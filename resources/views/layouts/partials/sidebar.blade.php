@@ -27,12 +27,16 @@
             </li>
             <li>
                 <a href="{{route('categories.index')}}"><i class="sidebar-item-icon fa fa-code-branch"></i>
-                    <span class="nav-label">Category</span></a>
+                    <span class="nav-label">Categories</span></a>
             </li> 
             <li>
                 <a href="{{route('brands.index')}}"><i class="sidebar-item-icon fa fa-copyright"></i>
-                    <span class="nav-label">Brand</span></a>
+                    <span class="nav-label">Brands</span></a>
             </li> 
+            <li>
+                <a href="{{route('units.index')}}"><i class="sidebar-item-icon fa fa-balance-scale"></i>
+                    <span class="nav-label">Units</span></a>
+            </li>
             <li>
                 <a href=""><i class="sidebar-item-icon fa fa-users"></i>
                     <span class="nav-label">Users</span></a>
