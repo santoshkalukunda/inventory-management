@@ -14,7 +14,8 @@ class BrandController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Brand $brand)
-    {if (!$brand) {
+    {
+        if (!$brand) {
         $brand = new Brand;
     }
     $brands=Brand::latest()->paginate(20);

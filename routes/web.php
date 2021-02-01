@@ -3,6 +3,7 @@
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DealerController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -36,5 +37,9 @@ Route::resource('brands',BrandController::class);
 //category route
 Route::get('categories/search',[CategoryController::class,'search'])->name('categories.search');
 Route::resource('categories',CategoryController::class);
+
+//product route
+Route::get('products/search',[ProductController::class,'search'])->name('products.search');
+Route::resource('products',ProductController::class);
 
 

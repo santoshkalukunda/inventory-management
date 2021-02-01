@@ -1,25 +1,36 @@
 @extends('layouts.backend')
 @section('title')
-Category
+Product
 @endsection
 @section('content')
 <div class="row">
     <div class="col-lg-4">
         <div class="ibox">
             <div class="ibox-head">
-                <div class="ibox-title">Category Form</div>
+                <div class="ibox-title">Product Form</div>
             </div>
             <div class="ibox-body">
-                <form action="{{$category->id ? route('categories.update',$category) : route('categories.store')}}" method="post">
+                <form action="{{$product->id ? route('products.update',$product) : route('products.store')}}" method="post">
                     @csrf
-                    @if ($category->id)
+                    @if ($product->id)
                     @method('put')
                     @endif
                     <div class="form-group">
+                        <label for="code">Product Code</label>
+                        <input type="text" id="code" name="code"
+                            class="form-control @error('code') is-invalid @enderror" value="{{old('code',$product->code)}}"
+                            placeholder="Product code">
+                        @error('code')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" id="name" name="name"
-                            class="form-control @error('name') is-invalid @enderror" value="{{old('name',$category->name)}}"
-                            placeholder="Category Name">
+                            class="form-control @error('name') is-invalid @enderror" value="{{old('name',$product->name)}}"
+                            placeholder="Product Name">
                         @error('name')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -28,7 +39,7 @@ Category
                     </div>
                     <div class="form-group">
                         <button type="submit"
-                            class="btn btn-success form-control btn-rounded">{{$category->id ? "upadete" : "Add"}}</button>
+                            class="btn btn-success form-control btn-rounded">{{$product->id ? "upadete" : "Add"}}</button>
                     </div>
                 </form>
             </div>
@@ -44,10 +55,13 @@ Category
             </p>
             <div class="collapse" id="filter">
                 <div class="card card-body">
-                    <form action="{{route('categories.search')}}" method="get">
+                    <form action="{{route('products.search')}}" method="get">
                         <div class="row">
                             <div class="col-md-5 form-group">
-                                <input type="text" class=" form-control" name="name" placeholder="Category">
+                                <input type="text" class=" form-control" name="code" placeholder="Product Code">
+                            </div>
+                            <div class="col-md-5 form-group">
+                                <input type="text" class=" form-control" name="name" placeholder="Product Name">
                             </div>
                             <div class="col-md-2">
                                 <input type="submit" class="form-control btn- btn-primary" value="Search">
@@ -61,29 +75,31 @@ Category
             <div class="ibox-body table-responsive">
                 <div class="row">
                     <div class="col-md">
-                        <h3 class="m-0">Categories List</h3>
+                        <h3 class="m-0">products List</h3>
                     </div>
                     <div class="col-md text-right">
-                        <span>Total Record: {{$categories->total()}}</span>
+                        <span>Total Record: {{$products->total()}}</span>
                     </div>
                 </div>
                 <hr>
                 <table class="table table-hover">
                     <thead class="bg-dark-light">
                         <tr>
-                            <th>Category</th>
+                            <th>Code</th>
+                            <th>Name</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($categories as $category)
+                        @forelse ($products as $product)
                         <tr>
-                            <td>{{$category->name}}</td>
+                            <td>{{$product->code}}</td>
+                            <td>{{$product->name}}</td>
                             <td>
-                                <a href="{{ route('categories.edit', $category) }}" class="text-muted"><i
+                                <a href="{{ route('products.edit', $product) }}" class="text-muted"><i
                                         class="fa fa-edit"></i></a>
                                 <span class="mx-3">|</span>
-                                <form action="{{route('categories.destroy', $category) }}"
+                                <form action="{{route('products.destroy', $product) }}"
                                     onsubmit="return confirm('Are you sure to delete?')" method="POST" class="d-inline">
                                     @csrf
                                     @method('delete')
@@ -94,12 +110,12 @@ Category
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="10"><span class="text-danger">*No data list Found</span></td>
+                            <td colspan="40" class="text-danger text-center"><span >OOPS!! data Not Found !!!</span></td>
                         </tr>
                         @endforelse
                     </tbody>
                 </table>
-                {{$categories->links()}}
+                {{$products->links()}}
             </div>
         </div>
     </div>
