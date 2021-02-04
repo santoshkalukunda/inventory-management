@@ -21,9 +21,11 @@
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             <div class="page-content fade-in-up">
-                @include('alerts.all')
-                @yield('content')
-                <!-- END PAGE CONTENT-->
+                <div class="container">
+                    @include('alerts.all')
+                    @yield('content')
+                    <!-- END PAGE CONTENT-->
+                </div>
             </div>
             @include('layouts.partials.footer')
         </div>

@@ -4,7 +4,9 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DealerController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\UnitController;
+use App\Models\Purchase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +28,13 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//purches route
+Route::get('purchase/{dealer}/create',[PurchaseController::class,'create'])->name('purchase.create');
+Route::post('purchase/{dealer}/store',[PurchaseController::class,'store'])->name('purchase.store');
+Route::get('purchase',[PurchaseController::class,'index'])->name('purchase.index');
+Route::delete('purchase/{purchase}',[PurchaseController::class,'destroy'])->name('purchase.destroy');
+Route::get('purchase/{purchase}/edit',[PurchaseController::class,'edit'])->name('purchase.edit');
+Route::put('purchase/{purchase}',[PurchaseController::class,'update'])->name('purchase.update');
 
 //dealers Route
 Route::get('dealers/search',[DealerController::class,'search'])->name('dealers.search');

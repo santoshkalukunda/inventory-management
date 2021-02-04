@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 @section('title')
-Dealer Registration
+Purchase Update
 @endsection
 @section('content')
 
@@ -8,12 +8,13 @@ Dealer Registration
     <div class="col-md-12">
         <div class="ibox">
             <div class="ibox-head">
-                <div class="ibox-title">Dealer Registration Form</div>
+                <div class="ibox-title">Purchase Update Form</div>
             </div>
             <div class="ibox-body">
-                <form action="{{route('dealers.store')}}" method="post">
+                <form action="{{route('purchase.update',$purchase)}}" method="post">
+                    @method('put')
                     @csrf
-                    @include('dealer.input')
+                    @include('purchase.input')
                 </form>
             </div>
         </div>

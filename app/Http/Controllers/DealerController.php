@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DealerRequest;
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Dealer;
+use App\Models\Product;
+use App\Models\Purchase;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 
 class DealerController extends Controller
@@ -52,7 +57,7 @@ class DealerController extends Controller
      */
     public function show(Dealer $dealer)
     {
-        //
+       return redirect()->route('purchase.create',$dealer);
     }
 
     /**

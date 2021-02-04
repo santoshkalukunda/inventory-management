@@ -9,4 +9,8 @@ class Unit extends Model
 {
     use HasFactory;
     protected $guarded=['id'];
+
+    public function purchase(){
+        return $this->hasMany(Purchase::class);
+    }
 }
