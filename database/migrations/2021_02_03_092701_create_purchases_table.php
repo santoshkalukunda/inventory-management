@@ -15,7 +15,8 @@ class CreatePurchasesTable extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
-            $table->string('date');
+            $table->string('order_date');
+            $table->string('shipping_date');
             $table->string('bill_no');
             $table->foreignId('product_id')->constrained('products');
             $table->foreignId('dealer_id')->constrained('dealers');

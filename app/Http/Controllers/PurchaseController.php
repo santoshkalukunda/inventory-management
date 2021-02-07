@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\purchaseExport;
 use App\Http\Requests\PurchaseRequest;
 use App\Models\Brand;
 use App\Models\Category;
@@ -9,7 +10,10 @@ use App\Models\Dealer;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\Unit;
+use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PurchaseController extends Controller
 {
@@ -20,8 +24,13 @@ class PurchaseController extends Controller
      */
     public function index()
     {
+        $products = Product::get();
+        $categories = Category::get();
+        $brands = Brand::get();
+        $units = Unit::get();
+        $dealers = Dealer::get();
         $purchases = Purchase::with('dealer', 'product', 'category', 'brand', 'unit')->latest()->paginate(20);
-        return view('purchase.index', compact('purchases'));
+        return view('purchase.index', compact('purchases', 'dealers', 'products', 'categories', 'brands', 'units'));
     }
 
     /**
@@ -56,7 +65,8 @@ class PurchaseController extends Controller
         $due= $total-$data['payment'];
         
         Purchase::create([
-            'date' => $data['date'],
+            'order_date' => $data['order_date'],
+            'shipping_date' => $data['shipping_date'],
             'bill_no' => $data['bill_no'],
             'dealer_id' => $dealer->id,
             'product_id' => $data['product_id'],
@@ -122,7 +132,8 @@ class PurchaseController extends Controller
         $due= $total-$data['payment'];
         // $purchase->update($request->validated());
         $purchase->update([
-            'date' => $data['date'],
+            'order_date' => $data['order_date'],
+            'shipping_date' => $data['shipping_date'],
             'bill_no' => $data['bill_no'],
             'product_id' => $data['product_id'],
             'category_id' => $data['category_id'],
@@ -156,5 +167,24 @@ class PurchaseController extends Controller
     {
         $purchase->delete();
         return redirect()->back()->with('success', "Purchase product deleted");
+    }
+
+    public function find(Request $request){
+        $request->validate([
+            'dealer_id' => 'required|exists:dealers,id',
+        ]);
+        $dealer=$request->dealer_id;
+        return redirect()->route('purchase.create',$dealer);
+    }
+
+    public function pdf(){
+        $purchases=Purchase::get();
+        $pdf = PDF::loadView('pdf.purchase-pdf',['purchases' => $purchases]);
+        return $pdf->setPaper('A4', 'landscape')->stream();
+        // return $pdf->download('pdf.purchase-pdf/report.pdf');
+    }
+
+    public function exp() {
+        return Excel::download(new purchaseExport, 'users-collection.xlsx');
     }
 }

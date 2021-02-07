@@ -24,7 +24,8 @@ class PurchaseRequest extends FormRequest
     public function rules()
     {
         return [
-        'date' => 'required',
+        'order_date' => 'required',
+        'shipping_date' => 'required',
         'bill_no' => 'required|numeric',
         'product_id' => 'required|exists:products,id',
         'category_id' => 'required|exists:categories,id',

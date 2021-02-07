@@ -1,55 +1,24 @@
-@extends('layouts.backend')
-@section('title')
-Purchase List
-@endsection
-@section('content')
-@push('style')
 <style>
-    /* Chrome, Safari, Edge, Opera */
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
     }
-    
-    /* Firefox */
-    input[type=number] {
-      -moz-appearance: textfield;
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
     }
     </style>
-@endpush
-<div class="row ">
-    <div class="col-md-2">
-        <button  class="btn btn-primary mb-2 form-control" data-toggle="modal" data-target="#exampleModal"> <i class="fa fa-plus"></i> New
-            Purchase
-        </button>
-    </div>
-    @include('modal.purchase-modal')
-    <div class="col-md-1">
-            <button class="btn btn-primary" data-toggle="collapse" href="#filter" role="button" aria-expanded="false"
-                aria-controls="filter">
-                <i class="fa fa-filter"></i> Filter
-            </button>
-    </div>
-    <div class="col-md-1">
-            <a class="btn btn-primary"  href="{{route('purchase.pdf')}}" >
-                <i class="fa fa-pdf"></i> PDF
-            </a>
-    </div>
-    <div class="col-md-1">
-        <a class="btn btn-primary"  href="{{route('purchase.excel')}}" >
-            <i class="fa fa-pdf"></i> Excel
-        </a>
-</div>
-   @include('purchase.filter-input')
+<div class="row">
     <div class="col-md-12 justify-content-center">
         <div class="ibox">
             <div class="ibox-head">
                 <div class="ibox-title">Purchase List</div>
             </div>
             <div class="ibox-body">
-                <div class="table-responsive">
-                    <table class="table-hover table-bordered">
+                <div class="table-responsive" style="font-size: 7px;">
+                    <table class="table table-hover table-bordered">
                         <tr class="text-center bg-light">
                             <th>Order_Date</th>
                             <th>Shipping_Date</th>
@@ -72,10 +41,9 @@ Purchase List
                             <th>Pyament</th>
                             <th>Due</th>
                             <th>MRP</th>
-                            <th colspan="3">Action</th>
                         </tr>
                         @forelse ($purchases as $purchase)
-                        <tr style="white-space:nowrap;">
+                        <tr >
                             <td>{{$purchase->order_date}}</td>
                             <td>{{$purchase->shipping_date}}</td>
                             <td class="text-right">{{$purchase->bill_no}}</td>
@@ -106,22 +74,6 @@ Purchase List
                             <td class="text-right">{{number_format((float)$purchase->payment,2,'.', '')}}</td>
                             <td class="text-right">{{number_format((float)$purchase->due,2,'.', '')}}</td>
                             <td class="text-right">{{number_format((float)$purchase->mrp,2,'.', '')}}</td>
-                            <td>
-                                <a href="" class="text-muted"><i class="fa fa-eye"></i></a>
-                            </td>
-                            <td>
-                                <a href="{{route('purchase.edit',$purchase)}}" class="text-muted"><i
-                                        class="fa fa-edit"></i></a>
-                            </td>
-                            <td>
-                                <form action="{{route('purchase.destroy',$purchase)}}"
-                                    onsubmit="return confirm('Are you sure to delete?')" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
-                                            class="fa fa-trash-alt"></i></button>
-                                </form>
-                            </td>
                         </tr>
                         @empty
                         <tr>
@@ -134,6 +86,10 @@ Purchase List
             </div>
         </div>
     </div>
+    <script type="text/php">
+        if ( isset($pdf) ) {
+            $font = Font_Metrics::get_font("helvetica", "bold");
+            $pdf->page_text(72, 18, "Header: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
+        }
+    </script> 
 </div>
-
-@endsection

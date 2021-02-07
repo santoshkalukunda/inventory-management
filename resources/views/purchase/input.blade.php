@@ -1,16 +1,25 @@
 <div class="row">
     <div class="col-md-3 form-group">
-        <label for="date" class="reauired">Date</label>
-        <input type="date" class="form-control @error('date') is-invalid @enderror" value="{{old('date',$purchase->date)}}" name="date" id="date" placeholder="Date" autofocus>
-        @error('date')
+        <label for="order_date" class="required">Order Date</label>
+        <input type="date" class="form-control @error('order_date') is-invalid @enderror" value="{{old('order_date',$purchase->order_date)}}" name="order_date" id="order_date" placeholder="Order Date">
+        @error('order_date')
         <div class="invalid-feedback">
             {{ $message }}
         </div>
         @enderror
     </div>
     <div class="col-md-3 form-group">
-        <label for="bill_no" class="reauired">Bill No.</label>
-        <input type="number" min="0" class="form-control @error('bill_no') is-invalid @enderror" value="{{old('bill_no',$purchase->bill_no)}}" name="bill_no" id="bill_no" placeholder="Bill No." autofocus>
+        <label for="shpping_date" class="required">Shipping Date</label>
+        <input type="date" class="form-control @error('shipping_date') is-invalid @enderror" value="{{old('shipping_date',$purchase->shipping_date)}}" name="shipping_date" id="shipping_date" placeholder="Shipping Date">
+        @error('shipping_date')
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
+    <div class="col-md-3 form-group">
+        <label for="bill_no" class="required">Bill No.</label>
+        <input type="number" min="0" class="form-control @error('bill_no') is-invalid @enderror" value="{{old('bill_no',$purchase->bill_no)}}" name="bill_no" id="bill_no" placeholder="Bill No." >
         @error('bill_no')
         <div class="invalid-feedback">
             {{ $message }}
@@ -155,7 +164,7 @@
         @enderror
     </div>
     <div class="col-md-2 form-group">
-        <label for="total">Net Total</label>
+        <label for="total">Net-Total</label>
         <input  step="any" type="number" min="0" class="form-control text-right @error('total') is-invalid @enderror" name="total" value="{{old('total',$purchase->total)}}" id="total" placeholder="Net-Total" readonly>
         @error('total')
         <div class="invalid-feedback">
@@ -165,7 +174,7 @@
     </div>
   
     <div class="col-md-2 form-group">
-        <label for="payment">Payment Amount</label>
+        <label for="payment" class="required">Payment Amount</label>
         <input type="number" min="0" step="any" class="form-control text-right @error('payment') is-invalid @enderror" name="payment" value="{{old('payment',$purchase->payment)}}" id="payment" placeholder="Payment Rs." onkeyup="fun()">
         @error('payment')
         <div class="invalid-feedback">

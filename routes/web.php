@@ -28,13 +28,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-//purches route
-Route::get('purchase/{dealer}/create',[PurchaseController::class,'create'])->name('purchase.create');
-Route::post('purchase/{dealer}/store',[PurchaseController::class,'store'])->name('purchase.store');
-Route::get('purchase',[PurchaseController::class,'index'])->name('purchase.index');
-Route::delete('purchase/{purchase}',[PurchaseController::class,'destroy'])->name('purchase.destroy');
-Route::get('purchase/{purchase}/edit',[PurchaseController::class,'edit'])->name('purchase.edit');
-Route::put('purchase/{purchase}',[PurchaseController::class,'update'])->name('purchase.update');
 
 //dealers Route
 Route::get('dealers/search',[DealerController::class,'search'])->name('dealers.search');
@@ -56,4 +49,14 @@ Route::resource('products',ProductController::class);
 Route::get('units/search',[UnitController::class,'search'])->name('units.search');
 Route::resource('units',UnitController::class);
 
+//purches route
+Route::get('purchase/{dealer}/create',[PurchaseController::class,'create'])->name('purchase.create');
+Route::post('purchase/{dealer}/store',[PurchaseController::class,'store'])->name('purchase.store');
+Route::get('purchase',[PurchaseController::class,'index'])->name('purchase.index');
+Route::delete('purchase/{purchase}',[PurchaseController::class,'destroy'])->name('purchase.destroy');
+Route::get('purchase/{purchase}/edit',[PurchaseController::class,'edit'])->name('purchase.edit');
+Route::put('purchase/{purchase}',[PurchaseController::class,'update'])->name('purchase.update');
+Route::post('purchase/find',[PurchaseController::class,'find'])->name('purchase.find');
+Route::get('purchase/pdf',[PurchaseController::class,'pdf'])->name('purchase.pdf');
+Route::get('purchase/excel',[PurchaseController::class,'exp'])->name('purchase.excel');
 
