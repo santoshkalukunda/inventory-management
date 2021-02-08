@@ -61,9 +61,9 @@ class PurchaseController extends Controller
         $data = $request->validated();
         // $purchase = new Purchase($request->validated());
         // $dealer->purchase()->save($purchase);
-        $total=$data['quantity'] * $data['rate'] - (($data['quantity'] * $data['rate']) * $data['discount'] / 100) + (($data['quantity'] * $data['rate']) * $data['vat'] / 100);
-        $due= $total-$data['payment'];
-        
+        $total = $data['quantity'] * $data['rate'] - (($data['quantity'] * $data['rate']) * $data['discount'] / 100) + (($data['quantity'] * $data['rate']) * $data['vat'] / 100);
+        $due = $total - $data['payment'];
+
         Purchase::create([
             'order_date' => $data['order_date'],
             'shipping_date' => $data['shipping_date'],
@@ -128,8 +128,8 @@ class PurchaseController extends Controller
     public function update(PurchaseRequest $request, Purchase $purchase)
     {
         $data = $request->validated();
-        $total=$data['quantity'] * $data['rate'] - (($data['quantity'] * $data['rate']) * $data['discount'] / 100) + (($data['quantity'] * $data['rate']) * $data['vat'] / 100);
-        $due= $total-$data['payment'];
+        $total = $data['quantity'] * $data['rate'] - (($data['quantity'] * $data['rate']) * $data['discount'] / 100) + (($data['quantity'] * $data['rate']) * $data['vat'] / 100);
+        $due = $total - $data['payment'];
         // $purchase->update($request->validated());
         $purchase->update([
             'order_date' => $data['order_date'],
@@ -169,22 +169,145 @@ class PurchaseController extends Controller
         return redirect()->back()->with('success', "Purchase product deleted");
     }
 
-    public function find(Request $request){
+    public function find(Request $request)
+    {
         $request->validate([
             'dealer_id' => 'required|exists:dealers,id',
         ]);
-        $dealer=$request->dealer_id;
-        return redirect()->route('purchase.create',$dealer);
+        $dealer = $request->dealer_id;
+        return redirect()->route('purchase.create', $dealer);
+    }
+    public function search(Request $request)
+    {
+        $purchases = new Purchase;
+        if ($request->has('dealer_id')) {
+            if ($request->dealer_id != null)
+                $purchases = $purchases->where('dealer_id', ["$request->dealer_id"]);
+        }
+        if ($request->has('bill_no')) {
+            if ($request->bill_no != null)
+                $purchases = $purchases->where('bill_no', ["$request->bill_no"]);
+        }
+        if ($request->has('product_id')) {
+            if ($request->product_id != null)
+                $purchases = $purchases->where('product_id', ["$request->product_id"]);
+        }
+        if ($request->has('category_id')) {
+            if ($request->category_id != null)
+                $purchases = $purchases->where('category_id', ["$request->category_id"]);
+        }
+        if ($request->has('brand_id')) {
+            if ($request->brand_id != null)
+                $purchases = $purchases->where('brand_id', ["$request->brand_id"]);
+        }
+        if ($request->has('model_no')) {
+            if ($request->model_no != null)
+                $purchases = $purchases->where('model_no', ["$request->model_no"]);
+        }
+        if ($request->has('serial_no')) {
+            if ($request->serial_no != null)
+                $purchases = $purchases->where('serial_no', ["$request->serial_no"]);
+        }
+        if ($request->has('batch_no')) {
+            if ($request->batch_no != null)
+                $purchases = $purchases->where('batch_no', ["$request->batch_no"]);
+        }
+        if ($request->has('order_date_from')) {
+            if ($request->order_date_from != null && $request->order_date_to != null)
+                $purchases = $purchases->whereBetween('order_date', [$request->order_date_from, $request->order_date_to]);
+        }
+        if ($request->has('shipping_date_from')) {
+            if ($request->shipping_date_from != null && $request->shipping_date_to != null)
+                $purchases = $purchases->whereBetween('shipping_date', [$request->shipping_date_from, $request->shipping_date_to]);
+        }
+        if ($request->has('mf_date_from')) {
+            if ($request->mf_date_from != null && $request->mf_date_to != null)
+                $purchases = $purchases->whereBetween('mf_date', [$request->mf_date_from, $request->mf_date_to]);
+        }
+        if ($request->has('exp_date_from')) {
+            if ($request->exp_date_from != null && $request->exp_date_to != null)
+                $purchases = $purchases->whereBetween('exp_date', [$request->exp_date_from, $request->exp_date_to]);
+        }
+
+        $purchases = $purchases->when($request->has('quantity_min') && !is_null($request->quantity_min), function ($query) use ($request) {
+            $query->where('quantity', '>=', $request->quantity_min);
+        })
+            ->when($request->has('quantity_max') && !is_null($request->quantity_max), function ($query) use ($request) {
+                $query->where('quantity', '<=', (int)$request->quantity_max);
+            });
+
+        if ($request->has('unit_id')) {
+            if ($request->unit_id != null)
+                $purchases = $purchases->where('unit_id', "$request->unit_id");
+        }
+        $purchases = $purchases->when($request->has('rate_min') && !is_null($request->rate_min), function ($query) use ($request) {
+            $query->where('rate', '>=', $request->rate_min);
+        })
+            ->when($request->has('rate_max') && !is_null($request->rate_max), function ($query) use ($request) {
+                $query->where('rate', '<=', (int)$request->rate_max);
+            });
+
+        $purchases = $purchases->when($request->has('discount_min') && !is_null($request->discount_min), function ($query) use ($request) {
+            $query->where('discount', '>=', $request->discount_min);
+        })
+            ->when($request->has('discount_max') && !is_null($request->discount_max), function ($query) use ($request) {
+                $query->where('discount', '<=', (int)$request->discount_max);
+            });
+        $purchases = $purchases->when($request->has('vat_min') && !is_null($request->vat_min), function ($query) use ($request) {
+            $query->where('vat', '>=', $request->vat_min);
+        })
+            ->when($request->has('vat_max') && !is_null($request->vat_max), function ($query) use ($request) {
+                $query->where('vat', '<=', (int)$request->vat_max);
+            });
+
+        $purchases = $purchases->when($request->has('total_min') && !is_null($request->total_min), function ($query) use ($request) {
+            $query->where('total', '>=', $request->total_min);
+        })
+            ->when($request->has('total_max') && !is_null($request->total_max), function ($query) use ($request) {
+                $query->where('total', '<=', (int)$request->total_max);
+            });
+
+        $purchases = $purchases->when($request->has('payment_min') && !is_null($request->payment_min), function ($query) use ($request) {
+            $query->where('payment', '>=', $request->payment_min);
+        })
+            ->when($request->has('payment_max') && !is_null($request->payment_max), function ($query) use ($request) {
+                $query->where('payment', '<=', (int)$request->payment_max);
+            });
+
+        $purchases = $purchases->when($request->has('due_min') && !is_null($request->due_min), function ($query) use ($request) {
+            $query->where('due', '>=', $request->due_min);
+        })
+            ->when($request->has('due_max') && !is_null($request->due_max), function ($query) use ($request) {
+                $query->where('due', '<=', (int)$request->due_max);
+            });
+
+
+        $purchases = $purchases->when($request->has('mrp_min') && !is_null($request->mrp_min), function ($query) use ($request) {
+            $query->where('mrp', '>=', $request->mrp_min);
+        })
+            ->when($request->has('mrp_max') && !is_null($request->mrp_max), function ($query) use ($request) {
+                $query->where('mrp', '<=', (int)$request->mrp_max);
+            });
+
+        $purchases = $purchases->with('dealer', 'product', 'category', 'brand', 'unit')->paginate();
+        $products = Product::get();
+        $categories = Category::get();
+        $brands = Brand::get();
+        $units = Unit::get();
+        $dealers = Dealer::get();
+        return view('purchase.index', compact('purchases', 'dealers', 'products', 'categories', 'brands', 'units'));
     }
 
-    public function pdf(){
-        $purchases=Purchase::get();
-        $pdf = PDF::loadView('pdf.purchase-pdf',['purchases' => $purchases]);
+    public function pdf()
+    {
+        $purchases = Purchase::get();
+        $pdf = PDF::loadView('pdf.purchase-pdf', ['purchases' => $purchases]);
         return $pdf->setPaper('A4', 'landscape')->stream();
         // return $pdf->download('pdf.purchase-pdf/report.pdf');
     }
 
-    public function exp() {
+    public function exp()
+    {
         return Excel::download(new purchaseExport, 'users-collection.xlsx');
     }
 }

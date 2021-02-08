@@ -43,7 +43,7 @@ class PurchaseRequest extends FormRequest
         'total' => 'required|numeric',
         'payment' => 'required|numeric',
         'due' => 'required|numeric',
-        'mrp' => 'nullable|numeric',
+        'mrp' => 'required|numeric',
         'details' => 'nullable'
         ];
     }

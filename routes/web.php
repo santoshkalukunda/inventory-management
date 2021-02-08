@@ -57,6 +57,8 @@ Route::delete('purchase/{purchase}',[PurchaseController::class,'destroy'])->name
 Route::get('purchase/{purchase}/edit',[PurchaseController::class,'edit'])->name('purchase.edit');
 Route::put('purchase/{purchase}',[PurchaseController::class,'update'])->name('purchase.update');
 Route::post('purchase/find',[PurchaseController::class,'find'])->name('purchase.find');
+Route::get('purchase/search',[PurchaseController::class,'search'])->name('purchase.search');
+
 Route::get('purchase/pdf',[PurchaseController::class,'pdf'])->name('purchase.pdf');
 Route::get('purchase/excel',[PurchaseController::class,'exp'])->name('purchase.excel');
 

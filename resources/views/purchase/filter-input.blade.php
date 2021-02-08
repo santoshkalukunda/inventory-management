@@ -1,7 +1,7 @@
 <div class="col-md-12 mb-2">
     <div class="collapse" id="filter">
         <div class="card card-body">
-            <form action="{{route('dealers.search')}}" method="get">
+            <form action="{{route('purchase.search')}}" method="get">
                 <div class="row">   
                     <div class="col-md-3 form-group">
                         <label for="dealer_id">Dealer Name</label>

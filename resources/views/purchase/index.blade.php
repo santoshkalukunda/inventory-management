@@ -44,8 +44,9 @@ Purchase List
    @include('purchase.filter-input')
     <div class="col-md-12 justify-content-center">
         <div class="ibox">
-            <div class="ibox-head">
+            <div class="ibox-head d-flex">
                 <div class="ibox-title">Purchase List</div>
+                <div>Total Result: {{$purchases->total()}}</div>
             </div>
             <div class="ibox-body">
                 <div class="table-responsive">
@@ -64,7 +65,6 @@ Purchase List
                             <th>Manufacture_date</th>
                             <th>Expiry_date</th>
                             <th>Quantity</th>
-                            <th class="mx-2">Uint </th>
                             <th>Rate</th>
                             <th>Discount</th>
                             <th>TAX/VAT</th>
@@ -97,8 +97,7 @@ Purchase List
                             <td>{{$purchase->batch_no}}</td>
                             <td>{{$purchase->mf_date}}</td>
                             <td>{{$purchase->exp_date}}</td>
-                            <td class="text-right">{{$purchase->quantity}}</td>
-                            <td>{{$purchase->unit->name}}</td>
+                            <td class="text-right">{{$purchase->quantity}} {{$purchase->unit->name}}</td>
                             <td class="text-right">{{number_format((float)$purchase->rate,2,'.', '')}}</td>
                             <td class="text-right">{{$purchase->discount}}%</td>
                             <td class="text-right">{{$purchase->vat}}%</td>
