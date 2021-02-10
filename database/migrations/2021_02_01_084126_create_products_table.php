@@ -17,6 +17,11 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('code');
             $table->string('name');
+            $table->foreignId('category_id')->constrained('categories');
+            $table->foreignId('brand_id')->constrained('brands');
+            $table->string('model_no')->nullable();
+            $table->string('serial_no')->nullable();
+            $table->text('details')->nullable();
             $table->timestamps();
         });
     }

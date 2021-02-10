@@ -28,10 +28,16 @@
     </div>
     <div class="col-md-3 form-group">
         <label for="product_id" class="required">Product Name</label>
-        <select  class="selectpicker form-control @error('product_id') is-invalid @enderror" name="product_id"   id="product" data-live-search="true" data-size="5">
+        <select  class="selectpicker form-control @error('product_id') is-invalid @enderror" name="product_id"   id="product" data-live-search="true" data-size="4">
             <option value="" selected>Select Product</option>
             @foreach ($products as $product)
-                <option value="{{$product->id}}" data-subtext="{{$product->code}}" {{$product->id == $purchase->product_id ? 'selected' : ''}}> {{$product->name}}</option>
+                <option value="{{$product->id}}" data-content="<span><b>{{$product->name}}</b>
+                    <br>{{$product->code}}
+                    <br>{{$product->category->name}}
+                    <br>{{$product->brand->name}}
+                    <br>{{$product->model_no}}
+                    <br>{{$product->serial_no}}
+                </span>" {{$product->id == $purchase->product_id ? 'selected' : ''}}>{{$product->name}}</option>
             @endforeach
           </select>
         @error('product_id')
@@ -192,7 +198,7 @@
         @enderror
     </div>
     <div class="col-md-2 form-group">
-        <label for="mrp">MRP</label>
+        <label for="mrp" class="required">MRP</label>
         <input type="number" min="0" class="form-control text-right @error('mrp') is-invalid @enderror" name="mrp" value="{{old('mrp',$purchase->mrp)}}" id="mrp" placeholder="MRP">
         @error('mrp')
         <div class="invalid-feedback">

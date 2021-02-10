@@ -24,7 +24,7 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        $products = Product::get();
+        $products = Product::with('category', 'brand',)->get();
         $categories = Category::get();
         $brands = Brand::get();
         $units = Unit::get();
@@ -70,10 +70,10 @@ class PurchaseController extends Controller
             'bill_no' => $data['bill_no'],
             'dealer_id' => $dealer->id,
             'product_id' => $data['product_id'],
-            'category_id' => $data['category_id'],
-            'brand_id' => $data['brand_id'],
-            'model_no' => $data['model_no'] ?? '-',
-            'serial_no' => $data['serial_no'] ?? '-',
+            // 'category_id' => $data['category_id'],
+            // 'brand_id' => $data['brand_id'],
+            // 'model_no' => $data['model_no'] ?? '-',
+            // 'serial_no' => $data['serial_no'] ?? '-',
             'batch_no' => $data['batch_no'] ?? '-',
             'mf_date' => $data['mf_date'] ?? '-',
             'exp_date' => $data['exp_date'] ?? '-',
@@ -136,10 +136,10 @@ class PurchaseController extends Controller
             'shipping_date' => $data['shipping_date'],
             'bill_no' => $data['bill_no'],
             'product_id' => $data['product_id'],
-            'category_id' => $data['category_id'],
-            'brand_id' => $data['brand_id'],
-            'model_no' => $data['model_no'] ?? '-',
-            'serial_no' => $data['serial_no'] ?? '-',
+            // 'category_id' => $data['category_id'],
+            // 'brand_id' => $data['brand_id'],
+            // 'model_no' => $data['model_no'] ?? '-',
+            // 'serial_no' => $data['serial_no'] ?? '-',
             'batch_no' => $data['batch_no'] ?? '-',
             'mf_date' => $data['mf_date'] ?? '-',
             'exp_date' => $data['exp_date'] ?? '-',
@@ -191,22 +191,6 @@ class PurchaseController extends Controller
         if ($request->has('product_id')) {
             if ($request->product_id != null)
                 $purchases = $purchases->where('product_id', ["$request->product_id"]);
-        }
-        if ($request->has('category_id')) {
-            if ($request->category_id != null)
-                $purchases = $purchases->where('category_id', ["$request->category_id"]);
-        }
-        if ($request->has('brand_id')) {
-            if ($request->brand_id != null)
-                $purchases = $purchases->where('brand_id', ["$request->brand_id"]);
-        }
-        if ($request->has('model_no')) {
-            if ($request->model_no != null)
-                $purchases = $purchases->where('model_no', ["$request->model_no"]);
-        }
-        if ($request->has('serial_no')) {
-            if ($request->serial_no != null)
-                $purchases = $purchases->where('serial_no', ["$request->serial_no"]);
         }
         if ($request->has('batch_no')) {
             if ($request->batch_no != null)
@@ -290,7 +274,7 @@ class PurchaseController extends Controller
             });
 
         $purchases = $purchases->with('dealer', 'product', 'category', 'brand', 'unit')->paginate();
-        $products = Product::get();
+        $products = Product::with('category', 'brand',)->get();
         $categories = Category::get();
         $brands = Brand::get();
         $units = Unit::get();

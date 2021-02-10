@@ -13,4 +13,8 @@ class Category extends Model
     public function purchase(){
         return $this->hasMany(Purchase::class);
     }
+
+    public function product(){
+        return $this->hasMany(Product::class);
+    }
 }

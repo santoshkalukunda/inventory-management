@@ -4,65 +4,70 @@ Product
 @endsection
 @section('content')
 <div class="row">
-    <div class="col-lg-4">
-        <div class="ibox">
-            <div class="ibox-head">
-                <div class="ibox-title">Product Form</div>
-            </div>
-            <div class="ibox-body">
-                <form action="{{$product->id ? route('products.update',$product) : route('products.store')}}" method="post">
-                    @csrf
-                    @if ($product->id)
-                    @method('put')
-                    @endif
-                    <div class="form-group">
-                        <label for="code">Product Code</label>
-                        <input type="text" id="code" name="code"
-                            class="form-control @error('code') is-invalid @enderror" value="{{old('code',$product->code)}}"
-                            placeholder="Product code">
-                        @error('code')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name"
-                            class="form-control @error('name') is-invalid @enderror" value="{{old('name',$product->name)}}"
-                            placeholder="Product Name">
-                        @error('name')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <button type="submit"
-                            class="btn btn-success form-control btn-rounded">{{$product->id ? "upadete" : "Add"}}</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+    <div class="col-md-2">
+        <p>
+            <a class="btn btn-primary" href="{{route('products.create')}}">
+                <i class="fa fa-plus"></i> New Product
+            </a>
+        </p>
     </div>
-    <div class="col-lg-8">
+    <div class="col-md-1">
+        <p>
+            <a class="btn btn-primary" data-toggle="collapse" href="#filter" role="button" aria-expanded="false"
+                aria-controls="filter">
+                <i class="fa fa-filter"></i> Filter
+            </a>
+        </p>
+    </div>
+    <div class="col-lg-12">
         <div class="mb-2">
-            <p>
-                <a class="btn btn-primary" data-toggle="collapse" href="#filter" role="button"
-                    aria-expanded="false" aria-controls="filter">
-                    <i class="fa fa-filter"></i> Filter
-                </a>
-            </p>
             <div class="collapse" id="filter">
                 <div class="card card-body">
                     <form action="{{route('products.search')}}" method="get">
                         <div class="row">
-                            <div class="col-md-5 form-group">
+                            <div class="col-md-3 form-group">
+                                <label for="category_id">Prodcut Code</label>
                                 <input type="text" class=" form-control" name="code" placeholder="Product Code">
                             </div>
-                            <div class="col-md-5 form-group">
+                            <div class="col-md-3 form-group">
+                                <label for="category_id">Prodcut Name</label>
                                 <input type="text" class=" form-control" name="name" placeholder="Product Name">
                             </div>
+                            <div class="col-md-3 form-group">
+                                <label for="category_id">Category Name</label>
+                                <select class="selectpicker form-control @error('category_id') is-invalid @enderror"
+                                    name="category_id" id="product_id" data-live-search="true" data-size="5">
+                                    <option value="" selected>Select Category</option>
+                                    @foreach ($categories as $category)
+                                    <option value="{{$category->id}}"> {{$category->name}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="brand_id">Brand Name</label>
+                                <select class="selectpicker form-control @error('brand_id') is-invalid @enderror"
+                                    name="brand_id" id="brand_id" data-live-search="true" data-size="5">
+                                    <option value="" selected>Select Brand</option>
+                                    @foreach ($brands as $brand)
+                                    <option value="{{$brand->id}}">
+                                        {{$brand->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="model_no">Model No.</label>
+                                <input type="text" class="form-control @error('model_no') is-invalid @enderror"
+                                    name="model_no" id="model_no" placeholder="Model No.">
+
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="serial_no">Serial No.</label>
+                                <input type="text" class="form-control @error('serial_no') is-invalid @enderror"
+                                    name="serial_no" id="serial_no" placeholder="Model No.">
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-2">
                                 <input type="submit" class="form-control btn- btn-primary" value="Search">
                             </div>
@@ -87,6 +92,10 @@ Product
                         <tr>
                             <th>Code</th>
                             <th>Name</th>
+                            <th>Category</th>
+                            <th>Brand</th>
+                            <th>Model_No.</th>
+                            <th>Serial_No.</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -95,6 +104,10 @@ Product
                         <tr>
                             <td>{{$product->code}}</td>
                             <td>{{$product->name}}</td>
+                            <td>{{$product->category->name}}</td>
+                            <td>{{$product->brand->name}}</td>
+                            <td>{{$product->model_no}}</td>
+                            <td>{{$product->serial_no}}</td>
                             <td>
                                 <a href="{{ route('products.edit', $product) }}" class="text-muted"><i
                                         class="fa fa-edit"></i></a>
@@ -110,7 +123,7 @@ Product
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="40" class="text-danger text-center"><span >OOPS!! data Not Found !!!</span></td>
+                            <td colspan="40" class="text-danger text-center"><span>OOPS!! data Not Found !!!</span></td>
                         </tr>
                         @endforelse
                     </tbody>

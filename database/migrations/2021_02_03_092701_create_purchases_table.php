@@ -20,10 +20,6 @@ class CreatePurchasesTable extends Migration
             $table->string('bill_no');
             $table->foreignId('product_id')->constrained('products');
             $table->foreignId('dealer_id')->constrained('dealers');
-            $table->foreignId('category_id')->constrained('categories');
-            $table->foreignId('brand_id')->constrained('brands');
-            $table->string('model_no')->nullable();
-            $table->string('serial_no')->nullable();
             $table->string('batch_no')->nullable();
             $table->string('mf_date')->nullable();
             $table->string('exp_date')->nullable();

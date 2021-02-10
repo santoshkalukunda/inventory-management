@@ -105,6 +105,7 @@ Dealer Registration
                 </div>
             </div>
         </div>
+        {{$dealers->links()}}
     </div>
 </div>
 

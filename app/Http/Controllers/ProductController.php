@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -13,13 +15,12 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Product $product)
+    public function index()
     {
-        if (!$product) {
-        $product = new Product;
-    }
-    $products=Product::latest()->paginate(20);
-    return view('product.index',compact('products','product'));
+        $categories = Category::get();
+        $brands = Brand::get();
+        $products = Product::with('category', 'brand',)->latest()->paginate(20);
+        return view('product.index', compact('products','brands','categories'));
     }
 
     /**
@@ -27,9 +28,14 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Product $product)
     {
-        //
+        if (!$product) {
+            $product = new Product;
+        }
+        $categories = Category::get();
+        $brands = Brand::get();
+        return view('product.create', compact('product', 'categories', 'brands'));
     }
 
     /**
@@ -63,7 +69,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return $this->index($product);
+        return $this->create($product);
     }
 
     /**
@@ -88,20 +94,39 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->back()->with('success','Product Deleted');
+        return redirect()->back()->with('success', 'Product Deleted');
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $products = new Product;
+        if ($request->has('code')) {
+            if ($request->code != null)
+                $products = $products->where('code', 'LIKE', ["$request->code%"]);
+        }
         if ($request->has('name')) {
             if ($request->name != null)
                 $products = $products->where('name', 'LIKE', ["$request->name%"]);
         }
-        $products=$products->paginate();
-        $product=null;
-        if (!$product) {
-            $product = new Product;
+        if ($request->has('category_id')) {
+            if ($request->category_id != null)
+                $products = $products->where('category_id', ["$request->category_id"]);
         }
-        return view('product.index',compact('products','product'));
+        if ($request->has('brand_id')) {
+            if ($request->brand_id != null)
+                $products = $products->where('brand_id', ["$request->brand_id"]);
+        }
+        if ($request->has('model_no')) {
+            if ($request->model_no != null)
+                $products = $products->where('model_no', ["$request->model_no"]);
+        }
+        if ($request->has('serial_no')) {
+            if ($request->serial_no != null)
+                $products = $products->where('serial_no', ["$request->serial_no"]);
+        }
+        $products = $products->with('category', 'brand',)->paginate();
+        $categories = Category::get();
+        $brands = Brand::get();
+        return view('product.index', compact('products','categories','brands'));
     }
 }

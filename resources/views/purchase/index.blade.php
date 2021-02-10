@@ -57,10 +57,6 @@ Purchase List
                             <th>Bill_No.</th>
                             <th>Dealer</th>
                             <th>Product</th>
-                            <th>Category</th>
-                            <th>Brand</th>
-                            <th>Model_No.</th>
-                            <th>Serial_No.</th>
                             <th>Batch_No.</th>
                             <th>Manufacture_date</th>
                             <th>Expiry_date</th>
@@ -83,17 +79,21 @@ Purchase List
                                 <a href="{{route('dealers.show',$purchase->dealer)}}"
                                     class="font-14"><b>{{$purchase->dealer->name}}</b></a>
                                 <span class=""> <br>{{$purchase->dealer->address}}</span>
-                                <span class=""> <br><b>PAN/VAT:</b>{{$purchase->dealer->pan_vat}}</span>
+                                <span class=""> <br>{{$purchase->dealer->pan_vat}}</span>
                             </td>
                             <td>
                                 {{$purchase->product->code}}
                                 <br>
-                                {{$purchase->product->name}}
+                                <b>{{$purchase->product->name}}</b>
+                                <br>
+                                {{$purchase->product->category->name}}
+                                <br>
+                                {{$purchase->product->brand->name}}
+                                <br>
+                                {{$purchase->model_no}}
+                                <br>
+                                {{$purchase->serial_no}}
                             </td>
-                            <td>{{$purchase->category->name}}</td>
-                            <td>{{$purchase->brand->name}}</td>
-                            <td>{{$purchase->model_no}}</td>
-                            <td>{{$purchase->serial_no}}</td>
                             <td>{{$purchase->batch_no}}</td>
                             <td>{{$purchase->mf_date}}</td>
                             <td>{{$purchase->exp_date}}</td>
@@ -132,6 +132,7 @@ Purchase List
                 </div>
             </div>
         </div>
+        {{$purchases->links()}}
     </div>
 </div>
 

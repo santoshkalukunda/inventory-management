@@ -26,6 +26,11 @@ class ProductRequest extends FormRequest
         return [
             'code' => 'required|unique:products,code',
             'name' => 'required|unique:products,name',
+            'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'required|exists:brands,id',
+            'model_no' => 'nullable',
+            'serial_no' => 'nullable',
+            'details' => 'nullable',
         ];
     }
 }
