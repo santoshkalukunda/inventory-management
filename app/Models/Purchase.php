@@ -27,4 +27,7 @@ class Purchase extends Model
         return $this->belongsTo(Unit::class);
     }
     
+    public function customer(){
+        return $this->belongsTo(Customer::class);
+    }
 }

@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DealerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UnitController;
 use App\Models\Purchase;
@@ -63,6 +65,13 @@ Route::get('purchase/search',[PurchaseController::class,'search'])->name('purcha
 Route::get('purchase/pdf',[PurchaseController::class,'pdf'])->name('purchase.pdf');
 Route::get('purchase/excel',[PurchaseController::class,'exp'])->name('purchase.excel');
 
+//customers route
+Route::get('customers/search',[CustomerController::class,'search'])->name('customers.search');
+Route::resource('customers',CustomerController::class);
+
+
+//sales route
+Route::resource('sales',SaleController::class);
 
 //store route
 Route::get('stores',[StoreController::class,'index'])->name('stores.index');

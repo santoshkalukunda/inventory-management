@@ -31,30 +31,35 @@ Purchase List
             <i class="fa fa-filter"></i> Filter
         </button>
     </div>
-    <div class="col-md-1 form-group">
+    {{-- <div class="col-md-1 form-group">
         <a class="btn btn-primary" href="{{route('purchase.pdf')}}">
-            <i class="fa fa-pdf"></i> PDF
-        </a>
-    </div>
-    <div class="col-md-1 form-group">
-        <a class="btn btn-primary" href="{{route('purchase.excel')}}">
-            <i class="fa fa-pdf"></i> Excel
-        </a>
-    </div>
-    <div class="col-md-7 form-group text-right">
-        @php
-        $total=0;
-        $due=0;
-        $payment=0;
-        foreach($purchases as $purchase)
-        {
-        $total=$total+$purchase->total;
-        $due=$due+$purchase->due;
-        $payment=$payment+$purchase->payment;
-        }
-        @endphp
-       <b>Total Amount: </b>{{$total}}/- <b>Payment :</b> {{$payment}}/- <b>Due :</b> {{$due}}/-
-    </div>
+    <i class="fa fa-pdf"></i> PDF
+    </a>
+</div>
+<div class="col-md-1 form-group">
+    <a class="btn btn-primary" href="{{route('purchase.excel')}}">
+        <i class="fa fa-pdf"></i> Excel
+    </a>
+</div> --}}
+<div class="col-md-9 form-group text-right">
+    @php
+    $total=0;
+    $due=0;
+    $payment=0;
+    $quantity=0;
+    foreach($purchases as $purchase)
+    {
+    $total=$total+$purchase->total;
+    $due=$due+$purchase->due;
+    $payment=$payment+$purchase->payment;
+    $quantity=$quantity+$purchase->quantity;
+    }
+    @endphp
+    <span class="bg-blue-light p-2"><b>Total Product: </b>{{$quantity}}</span>
+    <span class="bg-blue-light p-2"><b>Total Amount: </b>{{$total}}/-</span>
+    <span class="bg-blue-light p-2"><b>Payment :</b> {{$payment}}/-</span>
+    <span class="bg-blue-light p-2"> <b>Due :</b> {{$due}}/-</span>
+</div>
 
 </div>
 @include('purchase.filter-input')
@@ -150,6 +155,4 @@ Purchase List
     </div>
     {{$purchases->links()}}
 </div>
-</div>
-
 @endsection
