@@ -17,8 +17,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $categories = Category::get();
-        $brands = Brand::get();
+        $categories = Category::orderBy('name')->get();
+        $brands = Brand::orderBy('name')->get();
         $products = Product::with('category', 'brand',)->latest()->paginate(20);
         return view('product.index', compact('products','brands','categories'));
     }
@@ -33,8 +33,8 @@ class ProductController extends Controller
         if (!$product) {
             $product = new Product;
         }
-        $categories = Category::get();
-        $brands = Brand::get();
+        $categories = Category::orderBy('name')->get();
+        $brands = Brand::orderBy('name')->get();
         return view('product.create', compact('product', 'categories', 'brands'));
     }
 
@@ -125,8 +125,8 @@ class ProductController extends Controller
                 $products = $products->where('serial_no', ["$request->serial_no"]);
         }
         $products = $products->with('category', 'brand',)->paginate();
-        $categories = Category::get();
-        $brands = Brand::get();
+        $categories = Category::orderBy('name')->get();
+        $brands = Brand::orderBy('name')->get();
         return view('product.index', compact('products','categories','brands'));
     }
 }

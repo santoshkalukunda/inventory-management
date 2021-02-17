@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Dealer;
 use App\Models\Product;
 use App\Models\Purchase;
+use App\Models\Store;
 use App\Models\Unit;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Contracts\View\View;
@@ -24,11 +25,11 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        $products = Product::with('category', 'brand',)->get();
-        $categories = Category::get();
-        $brands = Brand::get();
-        $units = Unit::get();
-        $dealers = Dealer::get();
+        $products = Product::with('category', 'brand',)->orderBy('name')->get();
+        $categories = Category::orderBy('name')->get();
+        $brands = Brand::orderBy('name')->get();
+        $units = Unit::orderBy('name')->get();
+        $dealers = Dealer::orderBy('name')->get();
         $purchases = Purchase::with('dealer', 'product', 'category', 'brand', 'unit')->latest()->paginate(20);
         return view('purchase.index', compact('purchases', 'dealers', 'products', 'categories', 'brands', 'units'));
     }
@@ -85,9 +86,26 @@ class PurchaseController extends Controller
             'total' => $total,
             'payment' => $data['payment'],
             'due' => $due,
-            'mrp' => $data['mrp'] ?? '-',
+            'mrp' => $data['mrp'],
             'details' => $data['details'],
         ]);
+        $store = Store::where('product_id', $data['product_id'])->first();
+        if ($store) {
+
+            $total = $store->quantity + $data['quantity'];
+            $store->update([
+                'quantity' => $total,
+                'unit_id' => $data['unit_id'],
+                'mrp' => $data['mrp'],
+            ]);
+        } else {
+            Store::create([
+                'product_id' => $data['product_id'],
+                'quantity' => $data['quantity'],
+                'unit_id' => $data['unit_id'],
+                'mrp' => $data['mrp'],
+            ]);
+        }
         return redirect()->back()->with('success', 'Product Purchase done');
     }
 
@@ -131,6 +149,47 @@ class PurchaseController extends Controller
         $total = $data['quantity'] * $data['rate'] - (($data['quantity'] * $data['rate']) * $data['discount'] / 100) + (($data['quantity'] * $data['rate']) * $data['vat'] / 100);
         $due = $total - $data['payment'];
         // $purchase->update($request->validated());
+        if ($purchase->product_id == $data['product_id']) {
+            $store = Store::where('product_id', $data['product_id'])->first();
+            if ($purchase->quantity != $data['quantity']) {
+                    $total = $store->quantity + $data['quantity'] - $purchase->quantity;
+                    $store->update([
+                        'quantity' => $total,
+                        'unit_id' => $data['unit_id'],
+                        'mrp' => $data['mrp'],
+                    ]);
+            }
+            if($purchase->mrp != $data['mrp'] or $purchase->unit_id != $data['unit_id']) {
+                   
+                    $store->update([
+                        'unit_id' => $data['unit_id'],
+                        'mrp' => $data['mrp'],
+                    ]);
+            }
+        }else{
+            $store = Store::where('product_id', $purchase->product_id)->first();
+            $total = $store->quantity - $purchase->quantity;
+            $store->update([
+                'quantity' => $total,
+            ]);
+            $store = Store::where('product_id', $data['product_id'])->first();
+            if ($store) {
+                $total = $store->quantity + $data['quantity'];
+                $store->update([
+                    'quantity' => $total,
+                    'unit_id' => $data['unit_id'],
+                    'mrp' => $data['mrp'],
+                ]);
+            } else {
+                Store::create([
+                    'product_id' => $data['product_id'],
+                    'quantity' => $data['quantity'],
+                    'unit_id' => $data['unit_id'],
+                    'mrp' => $data['mrp'],
+                ]);
+            }
+        }
+
         $purchase->update([
             'order_date' => $data['order_date'],
             'shipping_date' => $data['shipping_date'],
@@ -154,6 +213,7 @@ class PurchaseController extends Controller
             'mrp' => $data['mrp'] ?? '-',
             'details' => $data['details'],
         ]);
+
         return redirect()->back()->with('success', 'Purchase Update Successfull');
     }
 
@@ -165,6 +225,11 @@ class PurchaseController extends Controller
      */
     public function destroy(Purchase $purchase)
     {
+        $store = Store::where('product_id', $purchase->product_id)->first();
+        $total = $store->quantity - $purchase->quantity;
+        $store->update([
+            'quantity' => $total,
+        ]);
         $purchase->delete();
         return redirect()->back()->with('success', "Purchase product deleted");
     }
@@ -274,11 +339,11 @@ class PurchaseController extends Controller
             });
 
         $purchases = $purchases->with('dealer', 'product', 'category', 'brand', 'unit')->paginate();
-        $products = Product::with('category', 'brand',)->get();
-        $categories = Category::get();
-        $brands = Brand::get();
-        $units = Unit::get();
-        $dealers = Dealer::get();
+        $products = Product::with('category', 'brand',)->orderBy('name')->get();
+        $categories = Category::orderBy('name')->get();
+        $brands = Brand::orderBy('name')->get();
+        $units = Unit::orderBy('name')->get();
+        $dealers = Dealer::orderBy('name')->get();
         return view('purchase.index', compact('purchases', 'dealers', 'products', 'categories', 'brands', 'units'));
     }
 

@@ -3,10 +3,10 @@
     <div class="page-brand" >
         <a class="link" href="/">
             <span class="brand">
-                Inventory <span class="brand-tip">MGMT</span>
+                <span class="brand-tip">IMS</span>
                 {{-- <img src="{{asset('assets/img/logo.png')}}" class="" width="80%" alt="closet Nepal Logo"> --}}
             </span>
-            <span class="brand-mini">IM</span>
+            <span class="brand-mini">IMS</span>
         </a>
     </div>
     <div class="flexbox flex-1">

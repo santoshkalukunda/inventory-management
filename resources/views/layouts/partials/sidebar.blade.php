@@ -9,7 +9,7 @@
             </li>
             <li class="heading">FEATURES</li>
             <li>
-                <a href=""><i class="sidebar-item-icon fa fa-warehouse"></i>
+                <a href="{{route('stores.index')}}"><i class="sidebar-item-icon fa fa-warehouse"></i>
                     <span class="nav-label">Store</span></a>
             </li> 
             <li>

@@ -7,7 +7,7 @@
                     <div class="col-md-3 form-group">
                         <label for="dealer_id">Dealer Name</label>br
                         <select class="selectpicker form-control @error('dealer_id') is-invalid @enderror"
-                            name="dealer_id" id="product" data-live-search="true" data-size="5">
+                            name="dealer_id" id="product" data-live-search="true" data-size="4">
                             <option value="" selected>Select Dealer</option>
                             @foreach ($dealers as $dealer)
                             <option value="{{$dealer->id}}"data-content="<b>{{$dealer->name}}</b>
@@ -132,13 +132,13 @@
                             name="discount_min" id="discount_min" placeholder="Discount Min.">
                     </div>
                     <div class="col-md-2 form-group">
-                        <label for="discount_max">Discount Max. in %</label>
+                        <label for="discount_max">Discount Max. in%</label>
                         <input type="number" min="0" step="any"
                             class="form-control text-right @error('discount_max') is-invalid @enderror"
                             name="discount_max" id="discount_max" placeholder="Discount Max in %">
                     </div>
                     <div class="col-md-2 form-group">
-                        <label for="vat_min">TAX/VAT Min. in %</label>
+                        <label for="vat_min">TAX/VAT Min. in%</label>
                         <input type="number" min="0" step="any"
                             class="form-control text-right @error('vat_min') is-invalid @enderror" name="vat_min"
                             id="vat_min" placeholder="TAX/VAT Min.">

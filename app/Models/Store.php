@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Store extends Model
 {
     use HasFactory;
-    protected $guarded=['id'];
-
-    public function purchase(){
-        return $this->hasMany(Purchase::class);
+    protected $guarded = ['id'];
+    
+    public function product(){
+        return $this->belongsTo(Product::class);
     }
     public function category(){
         return $this->belongsTo(Category::class);
@@ -19,7 +19,7 @@ class Product extends Model
     public function brand(){
         return $this->belongsTo(Brand::class);
     }
-    public function store(){
-        return $this->hasMany(Store::class);
+    public function unit(){
+        return $this->belongsTo(Unit::class);
     }
 }

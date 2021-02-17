@@ -80,7 +80,7 @@ Product
             <div class="ibox-body table-responsive">
                 <div class="row">
                     <div class="col-md">
-                        <h3 class="m-0">products List</h3>
+                        <h3 class="m-0">Products List</h3>
                     </div>
                     <div class="col-md text-right">
                         <span>Total Record: {{$products->total()}}</span>

@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DealerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UnitController;
 use App\Models\Purchase;
 use Illuminate\Support\Facades\Auth;
@@ -62,3 +63,7 @@ Route::get('purchase/search',[PurchaseController::class,'search'])->name('purcha
 Route::get('purchase/pdf',[PurchaseController::class,'pdf'])->name('purchase.pdf');
 Route::get('purchase/excel',[PurchaseController::class,'exp'])->name('purchase.excel');
 
+
+//store route
+Route::get('stores',[StoreController::class,'index'])->name('stores.index');
+Route::get('stores/search',[StoreController::class,'search'])->name('stores.search');

@@ -1,3 +1,18 @@
+@push('style')
+<style>
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    
+    /* Firefox */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+    </style>
+@endpush
 <div class="row">
     <div class="col-md-3 form-group">
         <label for="order_date" class="required">Order Date</label>
