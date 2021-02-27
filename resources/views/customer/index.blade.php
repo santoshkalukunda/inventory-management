@@ -57,7 +57,7 @@ Customer List
     <div class="col-md-12 justify-content-center">
         <div class="ibox">
             <div class="ibox-head d-flex">
-                <div class="ibox-title">customers List</div>
+                <div class="ibox-title">Customers List</div>
                 <div class="text-right">Total Record: {{$customers->total()}}</div>
             </div>
             <div class="ibox-body">
@@ -69,7 +69,6 @@ Customer List
                             <th>Phone</th>
                             <th>Email</th>
                             <th>PAN/VAT No.</th>
-                            <th>Age</th>
                             <th colspan="3">Action</th>
                         </tr>
                         @forelse ($customers as $customer)
@@ -79,7 +78,6 @@ Customer List
                             <td>{{$customer->phone}}</td>
                             <td>{{$customer->email}}</td>
                             <td>{{$customer->pan_vat}}</td>
-                            <td>{{$customer->age}}</td>
                             <td>
                                 <a href="{{route('customers.show',$customer)}}" class="text-muted"><i
                                         class="fa fa-eye"></i></a>

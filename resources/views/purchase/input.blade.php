@@ -32,7 +32,7 @@
         </div>
         @enderror
     </div>
-    <div class="col-md-3 form-group">
+    <div class="col-md-2 form-group">
         <label for="bill_no" class="required">Bill No.</label>
         <input type="number" min="0" class="form-control @error('bill_no') is-invalid @enderror" value="{{old('bill_no',$purchase->bill_no)}}" name="bill_no" id="bill_no" placeholder="Bill No." >
         @error('bill_no')
@@ -41,7 +41,7 @@
         </div>
         @enderror
     </div>
-    <div class="col-md-3 form-group">
+    <div class="col-md-4 form-group">
         <label for="product_id" class="required">Product Name</label>
         <select  class="selectpicker form-control @error('product_id') is-invalid @enderror" name="product_id"   id="product" data-live-search="true" data-size="4">
             <option value="" selected>Select Product</option>
@@ -62,61 +62,6 @@
         @enderror
     </div>
     <div class="col-md-3 form-group">
-        <label for="category_id" class="required">Category Name</label>
-        <select  class="selectpicker form-control @error('category_id') is-invalid @enderror" name="category_id"   id="product_id" data-live-search="true" data-size="5">
-            <option value="" selected>Select Category</option>
-            @foreach ($categories as $category)
-                <option value="{{$category->id}}" {{$category->id == $purchase->category_id ? 'selected' : ''}}> {{$category->name}}</option>
-            @endforeach
-          </select>
-        @error('category_id')
-        <div class="invalid-feedback">
-            {{ $message }}
-        </div>
-        @enderror
-    </div>
-    <div class="col-md-3 form-group">
-        <label for="brand_id" class="required">Brand Name</label>
-        <select  class="selectpicker form-control @error('brand_id') is-invalid @enderror" name="brand_id"   id="brand_id" data-live-search="true" data-size="5">
-            <option value="" selected>Select Brand</option>
-            @foreach ($brands as $brand)
-                <option value="{{$brand->id}}" {{$brand->id == $purchase->brand_id ? 'selected' : ''}}> {{$brand->name}}</option>
-            @endforeach
-          </select>
-        @error('brand_id')
-        <div class="invalid-feedback">
-            {{ $message }}
-        </div>
-        @enderror
-    </div>
-    <div class="col-md-3 form-group">
-        <label for="model_no">Model No.</label>
-        <input type="text" class="form-control @error('model_no') is-invalid @enderror" name="model_no" value="{{old('model_no',$purchase->model_no)}}" id="model_no" placeholder="Model No.">
-        @error('model_no')
-        <div class="invalid-feedback">
-            {{ $message }}
-        </div>
-        @enderror
-    </div>
-    <div class="col-md-3 form-group">
-        <label for="serial_no">Serial No.</label>
-        <input type="text" class="form-control @error('serial_no') is-invalid @enderror" name="serial_no" value="{{old('serial_no',$purchase->serial_no)}}" id="serial_no" placeholder="Model No.">
-        @error('serial_no')
-        <div class="invalid-feedback">
-            {{ $message }}
-        </div>
-        @enderror
-    </div>
-    <div class="col-md-3 form-group">
-        <label for="batch_no">Batch No.</label>
-        <input type="text" class="form-control @error('batch_no') is-invalid @enderror" name="batch_no" value="{{old('batch_no',$purchase->batch_no)}}" id="batch_no" placeholder="Batch No.">
-        @error('batch_no')
-        <div class="invalid-feedback">
-            {{ $message }}
-        </div>
-        @enderror
-    </div>
-    <div class="col-md-3 form-group">
         <label for="mf_date">Manufacture Date</label>
         <input type="date" class="form-control @error('mf_date') is-invalid @enderror" name="mf_date" value="{{old('mf_date',$purchase->mf_date)}}" id="mf_date" placeholder="Batch No.">
         @error('mf_date')
@@ -129,6 +74,15 @@
         <label for="exp_date">Expiry Date</label>
         <input type="date" class="form-control @error('exp_date') is-invalid @enderror" name="exp_date" value="{{old('exp_date',$purchase->exp_date)}}" id="exp_date" placeholder="Batch No.">
         @error('exp_date')
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
+    <div class="col-md-2 form-group">
+        <label for="batch_no">Batch No.</label>
+        <input type="text" class="form-control @error('batch_no') is-invalid @enderror" name="batch_no" value="{{old('batch_no',$purchase->batch_no)}}" id="batch_no" placeholder="Batch No.">
+        @error('batch_no')
         <div class="invalid-feedback">
             {{ $message }}
         </div>
@@ -248,7 +202,8 @@
     var due = document.getElementById("due").value;
     var payment = document.getElementById("payment").value;
     var calculate = (quantity * rate);
-     calculate = calculate - ((calculate * (discount)/100))+((calculate * (vat)/100));
+     calculate = calculate - ((calculate * (discount)/100));
+     var calculate = calculate + ((calculate * (vat)/100));
     document.getElementById("total").value = calculate.toFixed(2);
     document.getElementById("due").value = (calculate - payment).toFixed(2);
     // document.getElementById("member-kosten").innerHTML = ausgabe;

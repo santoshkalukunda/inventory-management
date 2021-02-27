@@ -29,7 +29,6 @@ Product
                                         <br>{{$product->category->name}}
                                         <br>{{$product->brand->name}}
                                         <br>{{$product->model_no}}
-                                        <br>{{$product->serial_no}}
                                     </span>">    
                                     </option>
                                     @endforeach
@@ -143,7 +142,6 @@ Product
                                 <th>Category</th>
                                 <th>Brand</th>
                                 <th>Model_No.</th>
-                                <th>Serial_No.</th>
                                 <th>Quantity</th>
                                 <th>Unit</th>
                                 <th>MRP</th>
@@ -158,7 +156,6 @@ Product
                                 <td>{{$store->product->category->name}}</td>
                                 <td>{{$store->product->brand->name}}</td>
                                 <td>{{$store->product->model_no}}</td>
-                                <td>{{$store->product->serial_no}}</td>
                                 <td class="text-right">{{$store->quantity}}</td>
                                 <td> {{$store->unit->name}}</td>
                                 <td class="text-right">{{$store->mrp}}</td>

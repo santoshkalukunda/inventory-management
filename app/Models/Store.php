@@ -22,4 +22,7 @@ class Store extends Model
     public function unit(){
         return $this->belongsTo(Unit::class);
     }
+    public function sale(){
+        return $this->hasMany(Sale::class);
+    }
 }

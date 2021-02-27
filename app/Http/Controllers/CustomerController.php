@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomerRequest;
+use App\Models\Bill;
 use App\Models\Customer;
+use App\Models\Sale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class CustomerController extends Controller
 {
@@ -15,8 +19,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers=Customer::latest()->paginate(20);
-        return view('customer.index',compact('customers'));
+        $customers = Customer::latest()->paginate(20);
+        return view('customer.index', compact('customers'));
     }
 
     /**
@@ -24,12 +28,12 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Customer $customer=null)
+    public function create(Customer $customer = null)
     {
         if (!$customer) {
             $customer = new Customer;
         }
-        return view('customer.create',compact('customer'));
+        return view('customer.create', compact('customer'));
     }
 
     /**
@@ -40,8 +44,13 @@ class CustomerController extends Controller
      */
     public function store(CustomerRequest $request)
     {
-        Customer::create($request->validated());
-        return redirect()->back()->with('success','Customer Registration Successfull');
+        $customer = Customer::create($request->validated());
+        $bill = Bill::create([
+            'customer_id' => $customer->id,
+            'user_id' => Auth::user()->id,
+            'status' => 'incomplete',
+        ]);
+        return redirect()->route('bills.create', compact('customer','bill'))->with('success', 'Customer Registration Successfull');
     }
 
     /**
@@ -63,7 +72,7 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
-        return view('customer.edit',compact('customer'));
+        return view('customer.edit', compact('customer'));
     }
 
     /**
@@ -76,7 +85,7 @@ class CustomerController extends Controller
     public function update(CustomerRequest $request, Customer $customer)
     {
         $customer->update($request->validated());
-        return redirect()->back()->with('success','Customer Update Successfull');
+        return redirect()->back()->with('success', 'Customer Update Successfull');
     }
 
     /**
@@ -88,11 +97,12 @@ class CustomerController extends Controller
     public function destroy(Customer $customer)
     {
         $customer->delete();
-        return redirect()->back()->with('success','Customer Information Deleted');
+        return redirect()->back()->with('success', 'Customer Information Deleted');
     }
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $customers = new Customer;
-      
+
         if ($request->has('name')) {
             if ($request->name != null)
                 $customers = $customers->where('name', 'LIKE', ["$request->name%"]);
@@ -103,11 +113,11 @@ class CustomerController extends Controller
         }
         if ($request->has('phone')) {
             if ($request->phone != null)
-                $customers = $customers->where('phone',["$request->phone"]);
+                $customers = $customers->where('phone', ["$request->phone"]);
         }
         if ($request->has('address')) {
             if ($request->address != null)
-            $customers = $customers->where('address', 'LIKE', ["$request->address%"]);
+                $customers = $customers->where('address', 'LIKE', ["$request->address%"]);
         }
         if ($request->has('pan_vat')) {
             if ($request->pan_vat != null)

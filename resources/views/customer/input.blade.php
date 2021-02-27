@@ -44,15 +44,6 @@
         </div>
         @enderror
     </div>
-    <div class="col-md-4 form-group">
-        <label for="age">Age</label>
-        <input type="number" min="0" class="form-control @error('age') is-invalid @enderror" name="age" value="{{old('age',$customer->age)}}" id="age" placeholder="Age">
-        @error('age')
-        <div class="invalid-feedback">
-            {{ $message }}
-        </div>
-        @enderror
-    </div>
     <div class="form-group col-md-12">
         <label for="details">Other details</label>
         <textarea type="text" id="details" name="details"

@@ -95,7 +95,7 @@ Product
                             <th>Category</th>
                             <th>Brand</th>
                             <th>Model_No.</th>
-                            <th>Serial_No.</th>
+                            {{-- <th>Serial_No.</th> --}}
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -107,7 +107,7 @@ Product
                             <td>{{$product->category->name}}</td>
                             <td>{{$product->brand->name}}</td>
                             <td>{{$product->model_no}}</td>
-                            <td>{{$product->serial_no}}</td>
+                            {{-- <td>{{$product->serial_no}}</td> --}}
                             <td>
                                 <a href="{{ route('products.edit', $product) }}" class="text-muted"><i
                                         class="fa fa-edit"></i></a>

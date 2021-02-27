@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BillController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
@@ -69,9 +70,18 @@ Route::get('purchase/excel',[PurchaseController::class,'exp'])->name('purchase.e
 Route::get('customers/search',[CustomerController::class,'search'])->name('customers.search');
 Route::resource('customers',CustomerController::class);
 
+//sales route
+Route::get('bills',[BillController::class,'index'])->name('bills.index');
+Route::get('bills/{customer}/create/{bill}',[BillController::class,'create'])->name('bills.create');
 
 //sales route
-Route::resource('sales',SaleController::class);
+Route::get('sales',[SaleController::class,'index'])->name('sales.index');
+Route::get('sales/{customer}/create',[SaleController::class,'create'])->name('sales.create');
+Route::post('sales/{customer}/store/{bill}',[SaleController::class,'store'])->name('sales.store');
+Route::delete('sales/{sale}',[SaleController::class,'destroy'])->name('sales.destroy');
+Route::get('sales/{sale}',[SaleController::class,'edit'])->name('sales.edit');
+Route::put('sales/{sale}',[SaleController::class,'update'])->name('sales.update');
+
 
 //store route
 Route::get('stores',[StoreController::class,'index'])->name('stores.index');

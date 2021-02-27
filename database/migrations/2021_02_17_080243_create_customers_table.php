@@ -20,7 +20,6 @@ class CreateCustomersTable extends Migration
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('pan_vat')->nullable();
-            $table->unsignedBigInteger('age')->nullable();
             $table->text('details')->nullable();
             $table->timestamps();
         });

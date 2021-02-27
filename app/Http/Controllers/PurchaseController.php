@@ -62,7 +62,9 @@ class PurchaseController extends Controller
         $data = $request->validated();
         // $purchase = new Purchase($request->validated());
         // $dealer->purchase()->save($purchase);
-        $total = $data['quantity'] * $data['rate'] - (($data['quantity'] * $data['rate']) * $data['discount'] / 100) + (($data['quantity'] * $data['rate']) * $data['vat'] / 100);
+        $total = $data['quantity'] * $data['rate'];
+        $total= $total - $total * $data['discount'] / 100;
+        $total= $total + $total * $data['vat'] / 100;
         $due = $total - $data['payment'];
 
         Purchase::create([
@@ -71,10 +73,6 @@ class PurchaseController extends Controller
             'bill_no' => $data['bill_no'],
             'dealer_id' => $dealer->id,
             'product_id' => $data['product_id'],
-            // 'category_id' => $data['category_id'],
-            // 'brand_id' => $data['brand_id'],
-            // 'model_no' => $data['model_no'] ?? '-',
-            // 'serial_no' => $data['serial_no'] ?? '-',
             'batch_no' => $data['batch_no'] ?? '-',
             'mf_date' => $data['mf_date'] ?? '-',
             'exp_date' => $data['exp_date'] ?? '-',
@@ -146,7 +144,10 @@ class PurchaseController extends Controller
     public function update(PurchaseRequest $request, Purchase $purchase)
     {
         $data = $request->validated();
-        $total = $data['quantity'] * $data['rate'] - (($data['quantity'] * $data['rate']) * $data['discount'] / 100) + (($data['quantity'] * $data['rate']) * $data['vat'] / 100);
+        // $total = $data['quantity'] * $data['rate'] - (($data['quantity'] * $data['rate']) * $data['discount'] / 100) + (($data['quantity'] * $data['rate']) * $data['vat'] / 100);
+        $total = $data['quantity'] * $data['rate'];
+        $total= $total - $total * $data['discount'] / 100;
+        $total= $total + $total * $data['vat'] / 100;
         $due = $total - $data['payment'];
         // $purchase->update($request->validated());
         if ($purchase->product_id == $data['product_id']) {

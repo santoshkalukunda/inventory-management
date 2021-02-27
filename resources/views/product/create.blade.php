@@ -38,7 +38,7 @@ Product
                         </div>
                         @enderror
                     </div>
-                    <div class=" col-md-3 form-group">
+                    <div class=" col-md-2 form-group">
                         <label for="category_id" class="required">Category Name</label>
                         <select  class="selectpicker form-control @error('category_id') is-invalid @enderror" name="category_id"   id="product_id" data-live-search="true" data-size="5">
                             <option value="" selected>Select Category</option>
@@ -52,7 +52,7 @@ Product
                         </div>
                         @enderror
                     </div>
-                    <div class=" col-md-3 form-group">
+                    <div class=" col-md-2 form-group">
                         <label for="brand_id" class="required">Brand Name</label>
                         <select  class="selectpicker form-control @error('brand_id') is-invalid @enderror" name="brand_id"   id="brand_id" data-live-search="true" data-size="5">
                             <option value="" selected>Select Brand</option>
@@ -66,7 +66,7 @@ Product
                         </div>
                         @enderror
                     </div>
-                    <div class=" col-md-3 form-group">
+                    <div class=" col-md-2 form-group">
                         <label for="model_no">Model No.</label>
                         <input type="text" class="form-control @error('model_no') is-invalid @enderror" name="model_no" value="{{old('model_no',$product->model_no)}}" id="model_no" placeholder="Model No.">
                         @error('model_no')
@@ -75,7 +75,7 @@ Product
                         </div>
                         @enderror
                     </div>
-                    <div class=" col-md-3 form-group">
+                    {{-- <div class=" col-md-3 form-group">
                         <label for="serial_no">Serial No.</label>
                         <input type="text" class="form-control @error('serial_no') is-invalid @enderror" name="serial_no" value="{{old('serial_no',$product->serial_no)}}" id="serial_no" placeholder="Model No.">
                         @error('serial_no')
@@ -83,7 +83,7 @@ Product
                             {{ $message }}
                         </div>
                         @enderror
-                    </div>
+                    </div> --}}
                     <div class="col-md-12 form-group">
                         <label for="details">Details.</label>
                         <textarea type="text" class="form-control @error('details') is-invalid @enderror" name="details" value="{{old('serial_no',$product->serial_no)}}" id="details" placeholder="Other Product details">{{$product->details}}</textarea>
@@ -95,7 +95,7 @@ Product
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3 form-group">
+                    <div class="col-md-2 form-group">
                         <button type="submit"
                             class="btn btn-success form-control btn-rounded">{{$product->id ? "upadete" : "Add"}}</button>
                     </div>

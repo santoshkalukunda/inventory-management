@@ -22,4 +22,7 @@ class Product extends Model
     public function store(){
         return $this->hasMany(Store::class);
     }
+    public function sale(){
+        return $this->hasMany(Sale::class);
+    }
 }
