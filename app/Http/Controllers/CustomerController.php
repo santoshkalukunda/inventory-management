@@ -45,12 +45,14 @@ class CustomerController extends Controller
     public function store(CustomerRequest $request)
     {
         $customer = Customer::create($request->validated());
-        $bill = Bill::create([
-            'customer_id' => $customer->id,
-            'user_id' => Auth::user()->id,
-            'status' => 'incomplete',
-        ]);
-        return redirect()->route('bills.create', compact('customer','bill'))->with('success', 'Customer Registration Successfull');
+        return redirect()->route('bills.store', compact('customer'));
+
+        // $bill = Bill::create([
+        //     'customer_id' => $customer->id,
+        //     'user_id' => Auth::user()->id,
+        //     'status' => 'incomplete',
+        // ]);
+        // return redirect()->route('bills.create', compact('customer','bill'))->with('success', 'Customer Registration Successfull');
     }
 
     /**
@@ -61,7 +63,8 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        //
+        $bills=$customer->bill()->latest()->paginate();
+        return view('customer.show',compact('customer','bills'));
     }
 
     /**

@@ -18,9 +18,7 @@ class CreateBillsTable extends Migration
             $table->string('date')->nullable();
             $table->foreignId('customer_id')->constrained('customers');
             $table->unsignedBigInteger('invoice_no')->nullable();
-            $table->double('discount')->nullable();
-            $table->double('vat')->nullable();
-            $table->double('total')->nullable();
+            $table->double('net_total')->nullable();
             $table->double('payment')->nullable();
             $table->double('due')->nullable();
             $table->string('status');

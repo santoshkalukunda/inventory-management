@@ -9,21 +9,25 @@
             </li>
             <li class="heading">FEATURES</li>
             <li>
-                <a href="{{route('stores.index')}}"><i class="sidebar-item-icon fa fa-warehouse"></i>
-                    <span class="nav-label">Store</span></a>
+                <a href="{{route('bills.index')}}"><i class="sidebar-item-icon fa fa-warehouse"></i>
+                    <span class="nav-label">Bills</span></a>
             </li> 
+          
             <li>
                 <a href="{{route('customers.index')}}"><i class="sidebar-item-icon fa fa-user-friends"></i>
                     <span class="nav-label">Customers</span></a>
             </li> 
             <li>
+                <a href="{{route('dealers.index')}}"><i class="sidebar-item-icon fa fa-shopping-cart"></i>
+                    <span class="nav-label">Dealers</span></a>
+            </li> 
+            <li>
                 <a href="{{route('purchase.index')}}"><i class="sidebar-item-icon fa fa-shopping-cart"></i>
                     <span class="nav-label">Purshase</span></a>
             </li> 
-          
             <li>
-                <a href="{{route('dealers.index')}}"><i class="sidebar-item-icon fa fa-shopping-cart"></i>
-                    <span class="nav-label">Dealers</span></a>
+                <a href="{{route('stores.index')}}"><i class="sidebar-item-icon fa fa-warehouse"></i>
+                    <span class="nav-label">Store</span></a>
             </li> 
             <li>
                 <a href="{{route('products.index')}}"><i class="sidebar-item-icon fa fa-file-alt"></i>

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BillRequest;
 use App\Models\Bill;
 use App\Models\Customer;
 use App\Models\Sale;
 use App\Models\Store;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BillController extends Controller
 {
@@ -17,7 +19,8 @@ class BillController extends Controller
      */
     public function index()
     {
-        //
+        $bills=Bill::with('customer','user','sale')->latest()->paginate(20);
+        return view('bill.index',compact('bills'));
     }
 
     /**
@@ -47,9 +50,14 @@ class BillController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Customer $customer)
     {
-        //
+        $bill = Bill::create([
+            'customer_id' => $customer->id,
+            'user_id' => Auth::user()->id,
+            'status' => 'incomplete',
+        ]);
+        return redirect()->route('bills.create', compact('customer','bill'))->with('success', 'Customer Registration Successfull');
     }
 
     /**
@@ -81,9 +89,20 @@ class BillController extends Controller
      * @param  \App\Models\Bill  $bill
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Bill $bill)
+    public function update(BillRequest $request, Bill $bill)
     {
-        //
+        $invoice_no=Bill::max('invoice_no');
+        $due = $request->net_total - $request->payment;
+        $bill->update([
+            'date' => $request->date,
+            'invoice_no' => ++$invoice_no,
+            'net_total' => $request->net_total,
+            'payment' => $request->payment,
+            'due' => $due,
+            'status' => 'complete',
+            'user_id' => Auth::user()->id,
+        ]);
+        return redirect()->back()->with('success',"Pyament Successfull");
     }
 
     /**
@@ -94,6 +113,16 @@ class BillController extends Controller
      */
     public function destroy(Bill $bill)
     {
-        //
+        $bill->update([
+            'status' => 'cancel',
+        ]);
+        $sales=Sale::where('bill_id',$bill->id)->where('customer_id',$bill->customer_id)->get();
+        foreach($sales as $sale){
+            $store = Store::findOrFail($sale->store_id);
+            $store->update([
+                'quantity' => $store->quantity + $sale->quantity,
+            ]);
+        }
+        return redirect()->back()->with('success',"Bill cancel Successfull");
     }
 }

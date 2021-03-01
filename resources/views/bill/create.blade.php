@@ -19,16 +19,18 @@ Dealer Registration
 </style>
 @endpush
 <div class="row justify-content-center">
+    @if ($bill->status=="incomplete")
     <div class="col-md-9">
-      @include('sale.create')
+        @include('sale.create')
     </div>
-    <div class="col-md-3">
+    @endif
+    <div class="{{$bill->status=="incomplete" ? "col-md-3" : "col-md-12"}} ">
         <div class="ibox">
             <div class="ibox-head">
                 <div class="ibox-title">Customer Details</div>
             </div>
             <div class="ibox-body  text-center">
-                <h3>{{$customer->name}}</h3>
+                <b>{{$customer->name}}</b>
                 <div> {{$customer->address}}</div>
                 <div>{{$customer->phone}}, {{$customer->email}}</div>
                 @if ($customer->pan_vat)
@@ -36,7 +38,20 @@ Dealer Registration
                 @endif
             </div>
         </div>
+        <div class="ibox">
+            <div class="text-center font-bold">Bill Status</div>
+            <div class="ibox-body  text-center">
+                @if ($bill->status=="incomplete")
+                <div class="btn btn-primary text-capitalize">{{$bill->status}}</div>
+                @elseif($bill->status=="complete")
+                <div class="btn btn-success text-capitalize">{{$bill->status}}</div>
+                @else
+                <div class="btn btn-danger text-capitalize">{{$bill->status}}</div>
+                @endif
+            </div>
+        </div>
     </div>
+
     <div class="col-md-12">
         <div class="ibox">
             <div class="ibox-head">
@@ -56,7 +71,7 @@ Dealer Registration
                         <th colspan="2">Action</th>
                     </tr>
                     @php
-                        $i=1;
+                    $i=1;
                     @endphp
                     @forelse ($sales as $sale)
                     <tr>
@@ -82,23 +97,25 @@ Dealer Registration
                         </td>
                     </tr>
                     @empty
-                        <tr>
-                            <td class=" text-danger text-center" colspan="48">*No product Added</td>
-                        </tr>
+                    <tr>
+                        <td class=" text-danger text-center" colspan="48">*No product Added</td>
+                    </tr>
                     @endforelse
-                    
+
                 </table>
             </div>
         </div>
     </div>
+    @if ($bill->status=="incomplete")
     <div class="col-md-12">
         <div class="ibox">
             <div class="ibox-head">
                 <div class="ibox-title">Product Sale</div>
             </div>
             <div class="ibox-body">
-                <form action="" method="post">
+                <form action="{{route('bills.update',$bill)}}" method="post">
                     @csrf
+                    @method('put')
                     <div class="row">
                         <div class="col-md-3 form-group">
                             <label for="date" class="required">Billing Date</label>
@@ -110,52 +127,53 @@ Dealer Registration
                             </div>
                             @enderror
                         </div>
-                    <div class="col-md-2 form-group">
-                        <label for="net_total">Net-Total</label>
-                        <input step="any" type="number" min="0"
-                            class="form-control text-right @error('net_total') is-invalid @enderror" name="net_total"
-                            value="{{round($net_tatal, 2)}}" id="net_total" placeholder="Net-Total" readonly>
-                        @error('net_total')
-                        <div class="invalid-feedback">
-                            {{ $message }}
+                        <div class="col-md-2 form-group">
+                            <label for="net_total">Net-Total</label>
+                            <input step="any" type="number" min="0"
+                                class="form-control text-right @error('net_total') is-invalid @enderror"
+                                name="net_total" value="{{round($net_tatal, 2)}}" id="net_total" placeholder="Net-Total"
+                                readonly>
+                            @error('net_total')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
                         </div>
-                        @enderror
-                    </div>
 
-                    <div class="col-md-2 form-group">
-                        <label for="payment" class="required">Payment Amount</label>
-                        <input type="number" min="0" step="any"
-                            class="form-control text-right @error('payment') is-invalid @enderror" name="payment"
-                            value="{{old('payment',$sale->payment)}}" id="payment" placeholder="Payment Rs."
-                            onkeyup="fun()">
-                        @error('payment')
-                        <div class="invalid-feedback">
-                            {{ $message }}
+                        <div class="col-md-2 form-group">
+                            <label for="payment" class="required">Payment Amount</label>
+                            <input type="number" min="0" step="any"
+                                class="form-control text-right @error('payment') is-invalid @enderror" name="payment"
+                                value="{{old('payment')}}" id="payment" placeholder="Payment Rs." onkeyup="fun()">
+                            @error('payment')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
                         </div>
-                        @enderror
-                    </div>
 
-                    <div class="col-md-2 form-group">
-                        <label for="due">Due Amount</label>
-                        <input type="number" step="any"
-                            class="form-control text-right @error('due') is-invalid @enderror" name="due"
-                            value="{{old('due',$sale->due)}}" id="due" placeholder="Due Amount" readonly>
-                        @error('due')
-                        <div class="invalid-feedback">
-                            {{ $message }}
+                        <div class="col-md-2 form-group">
+                            <label for="due">Due Amount</label>
+                            <input type="number" step="any"
+                                class="form-control text-right @error('due') is-invalid @enderror" name="due"
+                                value="{{old('due')}}" id="due" placeholder="Due Amount" readonly>
+                            @error('due')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
                         </div>
-                        @enderror
+                        <div class="form-group col-md-2">
+                            <label for="" class="mb-4"></label>
+                            <button type="submit" class="btn btn-success form-control btn-rounded">Pay</button>
+                        </div>
                     </div>
-                    <div class="form-group col-md-2">
-                        <label for="" class="mb-4"></label>
-                        <button type="submit" class="btn btn-success form-control btn-rounded">Pay</button>
-                    </div>
+                </form>
             </div>
-            </form>
-
         </div>
     </div>
-</div>
+    @endif
+
 </div>
 <script>
     function fun(){
