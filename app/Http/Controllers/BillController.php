@@ -19,8 +19,9 @@ class BillController extends Controller
      */
     public function index()
     {
-        $bills=Bill::with('customer','user','sale')->latest()->paginate(20);
-        return view('bill.index',compact('bills'));
+        $customers = Customer::get();
+        $bills = Bill::with('customer', 'user', 'sale')->latest()->paginate(20);
+        return view('bill.index', compact('bills', 'customers'));
     }
 
     /**
@@ -28,20 +29,20 @@ class BillController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Customer $customer, Sale $sale=null, Bill $bill )
+    public function create(Customer $customer, Sale $sale = null, Bill $bill)
     {
         // $bill=Bill::where('uuid',$bill)->firstOrFail();
-        
-        $stores=Store::with('product', 'category', 'brand', 'unit')->where('quantity','>',0)->latest()->get();
+
+        $stores = Store::with('product', 'category', 'brand', 'unit')->where('quantity', '>', 0)->latest()->get();
         if (!$sale) {
             $sale = new Sale;
         }
-        $sales=Sale::with('store','unit','product')->where('customer_id',$customer->id)->where('bill_id',$bill->id)->get();
-        $net_tatal=0;
-        foreach($sales as $total){
-            $net_tatal= $net_tatal + $total->total;
+        $sales = Sale::with('store', 'unit', 'product')->where('customer_id', $customer->id)->where('bill_id', $bill->id)->get();
+        $net_tatal = 0;
+        foreach ($sales as $total) {
+            $net_tatal = $net_tatal + $total->total;
         }
-        return view('bill.create',compact('customer','bill','sale','stores','sales','net_tatal'));
+        return view('bill.create', compact('customer', 'bill', 'sale', 'stores', 'sales', 'net_tatal'));
     }
 
     /**
@@ -57,7 +58,7 @@ class BillController extends Controller
             'user_id' => Auth::user()->id,
             'status' => 'incomplete',
         ]);
-        return redirect()->route('bills.create', compact('customer','bill'))->with('success', 'Customer Registration Successfull');
+        return redirect()->route('bills.create', compact('customer', 'bill'))->with('success', 'Customer Registration Successfull');
     }
 
     /**
@@ -68,7 +69,8 @@ class BillController extends Controller
      */
     public function show(Bill $bill)
     {
-        //
+        $saleDues=$bill->saleDeu()->latest()->paginate();
+        return view('bill.show',compact('bill','saleDues'));
     }
 
     /**
@@ -91,7 +93,7 @@ class BillController extends Controller
      */
     public function update(BillRequest $request, Bill $bill)
     {
-        $invoice_no=Bill::max('invoice_no');
+        $invoice_no = Bill::max('invoice_no');
         $due = $request->net_total - $request->payment;
         $bill->update([
             'date' => $request->date,
@@ -102,7 +104,7 @@ class BillController extends Controller
             'status' => 'complete',
             'user_id' => Auth::user()->id,
         ]);
-        return redirect()->back()->with('success',"Pyament Successfull");
+        return redirect()->back()->with('success', "Pyament Successfull");
     }
 
     /**
@@ -113,16 +115,30 @@ class BillController extends Controller
      */
     public function destroy(Bill $bill)
     {
+        $sales = Sale::where('bill_id', $bill->id)->where('customer_id', $bill->customer_id)->get();
+        foreach ($sales as $sale) {
+            $store = Store::findOrFail($sale->store_id);
+            $store->update([
+                'quantity' => $store->quantity + $sale->quantity,
+            ]);
+            $sale->delete();
+        }
+        $bill->delete();
+        return redirect()->back()->with('success', "Bill cancel Successfull");
+    }
+
+    public function cancel(Bill $bill)
+    {
         $bill->update([
             'status' => 'cancel',
         ]);
-        $sales=Sale::where('bill_id',$bill->id)->where('customer_id',$bill->customer_id)->get();
-        foreach($sales as $sale){
+        $sales = Sale::where('bill_id', $bill->id)->where('customer_id', $bill->customer_id)->get();
+        foreach ($sales as $sale) {
             $store = Store::findOrFail($sale->store_id);
             $store->update([
                 'quantity' => $store->quantity + $sale->quantity,
             ]);
         }
-        return redirect()->back()->with('success',"Bill cancel Successfull");
+        return redirect()->back()->with('success', "Bill cancel Successfull");
     }
 }

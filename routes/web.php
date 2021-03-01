@@ -8,6 +8,7 @@ use App\Http\Controllers\DealerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SaleDueController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UnitController;
 use App\Models\Purchase;
@@ -67,6 +68,7 @@ Route::get('purchase/pdf',[PurchaseController::class,'pdf'])->name('purchase.pdf
 Route::get('purchase/excel',[PurchaseController::class,'exp'])->name('purchase.excel');
 
 //customers route
+Route::post('customers/find',[CustomerController::class,'find'])->name('customers.find');
 Route::get('customers/search',[CustomerController::class,'search'])->name('customers.search');
 Route::resource('customers',CustomerController::class);
 
@@ -76,16 +78,25 @@ Route::get('bills/{customer}/create/{bill}',[BillController::class,'create'])->n
 Route::put('bills/{bill}',[BillController::class,'update'])->name('bills.update');
 Route::delete('bills/{bill}',[BillController::class,'destroy'])->name('bills.destroy');
 Route::get('bills/{customer}',[BillController::class,'store'])->name('bills.store');
+Route::post('bills/{bill}/cancel',[BillController::class,'cancel'])->name('bills.cancel');
+Route::get('bills/{bill}/show',[BillController::class,'show'])->name('bills.show');
+
+
 
 //sales route
 Route::get('sales',[SaleController::class,'index'])->name('sales.index');
 Route::get('sales/{customer}/create',[SaleController::class,'create'])->name('sales.create');
 Route::post('sales/{customer}/store/{bill}',[SaleController::class,'store'])->name('sales.store');
 Route::delete('sales/{sale}',[SaleController::class,'destroy'])->name('sales.destroy');
-Route::get('sales/{sale}',[SaleController::class,'edit'])->name('sales.edit');
+// Route::get('sales/{sale}',[SaleController::class,'edit'])->name('sales.edit');
 Route::put('sales/{sale}',[SaleController::class,'update'])->name('sales.update');
 
 
 //store route
 Route::get('stores',[StoreController::class,'index'])->name('stores.index');
 Route::get('stores/search',[StoreController::class,'search'])->name('stores.search');
+
+
+//saledeu
+Route::post('sale-dues/{customer}/create/{bill}',[SaleDueController::class,'store'])->name('sale-dues.store');
+Route::delete('sale-dues/{saleDue}',[SaleDueController::class,'destroy'])->name('sale-dues.destroy');

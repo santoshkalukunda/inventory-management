@@ -83,9 +83,10 @@ Dealer Registration
                         <td class="text-right">{{$sale->discount ?? "0"}}%</td>
                         <td class="text-right">{{$sale->vat ?? "0"}}%</td>
                         <td class="text-right">{{round($sale->total, 2)}}</td>
-                        <td>
+                        @if ($bill->status == "incomplete")
+                        {{-- <td>
                             <a href="{{route('sales.edit',$sale)}}" class="text-muted"><i class="fa fa-edit"></i></a>
-                        </td>
+                        </td> --}}
                         <td>
                             <form action="{{route('sales.destroy',$sale)}}"
                                 onsubmit="return confirm('Are you sure to delete?')" method="POST" class="d-inline">
@@ -95,6 +96,7 @@ Dealer Registration
                                         class="fa fa-trash-alt"></i></button>
                             </form>
                         </td>
+                        @endif
                     </tr>
                     @empty
                     <tr>
@@ -106,7 +108,7 @@ Dealer Registration
             </div>
         </div>
     </div>
-    @if ($bill->status=="incomplete")
+    @if ($bill->status == "incomplete")
     <div class="col-md-12">
         <div class="ibox">
             <div class="ibox-head">

@@ -15,7 +15,7 @@
                     <th>Due</th>
                     <th>Status</th>
                     <th>User Name</th>
-                    <th colspan="3">Action</th>
+                    <th colspan="4">Action</th>
                 </tr>
                 @forelse ($bills as $bill)
                 <tr>
@@ -27,25 +27,43 @@
                     <td>{{$bill->due}}</td>
                     <td>{{$bill->status}}</td>
                     <td>{{$bill->user->name}}</td>
+                    @if ($bill->status =="complete")
                     <td>
-                    @php
+                        @php
                         $customer=$bill->customer_id;
-                    @endphp
-                        <a href="{{route('bills.create', compact('customer','bill'))}}" class="text-muted"><i class="fa fa-eye"></i></a>
+                        @endphp
+                        <a href="{{route('bills.show', $bill)}}" class="text-muted"><i
+                                class="fa fa-eye"></i></a>
                     </td>
-                    @if ($bill->status !="cancel")
+                    @endif
                     <td>
-                        <a href="{{route('customers.edit',$customer)}}" class="text-muted"><i class="fa fa-edit"></i></a>
+                        @php
+                        $customer=$bill->customer_id;
+                        @endphp
+                        <a href="{{route('bills.create', compact('customer','bill'))}}" class="text-muted"><i
+                                class="fa fa-edit"></i></a>
                     </td>
+                    @if ($bill->status =="complete")
                     <td>
-                        <form action="{{route('bills.destroy',$bill)}}" onsubmit="return confirm('Are you sure to cancel bill?')" method="POST" class="d-inline">
+                        <form action="{{route('bills.cancel',$bill)}}"
+                            onsubmit="return confirm('Are you sure to cancel bill?')" method="POST" class="d-inline">
                             @csrf
-                            @method('delete')
-                            <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i class="fa fa-trash-alt"></i></button>
+                            <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
+                                    class="fa fa-window-close"></i></button>
                         </form>
                     </td>
                     @endif
-
+                    @if ($bill->status =="incomplete")
+                    <td>
+                        <form action="{{route('bills.destroy',$bill)}}"
+                            onsubmit="return confirm('Are you sure to delete bill?')" method="POST" class="d-inline">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
+                                    class="fa fa-trash-alt"></i></button>
+                        </form>
+                    </td>
+                    @endif
                 </tr>
                 @empty
                 <tr>

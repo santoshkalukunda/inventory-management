@@ -5,9 +5,11 @@ Customer List
 @section('content')
 <div class="row">
     <div class="col-md-2">
-        <a href="{{route('customers.create')}}" class="btn btn-primary mb-2 form-control"> <i class="fa fa-plus"></i> New
+        <button class="btn btn-primary mb-2 form-control" data-toggle="modal" data-target="#new-bill"> <i
+                class="fa fa-plus"></i> New
             Bill
-        </a>
+        </button>
+        @include('modal.bill-create')
     </div>
     <div class="col-md-2">
         <p>
@@ -23,10 +25,21 @@ Customer List
                 <form action="{{route('customers.search')}}" method="get">
                     <div class="row">
                         <div class="col-md-3 form-group">
-                            <input type="text" class=" form-control" name="name" placeholder="Name">
+                            <label for="customer_id">Customer Name</label>br
+                            <select class="selectpicker form-control @error('customer_id') is-invalid @enderror"
+                                name="customer_id" id="product" data-live-search="true" data-size="4">
+                                <option value="" selected>Select Customer</option>
+                                @foreach ($customers as $customer)
+                                <option value="{{$customer->id}}" data-content="<b>{{$customer->name}}</b>
+                                    <br>{{$customer->address}}
+                                    <br>{{$customer->phone}}
+                                    <br>{{$customer->pan_vat}}
+                                    "></option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-md-3 form-group">
-                            <input type="text" class=" form-control" name="address" placeholder="Address">
+                           
                         </div>
                         <div class="col-md-3 form-group">
                             <input type="text" class=" form-control" name="phone" placeholder="Phone no.">
@@ -54,7 +67,7 @@ Customer List
         </div>
     </div>
     <div class="col-md-12 justify-content-center">
-    @include('bill.list')
+        @include('bill.list')
     </div>
 </div>
 

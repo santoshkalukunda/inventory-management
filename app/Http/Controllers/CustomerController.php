@@ -139,4 +139,12 @@ class CustomerController extends Controller
         $customers = $customers->paginate();
         return view('customer.index', compact('customers'));
     }
+    public function find(Request $request)
+    {
+        $request->validate([
+            'customer_id' => 'required|exists:customers,id',
+        ]);
+        $customer = Customer::findOrFail($request->customer_id);
+        return redirect()->route('bills.store', $customer);
+    }
 }
