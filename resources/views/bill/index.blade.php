@@ -34,6 +34,22 @@ Customer List
             </a>
         </p>
     </div>
+    <div class="col-md-8 form-group text-right">
+        @php
+        $total=0;
+        $due=0;
+        $payment=0;
+        foreach($bills as $bill)
+        {
+        $total = $total + $bill->net_total;
+        $payment = $payment + $bill->payment;
+        $due = $due + $bill->due;
+        }
+        @endphp
+        <span class="bg-blue-light p-2"><b>Net Total : </b>{{$total}}/-</span>
+        <span class="bg-blue-light p-2"><b>Payment : </b>{{$payment}}</span>
+        <span class="bg-blue-light p-2"><b>Due Amount : </b>{{$due}}</span>
+    </div>
     <div class="col-md-12 mb-2">
         <div class="collapse" id="filter">
             <div class="card card-body">

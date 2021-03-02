@@ -7,11 +7,11 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DealerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\PurchaseDueController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SaleDueController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UnitController;
-use App\Models\Purchase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -60,6 +60,7 @@ Route::post('purchase/{dealer}/store',[PurchaseController::class,'store'])->name
 Route::get('purchase',[PurchaseController::class,'index'])->name('purchase.index');
 Route::delete('purchase/{purchase}',[PurchaseController::class,'destroy'])->name('purchase.destroy');
 Route::get('purchase/{purchase}/edit',[PurchaseController::class,'edit'])->name('purchase.edit');
+Route::get('purchase/{purchase}/show',[PurchaseController::class,'show'])->name('purchase.show');
 Route::put('purchase/{purchase}',[PurchaseController::class,'update'])->name('purchase.update');
 Route::post('purchase/find',[PurchaseController::class,'find'])->name('purchase.find');
 Route::get('purchase/search',[PurchaseController::class,'search'])->name('purchase.search');
@@ -101,3 +102,7 @@ Route::get('stores/search',[StoreController::class,'search'])->name('stores.sear
 //saledeu
 Route::post('sale-dues/{customer}/create/{bill}',[SaleDueController::class,'store'])->name('sale-dues.store');
 Route::delete('sale-dues/{saleDue}',[SaleDueController::class,'destroy'])->name('sale-dues.destroy');
+
+//parchase route
+Route::post('purchase-dues/{purchase}/create',[PurchaseDueController::class,'store'])->name('purchase-dues.store');
+Route::delete('purchase-dues/{purchaseDue}',[PurchaseDueController::class,'destroy'])->name('purchase-dues.destroy');

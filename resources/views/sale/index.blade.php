@@ -46,10 +46,9 @@ Sales List
         $quantity=$quantity+$sale->quantity;
         }
         @endphp
-        <span class="bg-blue-light p-2"><b>Total Product: </b>{{$quantity}}</span>
+        <span class="bg-blue-light p-2"><b>Product Quantity: </b>{{$quantity}}</span>
         <span class="bg-blue-light p-2"><b>Total Amount: </b>{{$total}}/-</span>
     </div>
-
 </div>
 <div class="col-md-12 justify-content-center">
     <div class="ibox">

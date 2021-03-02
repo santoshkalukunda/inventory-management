@@ -115,7 +115,8 @@ class PurchaseController extends Controller
      */
     public function show(Purchase $purchase)
     {
-        //
+        $purchaseDues=$purchase->purchaseDue()->latest()->paginate();
+        return view('purchase.show',compact('purchase','purchaseDues'));
     }
 
     /**

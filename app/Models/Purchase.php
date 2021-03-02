@@ -30,4 +30,7 @@ class Purchase extends Model
     public function customer(){
         return $this->belongsTo(Customer::class);
     }
+    public function purchaseDue(){
+        return $this->hasMany(PurchaseDue::class);
+    }
 }
