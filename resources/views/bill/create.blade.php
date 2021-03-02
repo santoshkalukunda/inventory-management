@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 @section('title')
-Dealer Registration
+Bill Create
 @endsection
 @section('content')
 @push('style')
@@ -45,9 +45,11 @@ Dealer Registration
                 <div class="btn btn-primary text-capitalize">{{$bill->status}}</div>
                 @elseif($bill->status=="complete")
                 <div class="btn btn-success text-capitalize">{{$bill->status}}</div>
+                <div class="my-3"> <span class="badge-primary p-2 mx-1"><b>Net-total :</b> {{$bill->net_total}}/- </span> <span class="badge-primary p-2 mx-1"><b>Pay Amount :</b> {{$bill->payment}}/- </span> <span class="badge-primary p-2 mx-1"><b>Due :</b> {{$bill->due}}</span></div>
                 @else
                 <div class="btn btn-danger text-capitalize">{{$bill->status}}</div>
                 @endif
+
             </div>
         </div>
     </div>

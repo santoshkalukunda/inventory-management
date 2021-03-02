@@ -74,6 +74,7 @@ Route::resource('customers',CustomerController::class);
 
 //sales route
 Route::get('bills',[BillController::class,'index'])->name('bills.index');
+Route::get('bills/search',[BillController::class,'search'])->name('bills.search');
 Route::get('bills/{customer}/create/{bill}',[BillController::class,'create'])->name('bills.create');
 Route::put('bills/{bill}',[BillController::class,'update'])->name('bills.update');
 Route::delete('bills/{bill}',[BillController::class,'destroy'])->name('bills.destroy');

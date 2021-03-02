@@ -18,7 +18,7 @@ class StoreController extends Controller
      */
     public function index()
     {
-        $stores=Store::with('product', 'category', 'brand', 'unit')->latest()->get();
+        $stores=Store::with('product', 'category', 'brand', 'unit')->latest()->paginate(20);
         $products = Product::with('category', 'brand',)->orderBy('name')->get();
         $categories = Category::orderBy('name')->get();
         $brands = Brand::orderBy('name')->get();

@@ -19,7 +19,9 @@ class SaleController extends Controller
      */
     public function index()
     {
-        return view('sale.index');
+        $customers = Customer::get();
+        $sales=Sale::with('customer','store','bill','unit')->latest()->paginate(20);
+        return view('sale.index',compact('sales','customers'));
     }
 
     /**

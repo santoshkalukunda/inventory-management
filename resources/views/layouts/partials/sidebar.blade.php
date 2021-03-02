@@ -9,7 +9,11 @@
             </li>
             <li class="heading">FEATURES</li>
             <li>
-                <a href="{{route('bills.index')}}"><i class="sidebar-item-icon fa fa-warehouse"></i>
+                <a href="{{route('sales.index')}}"><i class="sidebar-item-icon fa fa-money-check-alt"></i>
+                    <span class="nav-label">Sales</span></a>
+            </li> 
+            <li>
+                <a href="{{route('bills.index')}}"><i class="sidebar-item-icon fa fa-file"></i>
                     <span class="nav-label">Bills</span></a>
             </li> 
           

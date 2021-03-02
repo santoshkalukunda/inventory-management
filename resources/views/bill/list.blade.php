@@ -19,7 +19,11 @@
                 </tr>
                 @forelse ($bills as $bill)
                 <tr>
-                    <td><a href="{{route('customers.show',$bill->customer_id)}}"> {{$bill->customer->name}} </a></td>
+                    <td><a href="{{route('customers.show',$bill->customer_id)}}">
+                            <b>{{$bill->customer->name}}</b></a>
+                        <span class=""> <br>{{$bill->customer->address}}</span>
+                        <span class=""> <br>{{$bill->customer->phone}}</span>
+                    </td>
                     <td>{{$bill->date}}</td>
                     <td>{{$bill->invoice_no}}</td>
                     <td>{{$bill->net_total}}</td>
@@ -32,8 +36,7 @@
                         @php
                         $customer=$bill->customer_id;
                         @endphp
-                        <a href="{{route('bills.show', $bill)}}" class="text-muted"><i
-                                class="fa fa-eye"></i></a>
+                        <a href="{{route('bills.show', $bill)}}" class="text-muted"><i class="fa fa-eye"></i></a>
                     </td>
                     @endif
                     <td>

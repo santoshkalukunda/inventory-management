@@ -83,6 +83,10 @@ Customer List
                                         class="fa fa-eye"></i></a>
                             </td>
                             <td>
+                                <a href="{{route('bills.store',$customer)}}" class="text-muted"><i
+                                        class="fa fa-file"></i></a>
+                            </td>
+                            <td>
                                 <a href="{{route('customers.edit',$customer)}}" class="text-muted"><i
                                         class="fa fa-edit"></i></a>
                             </td>
