@@ -67,7 +67,7 @@ Dealer List
                             <th>Email</th>
                             <th>PAN/VAT No.</th>
                             <th>Registration No.</th>
-                            <th colspan="3">Action</th>
+                            <th colspan="4">Action</th>
                         </tr>
                         @forelse ($dealers as $dealer)
                         <tr>
@@ -78,6 +78,10 @@ Dealer List
                             <td>{{$dealer->pan_vat}}</td>
                             <td>{{$dealer->reg_no}}</td>
                             <td>
+                                <a href="{{route('purchase.create',$dealer)}}" class="text-muted"><i
+                                        class="fa fa-file"></i></a>
+                            </td>
+                            <td>
                                 <a href="{{route('dealers.show',$dealer)}}" class="text-muted"><i
                                         class="fa fa-eye"></i></a>
                             </td>
@@ -85,6 +89,7 @@ Dealer List
                                 <a href="{{route('dealers.edit',$dealer)}}" class="text-muted"><i
                                         class="fa fa-edit"></i></a>
                             </td>
+                            
                             <td>
                                 <form action="{{route('dealers.destroy',$dealer)}}"
                                     onsubmit="return confirm('Are you sure to delete?')" method="POST" class="d-inline">

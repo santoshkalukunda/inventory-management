@@ -57,7 +57,8 @@ class DealerController extends Controller
      */
     public function show(Dealer $dealer)
     {
-       return redirect()->route('purchase.create',$dealer);
+        $purchases=$dealer->purchase()->with('dealer', 'product', 'category', 'brand', 'unit')->latest()->paginate(20);
+        return view('dealer.show',compact('purchases','dealer'));
     }
 
     /**

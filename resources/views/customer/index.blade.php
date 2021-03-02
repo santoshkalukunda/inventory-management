@@ -69,7 +69,7 @@ Customer List
                             <th>Phone</th>
                             <th>Email</th>
                             <th>PAN/VAT No.</th>
-                            <th colspan="3">Action</th>
+                            <th colspan="4">Action</th>
                         </tr>
                         @forelse ($customers as $customer)
                         <tr>
@@ -79,13 +79,14 @@ Customer List
                             <td>{{$customer->email}}</td>
                             <td>{{$customer->pan_vat}}</td>
                             <td>
-                                <a href="{{route('customers.show',$customer)}}" class="text-muted"><i
-                                        class="fa fa-eye"></i></a>
-                            </td>
-                            <td>
                                 <a href="{{route('bills.store',$customer)}}" class="text-muted"><i
                                         class="fa fa-file"></i></a>
                             </td>
+                            <td>
+                                <a href="{{route('customers.show',$customer)}}" class="text-muted"><i
+                                        class="fa fa-eye"></i></a>
+                            </td>
+                       
                             <td>
                                 <a href="{{route('customers.edit',$customer)}}" class="text-muted"><i
                                         class="fa fa-edit"></i></a>
