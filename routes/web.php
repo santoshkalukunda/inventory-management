@@ -100,8 +100,10 @@ Route::get('stores/search',[StoreController::class,'search'])->name('stores.sear
 
 
 //saledeu
+Route::get('sale-dues',[SaleDueController::class,'index'])->name('sale-dues.index');
 Route::post('sale-dues/{customer}/create/{bill}',[SaleDueController::class,'store'])->name('sale-dues.store');
 Route::delete('sale-dues/{saleDue}',[SaleDueController::class,'destroy'])->name('sale-dues.destroy');
+Route::get('sale-dues/search',[SaleDueController::class,'search'])->name('sale-dues.search');
 
 //parchase route
 Route::post('purchase-dues/{purchase}/create',[PurchaseDueController::class,'store'])->name('purchase-dues.store');

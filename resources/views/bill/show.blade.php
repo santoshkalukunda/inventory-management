@@ -84,50 +84,7 @@ Sale Deu Payment
         </div>
     </div>
     <div class="col-md-12 justify-content-center">
-        <div class="ibox">
-            <div class="ibox-head d-flex">
-                <div class="ibox-title">Due Pay List</div>
-                <div class="text-right">Total Record: {{$saleDues->total()}}</div>
-            </div>
-            <div class="ibox-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <tr>
-                            <th>Customer</th>
-                            <th>Date</th>
-                            <th>Due Amount</th>
-                            <th>Payment</th>
-                            <th>Due</th>
-                            <th>User Name</th>
-                            <th>Action</th>
-                        </tr>
-                        @forelse ($saleDues as $saleDue)
-                        <tr>
-                            <td> {{$saleDue->customer->name}}</td>
-                            <td>{{$saleDue->date}}</td>
-                            <td>{{$saleDue->due_amount}}</td>
-                            <td>{{$saleDue->payment}}</td>
-                            <td>{{$saleDue->due}}</td>
-                            <td>{{$saleDue->user->name}}</td>
-                            <td>
-                                <form action="{{route('sale-dues.destroy',$saleDue)}}"
-                                    onsubmit="return confirm('Are you sure to delete due Payment?')" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
-                                            class="fa fa-trash-alt"></i></button>
-                                </form>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="40" class=" text-center text-danger">*Data Not Found !!!</td>
-                        </tr>
-                        @endforelse
-                    </table>
-                </div>
-            </div>
-        </div>
+       @include('sale-due.list')
     </div>
 </div>
 @endsection

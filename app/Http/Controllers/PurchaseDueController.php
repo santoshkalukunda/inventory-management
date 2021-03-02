@@ -6,6 +6,7 @@ use App\Http\Requests\PurchaseDueRequest;
 use App\Models\Dealer;
 use App\Models\Purchase;
 use App\Models\PurchaseDue;
+use App\Models\SaleDue;
 use Illuminate\Http\Request;
 
 class PurchaseDueController extends Controller
@@ -17,7 +18,7 @@ class PurchaseDueController extends Controller
      */
     public function index()
     {
-        //
+       
     }
 
     /**

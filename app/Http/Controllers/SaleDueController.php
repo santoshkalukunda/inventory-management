@@ -6,6 +6,7 @@ use App\Http\Requests\SaleDueRequest;
 use App\Models\Bill;
 use App\Models\Customer;
 use App\Models\SaleDue;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +19,10 @@ class SaleDueController extends Controller
      */
     public function index()
     {
-        //
+        $customers = Customer::get();
+        $users = User::get();
+        $saleDues = SaleDue::with('customer','bill','user')->latest()->paginate(20);
+        return view('sale-due.index',compact('saleDues','customers','users'));
     }
 
     /**
@@ -105,5 +109,44 @@ class SaleDueController extends Controller
         ]);
         $saleDue->delete();
         return redirect()->back()->with('success',"Deu payment deleted");
+    }
+
+    public function search(Request $request){
+        $saleDues = new SaleDue;
+        if ($request->has('customer_id')) {
+            if ($request->customer_id != null)
+                $saleDues = $saleDues->where('customer_id', ["$request->customer_id"]);
+        }
+        if ($request->has('bill_date_from')) {
+            if ($request->bill_date_from != null && $request->bill_date_to != null)
+                $saleDues = $saleDues->whereBetween('date', [$request->bill_date_from, $request->bill_date_to]);
+        }
+        if ($request->has('user_id')) {
+            if ($request->user_id != null)
+                $saleDues = $saleDues->where('user_id', ["$request->user_id"]);
+        }
+        $saleDues = $saleDues->when($request->has('net_total_min') && !is_null($request->net_total_min), function ($query) use ($request) {
+            $query->where('due_amount', '>=', $request->net_total_min);
+        })
+            ->when($request->has('net_total_max') && !is_null($request->net_total_max), function ($query) use ($request) {
+                $query->where('due_amount', '<=', (int)$request->net_total_max);
+            });
+        $saleDues = $saleDues->when($request->has('payment_min') && !is_null($request->payment_min), function ($query) use ($request) {
+            $query->where('payment', '>=', $request->payment_min);
+        })
+            ->when($request->has('payment_max') && !is_null($request->payment_max), function ($query) use ($request) {
+                $query->where('payment', '<=', (int)$request->payment_max);
+            });
+        $saleDues = $saleDues->when($request->has('due_min') && !is_null($request->due_min), function ($query) use ($request) {
+            $query->where('due', '>=', $request->due_min);
+        })
+            ->when($request->has('due_max') && !is_null($request->due_max), function ($query) use ($request) {
+                $query->where('due', '<=', (int)$request->due_max);
+            });
+        $customers = Customer::get();
+        $users = User::get();
+        $saleDues = $saleDues->with('customer','bill','user')->latest()->paginate();
+        return view('sale-due.index',compact('saleDues','customers','users'));
+
     }
 }
