@@ -60,6 +60,7 @@ Sales List
             <div class="table-responsive">
                 <table class="table-hover table">
                     <tr class="text-center bg-light">
+                        <th>Date</th>
                         <th>Customer</th>
                         <th>Product</th>
                         <th class="text-right">Quantity</th>
@@ -72,10 +73,12 @@ Sales List
                     </tr>
                     @forelse ($sales as $sale)
                     <tr style="white-space:nowrap;">
+                        <td>{{$sale->date}}</td>
                         <td>
                             <b>{{$sale->customer->name}}</b></a>
                             <span class=""> <br>{{$sale->customer->address}}</span>
                             <span class=""> <br>{{$sale->customer->phone}}</span>
+                            <span class=""> <br>{{$sale->customer->pan_vat}}</span>
                         </td>
                         <td>
                             {{$sale->store->product->code}}

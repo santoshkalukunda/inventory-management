@@ -4,11 +4,11 @@ Bill List
 @endsection
 @section('content')
 <div class="row">
-    <div class="col-md-2">
-        <a href="{{route('customers.create')}}" class="btn btn-primary mb-2 form-control"> <i class="fa fa-plus"></i>
-            New
-            Bill
-        </a>
+    <div class="col-md-12 text-center">
+        <h3>{{$customer->name}}</h3>
+        <div>{{$customer->address}}</div>
+        <div>{{$customer->phone}}, {{$customer->email}}</div>
+        <div><b>PAN/VAT :</b> {{$customer->pan_vat}}</div>
     </div>
     <div class="col-md-2">
         <p>
@@ -56,7 +56,7 @@ Bill List
     </div>
 
     <div class="col-md-12 justify-content-center">
-     @include('bill.list')
+        @include('bill.list')
     </div>
 </div>
 @endsection

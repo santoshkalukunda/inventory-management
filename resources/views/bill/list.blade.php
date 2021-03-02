@@ -7,8 +7,8 @@
         <div class="table-responsive">
             <table class="table table-hover">
                 <tr>
-                    <th>Customer</th>
                     <th>Bill Date</th>
+                    <th>Customer</th>
                     <th>Invoice No.</th>
                     <th>Net Total</th>
                     <th>Payment</th>
@@ -19,12 +19,12 @@
                 </tr>
                 @forelse ($bills as $bill)
                 <tr>
+                    <td>{{$bill->date}}</td>
                     <td><a href="{{route('customers.show',$bill->customer_id)}}">
                             <b>{{$bill->customer->name}}</b></a>
                         <span class=""> <br>{{$bill->customer->address}}</span>
                         <span class=""> <br>{{$bill->customer->phone}}</span>
                     </td>
-                    <td>{{$bill->date}}</td>
                     <td>{{$bill->invoice_no}}</td>
                     <td>{{$bill->net_total}}</td>
                     <td>{{$bill->payment}}</td>

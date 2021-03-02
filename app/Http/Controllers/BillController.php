@@ -60,7 +60,7 @@ class BillController extends Controller
             'user_id' => Auth::user()->id,
             'status' => 'incomplete',
         ]);
-        return redirect()->route('bills.create', compact('customer', 'bill'))->with('success', 'Customer Registration Successfull');
+        return redirect()->route('bills.create', compact('customer', 'bill'))->with('success', 'New Bill Created');
     }
 
     /**
@@ -105,6 +105,9 @@ class BillController extends Controller
             'due' => $due,
             'status' => 'complete',
             'user_id' => Auth::user()->id,
+        ]);
+        $bill->sale()->update([
+            'date' => $request->date,
         ]);
         return redirect()->back()->with('success', "Pyament Successfull");
     }

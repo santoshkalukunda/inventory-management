@@ -45,7 +45,7 @@ class CustomerController extends Controller
     public function store(CustomerRequest $request)
     {
         $customer = Customer::create($request->validated());
-        return redirect()->route('bills.store', compact('customer'));
+        return redirect()->route('bills.store', compact('customer'))->with('success', 'Customer Registration Successfull');
 
         // $bill = Bill::create([
         //     'customer_id' => $customer->id,
