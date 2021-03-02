@@ -96,10 +96,11 @@ class BillController extends Controller
     public function update(BillRequest $request, Bill $bill)
     {
         $invoice_no = Bill::max('invoice_no');
+        $invoice_no = $invoice_no + 1;
         $due = $request->net_total - $request->payment;
         $bill->update([
             'date' => $request->date,
-            'invoice_no' => ++$invoice_no,
+            'invoice_no' => $invoice_no,
             'net_total' => $request->net_total,
             'payment' => $request->payment,
             'due' => $due,
@@ -108,6 +109,7 @@ class BillController extends Controller
         ]);
         $bill->sale()->update([
             'date' => $request->date,
+            'invoice_no' => $invoice_no,
         ]);
         return redirect()->back()->with('success', "Pyament Successfull");
     }

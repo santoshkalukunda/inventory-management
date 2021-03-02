@@ -20,6 +20,7 @@ class CreateSalesTable extends Migration
             $table->foreignId('customer_id')->constrained('customers');
             $table->foreignId('store_id')->constrained('stores');
             $table->string('date')->nullable();
+            $table->unsignedBigInteger('invoice_no')->nullable();
             $table->double('quantity');
             $table->foreignId('unit_id')->constrained('units');
             $table->double('rate');

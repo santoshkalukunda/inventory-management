@@ -92,6 +92,7 @@ Route::post('sales/{customer}/store/{bill}',[SaleController::class,'store'])->na
 Route::delete('sales/{sale}',[SaleController::class,'destroy'])->name('sales.destroy');
 // Route::get('sales/{sale}',[SaleController::class,'edit'])->name('sales.edit');
 Route::put('sales/{sale}',[SaleController::class,'update'])->name('sales.update');
+Route::get('sales/search',[SaleController::class,'search'])->name('sales.search');
 
 
 //store route

@@ -8,8 +8,8 @@
             <table class="table table-hover">
                 <tr>
                     <th>Bill Date</th>
-                    <th>Customer</th>
                     <th>Invoice No.</th>
+                    <th>Customer</th>
                     <th>Net Total</th>
                     <th>Payment</th>
                     <th>Due</th>
@@ -20,12 +20,12 @@
                 @forelse ($bills as $bill)
                 <tr>
                     <td>{{$bill->date}}</td>
+                    <td>{{$bill->invoice_no}}</td>
                     <td><a href="{{route('customers.show',$bill->customer_id)}}">
                             <b>{{$bill->customer->name}}</b></a>
                         <span class=""> <br>{{$bill->customer->address}}</span>
                         <span class=""> <br>{{$bill->customer->phone}}</span>
                     </td>
-                    <td>{{$bill->invoice_no}}</td>
                     <td>{{$bill->net_total}}</td>
                     <td>{{$bill->payment}}</td>
                     <td>{{$bill->due}}</td>

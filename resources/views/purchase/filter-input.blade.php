@@ -34,7 +34,6 @@
                                 <br>{{$product->category->name}}
                                 <br>{{$product->brand->name}}
                                 <br>{{$product->model_no}}
-                                <br>{{$product->serial_no}}
                             </span>">    
                             </option>
                             @endforeach
@@ -108,7 +107,6 @@
                                 {{$unit->name}}</option>
                             @endforeach
                         </select>
-
                     </div>
                     <div class="col-md-2 form-group">
                         <label for="rate_min">Rate Min.</label>
@@ -123,7 +121,6 @@
                             id="rate_max" placeholder="Rate Max. Rs.">
                     </div>
                     <div class="col-md-2 form-group">
-
                     </div>
                     <div class="col-md-2 form-group">
                         <label for="discount_min">Discount Min. in %</label>
