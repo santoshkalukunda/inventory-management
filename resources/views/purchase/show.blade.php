@@ -17,13 +17,20 @@ Purchase Deu Payment
     }
 </style>
 <div class="row">
+    <div class="col-md-12 text-center my-3">
+        <h3>{{$purchase->dealer->name}}</h3>
+        <div>{{$purchase->dealer->address}}</div>
+        <div>{{$purchase->dealer->phone}}, {{$purchase->dealer->email}}</div>
+        <div><b>PAN/VAT :</b> {{$purchase->dealer->pan_vat}}</div>
+       <div><b>Reg. No. :</b> {{$purchase->dealer->reg_no}}</div>
+    </div>
     <div class="col-md-12 mb-2">
         <div class="ibox">
             <div class="ibox-head">
                 <div class="ibox-title">Deu Pay [Bill No. {{$purchase->bill_no}}]</div>
             </div>
             @php
-                $dealer=$purchase->dealer_id;
+            $dealer=$purchase->dealer_id;
             @endphp
             <div class="ibox-body">
                 <form action="{{route('purchase-dues.store',$purchase)}}" method="post">
@@ -43,8 +50,8 @@ Purchase Deu Payment
                             <label for="due_amount">Deu Amount</label>
                             <input step="any" type="number" min="0"
                                 class="form-control text-right @error('due_amount') is-invalid @enderror"
-                                name="due_amount" value="{{old('due_amount',round($purchase->due, 2))}}" id="due_amount" placeholder="Due Amount"
-                                readonly>
+                                name="due_amount" value="{{old('due_amount',round($purchase->due, 2))}}" id="due_amount"
+                                placeholder="Due Amount" readonly>
                             @error('due_amount')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -84,48 +91,7 @@ Purchase Deu Payment
         </div>
     </div>
     <div class="col-md-12 justify-content-center">
-        <div class="ibox">
-            <div class="ibox-head d-flex">
-                <div class="ibox-title">Due Pay List</div>
-                <div class="text-right">Total Record: {{$purchaseDues->total()}}</div>
-            </div>
-            <div class="ibox-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <tr>
-                            <th>Dealer</th>
-                            <th>Date</th>
-                            <th>Due Amount</th>
-                            <th>Payment</th>
-                            <th>Due</th>
-                            <th>Action</th>
-                        </tr>
-                        @forelse ($purchaseDues as $purchaseDue)
-                        <tr>
-                            <td> {{$purchaseDue->dealer->name}}</td>
-                            <td>{{$purchaseDue->date}}</td>
-                            <td>{{$purchaseDue->due_amount}}</td>
-                            <td>{{$purchaseDue->payment}}</td>
-                            <td>{{$purchaseDue->due}}</td>
-                            <td>
-                                <form action="{{route('purchase-dues.destroy',$purchaseDue)}}"
-                                    onsubmit="return confirm('Are you sure to delete due Payment?')" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
-                                            class="fa fa-trash-alt"></i></button>
-                                </form>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="40" class=" text-center text-danger">*Data Not Found !!!</td>
-                        </tr>
-                        @endforelse
-                    </table>
-                </div>
-            </div>
-        </div>
+        @include('purchase-due.list')
     </div>
 </div>
 @endsection

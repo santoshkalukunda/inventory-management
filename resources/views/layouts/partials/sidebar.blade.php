@@ -8,13 +8,14 @@
                 </a>
             </li>
             <li class="heading">FEATURES</li>
-            <li>
-                <a href="{{route('sales.index')}}"><i class="sidebar-item-icon fa fa-money-check-alt"></i>
-                    <span class="nav-label">Sales</span></a>
-            </li> 
+        
             <li>
                 <a href="{{route('bills.index')}}"><i class="sidebar-item-icon fa fa-file"></i>
                     <span class="nav-label">Bills</span></a>
+            </li> 
+            <li>
+                <a href="{{route('sales.index')}}"><i class="sidebar-item-icon fa fa-money-check-alt"></i>
+                    <span class="nav-label">Sales</span></a>
             </li> 
             <li>
                 <a href="{{route('sale-dues.index')}}"><i class="sidebar-item-icon fa fa-redo"></i>
@@ -25,12 +26,16 @@
                     <span class="nav-label">Customers</span></a>
             </li> 
             <li>
-                <a href="{{route('dealers.index')}}"><i class="sidebar-item-icon fa fa-shopping-cart"></i>
-                    <span class="nav-label">Dealers</span></a>
-            </li> 
-            <li>
                 <a href="{{route('purchase.index')}}"><i class="sidebar-item-icon fa fa-shopping-cart"></i>
                     <span class="nav-label">Purshase</span></a>
+            </li> 
+            <li>
+                <a href="{{route('purchase-dues.index')}}"><i class="sidebar-item-icon fa fa-history"></i>
+                    <span class="nav-label">Purshase Due Logs</span></a>
+            </li> 
+            <li>
+                <a href="{{route('dealers.index')}}"><i class="sidebar-item-icon fa fa-user"></i>
+                    <span class="nav-label">Dealers</span></a>
             </li> 
             <li>
                 <a href="{{route('stores.index')}}"><i class="sidebar-item-icon fa fa-warehouse"></i>

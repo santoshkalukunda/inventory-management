@@ -18,7 +18,9 @@ class PurchaseDueController extends Controller
      */
     public function index()
     {
-       
+        $dealers = Dealer::get();
+        $purchaseDues = PurchaseDue::latest()->paginate(20);
+        return view('purchase-due.index', compact('purchaseDues', 'dealers'));
     }
 
     /**
@@ -41,7 +43,7 @@ class PurchaseDueController extends Controller
     {
 
         $due = $purchase->due - $request->payment;
-        $purchaseDue=PurchaseDue::create([
+        $purchaseDue = PurchaseDue::create([
             'purchase_id' => $purchase->id,
             'dealer_id' => $purchase->dealer_id,
             'date' => $request->date,
@@ -53,7 +55,7 @@ class PurchaseDueController extends Controller
             'payment' => $purchase->payment + $request->payment,
             'due' => $due,
         ]);
-        return redirect()->back()->with('success',"Due payment Successfull");
+        return redirect()->back()->with('success', "Due payment Successfull");
     }
 
     /**
@@ -98,12 +100,47 @@ class PurchaseDueController extends Controller
      */
     public function destroy(PurchaseDue $purchaseDue)
     {
-        $purchase=Purchase::findOrFail($purchaseDue->purchase_id);
+        $purchase = Purchase::findOrFail($purchaseDue->purchase_id);
         $purchase->update([
             'payment' => $purchase->payment - $purchaseDue->payment,
             'due' => $purchase->due + $purchaseDue->payment,
         ]);
         $purchaseDue->delete();
-        return redirect()->back()->with('success',"Deu payment deleted");
+        return redirect()->back()->with('success', "Deu payment deleted");
+    }
+
+    public function search(Request $request)
+    {
+        $purchaseDues = new PurchaseDue;
+        if ($request->has('dealer_id')) {
+            if ($request->dealer_id != null)
+                $purchaseDues = $purchaseDues->where('dealer_id', ["$request->dealer_id"]);
+        }
+        if ($request->has('bill_date_from')) {
+            if ($request->bill_date_from != null && $request->bill_date_to != null)
+                $purchaseDues = $purchaseDues->whereBetween('date', [$request->bill_date_from, $request->bill_date_to]);
+        }
+        $purchaseDues = $purchaseDues->when($request->has('net_total_min') && !is_null($request->net_total_min), function ($query) use ($request) {
+            $query->where('due_amount', '>=', $request->net_total_min);
+        })
+            ->when($request->has('net_total_max') && !is_null($request->net_total_max), function ($query) use ($request) {
+                $query->where('due_amount', '<=', (int)$request->net_total_max);
+            });
+        $purchaseDues = $purchaseDues->when($request->has('payment_min') && !is_null($request->payment_min), function ($query) use ($request) {
+            $query->where('payment', '>=', $request->payment_min);
+        })
+            ->when($request->has('payment_max') && !is_null($request->payment_max), function ($query) use ($request) {
+                $query->where('payment', '<=', (int)$request->payment_max);
+            });
+        $purchaseDues = $purchaseDues->when($request->has('due_min') && !is_null($request->due_min), function ($query) use ($request) {
+            $query->where('due', '>=', $request->due_min);
+        })
+            ->when($request->has('due_max') && !is_null($request->due_max), function ($query) use ($request) {
+                $query->where('due', '<=', (int)$request->due_max);
+            });
+
+            $dealers = Dealer::get();
+            $purchaseDues = $purchaseDues->latest()->paginate();
+            return view('purchase-due.index', compact('purchaseDues', 'dealers'));
     }
 }

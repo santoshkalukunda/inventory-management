@@ -106,5 +106,7 @@ Route::delete('sale-dues/{saleDue}',[SaleDueController::class,'destroy'])->name(
 Route::get('sale-dues/search',[SaleDueController::class,'search'])->name('sale-dues.search');
 
 //parchase route
+Route::get('purchase-dues',[PurchaseDueController::class,'index'])->name('purchase-dues.index');
+Route::get('purchase-dues/search',[PurchaseDueController::class,'search'])->name('purchase-dues.search');
 Route::post('purchase-dues/{purchase}/create',[PurchaseDueController::class,'store'])->name('purchase-dues.store');
 Route::delete('purchase-dues/{purchaseDue}',[PurchaseDueController::class,'destroy'])->name('purchase-dues.destroy');
