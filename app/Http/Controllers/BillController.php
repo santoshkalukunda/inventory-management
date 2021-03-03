@@ -202,7 +202,7 @@ class BillController extends Controller
     public function pdf(Bill $bill){
        $sales=$bill->sale()->get();
        $pdf = PDF::loadView('pdf.bill-pdf',compact('sales','bill'));
-       return $pdf->setPaper('A4')->stream();
+       return $pdf->setPaper('A4')->stream($bill->customer->name.$bill->id.".pdf");
     //    return view('pdf.bill-pdf',compact('sales','bill'));
     }
 }
