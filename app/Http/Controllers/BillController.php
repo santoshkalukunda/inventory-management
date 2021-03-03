@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Sale;
 use App\Models\Store;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -196,5 +197,12 @@ class BillController extends Controller
         $users = User::get();
         $bills = $bills->with('customer', 'user', 'sale')->latest()->paginate();
         return view('bill.index', compact('bills', 'customers', 'users'));
+    }
+
+    public function pdf(Bill $bill){
+       $sales=$bill->sale()->get();
+       $pdf = PDF::loadView('pdf.bill-pdf',compact('sales','bill'));
+       return $pdf->setPaper('A4')->stream();
+    //    return view('pdf.bill-pdf',compact('sales','bill'));
     }
 }

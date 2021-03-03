@@ -67,6 +67,7 @@ Route::get('purchase/search',[PurchaseController::class,'search'])->name('purcha
 
 //PDF
 Route::get('purchase/pdf',[PurchaseController::class,'pdf'])->name('purchase.pdf');
+Route::get('bills/{bill}/pdf',[BillController::class,'pdf'])->name('bills.pdf');
 Route::get('purchase/excel',[PurchaseController::class,'exp'])->name('purchase.excel');
 
 //customers route

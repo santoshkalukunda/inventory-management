@@ -1,95 +1,144 @@
-<style>
-    table {
-      font-family: arial, sans-serif;
-      border-collapse: collapse;
-      width: 100%;
-    }
-    td, th {
-      border: 1px solid #dddddd;
-      text-align: left;
-      padding: 8px;
-    }
-    </style>
-<div class="row">
-    <div class="col-md-12 justify-content-center">
-        <div class="ibox">
-            <div class="ibox-head">
-                <div class="ibox-title">Purchase List</div>
-            </div>
-            <div class="ibox-body">
-                <div class="table-responsive" style="font-size: 7px;">
-                    <table class="table table-hover table-bordered">
-                        <tr class="text-center bg-light">
-                            <th>Order_Date</th>
-                            <th>Shipping_Date</th>
-                            <th>Bill_No.</th>
-                            <th>Dealer</th>
-                            <th>Product</th>
-                            <th>Category</th>
-                            <th>Brand</th>
-                            <th>Model_No.</th>
-                            <th>Serial_No.</th>
-                            <th>Batch_No.</th>
-                            <th>Manufacture_date</th>
-                            <th>Expiry_date</th>
-                            <th>Quantity</th>
-                            <th class="mx-2">Uint </th>
-                            <th>Rate</th>
-                            <th>Discount</th>
-                            <th>TAX/VAT</th>
-                            <th>Total</th>
-                            <th>Pyament</th>
-                            <th>Due</th>
-                            <th>MRP</th>
-                        </tr>
-                        @forelse ($purchases as $purchase)
-                        <tr >
-                            <td>{{$purchase->order_date}}</td>
-                            <td>{{$purchase->shipping_date}}</td>
-                            <td class="text-right">{{$purchase->bill_no}}</td>
-                            <td>
-                                <a href="{{route('dealers.show',$purchase->dealer)}}"
-                                    class="font-14"><b>{{$purchase->dealer->name}}</b></a>
-                                <span class=""> <br>{{$purchase->dealer->address}}</span>
-                                <span class=""> <br><b>PAN/VAT:</b>{{$purchase->dealer->pan_vat}}</span>
-                            </td>
-                            <td>
-                                {{$purchase->product->code}}
-                                <br>
-                                {{$purchase->product->name}}
-                            </td>
-                            {{-- <td>{{$purchase->category->name}}</td> --}}
-                            {{-- <td>{{$purchase->brand->name}}</td> --}}
-                            <td>{{$purchase->model_no}}</td>
-                            <td>{{$purchase->serial_no}}</td>
-                            <td>{{$purchase->batch_no}}</td>
-                            <td>{{$purchase->mf_date}}</td>
-                            <td>{{$purchase->exp_date}}</td>
-                            <td class="text-right">{{$purchase->quantity}}</td>
-                            <td>{{$purchase->unit->name}}</td>
-                            <td class="text-right">{{number_format((float)$purchase->rate,2,'.', '')}}</td>
-                            <td class="text-right">{{$purchase->discount}}%</td>
-                            <td class="text-right">{{$purchase->vat}}%</td>
-                            <td class="text-right">{{number_format((float)$purchase->total,2,'.', '')}}</td>
-                            <td class="text-right">{{number_format((float)$purchase->payment,2,'.', '')}}</td>
-                            <td class="text-right">{{number_format((float)$purchase->due,2,'.', '')}}</td>
-                            <td class="text-right">{{number_format((float)$purchase->mrp,2,'.', '')}}</td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="40" class=" text-center text-danger">*Data Not Found !!!</td>
-                        </tr>
-                        @endforelse
+<!DOCTYPE html>
+<html lang="en">
 
-                    </table>
-                </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Invoice Preview</title>
+    <style>
+        .col-md-6 {
+            float: left;
+            width: 50%;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+            margin: 5px;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 13px;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 4px;
+        }
+
+        body {
+            margin: 5px 40px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row my-5">
+            <div class="col-md-12 text-center" style="">
+                <b style="font-size: 20px;">ABC Traders</b>
+                <div>Butwal-1, Rupandehi, Lumbini Province</div>
+                <div>98xxxxxxxx,, email@gmail.com</div>
+                <div><b>PAN/VAT :</b>684837849</div>
+                <h4>INVOICE</h4>
+            </div>
+            <div class="col-md-6">
+                <span><b>Name:</b> {{$bill->customer->name}} <br></span>
+                <span><b>Address:</b> {{$bill->customer->address}} <br></span>
+                @if ($bill->customer->phone)
+                <span><b>Phone:</b> {{$bill->customer->phone}}<br></span>
+                @endif
+                @if ($bill->customer->email)
+                <span><b>Email:</b>{{$bill->customer->email}} <br></span>
+                @endif
+                @if ($bill->customer->pan_vat)
+                <span><b>PAN/VAT:</b> {{$bill->customer->pan_vat}}</span>
+                @endif
+            </div>
+            <div class="col-md-6 text-right">
+                <b>Invoice No.:</b> {{$bill->invoice_no}} <br>
+                <b>Transaction Date:</b> {{$bill->date}} <br>
+                <b>Invoice Issue Date:</b> <span>{{date('Y/m/d')}} <br>
+                    {{date('h:i:sa')}}</span>
             </div>
         </div>
+        <div class="row my-5">
+            <div class="col-md-12 my-3">
+                <div class="ibox">
+                    <div class="ibox-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <tr class="text-center bg-light">
+                                    <th>SN</th>
+                                    <th>Particulars</th>
+                                    <th class="text-right">Quantity</th>
+                                    <th class="text-right">Rate</th>
+                                    <th class="text-right">Discount</th>
+                                    <th class="text-right">TAX/VAT</th>
+                                    <th class="text-right">Total</th>
+                                </tr>
+                                @php
+                                $i=1;
+                                @endphp
+                                @foreach ($sales as $sale)
+                                <tr>
+                                    <td class="text-right">{{$i++}}.</td>
+                                    <td>{{$sale->store->product->name}}</td>
+                                    <td class="text-right">{{$sale->quantity}} {{$sale->unit->name}}</td>
+                                    <td class="text-right">{{$sale->rate}}</td>
+                                    <td class="text-right">{{$sale->discount ?? "0"}}%</td>
+                                    <td class="text-right">{{$sale->vat ?? "0"}}%</td>
+                                    <td class="text-right">{{round($sale->total, 2)}}</td>
+                                </tr>
+                                @endforeach
+                                <tr>
+                                    <td colspan="5" rowspan="3">
+                                        <span style="text-transform: capitalize"><b>In-word Rs.:</b> {{Terbilang::make( round($bill->net_total))}} Only.</span> 
+                                    </td>
+                                    <td class="text-right">Grand Total</td>
+                                    <td class="text-right">{{round($bill->net_total)}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">Pyment</td>
+                                    <td class="text-right">{{$bill->payment}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">Due</td>
+                                    <td class="text-right">{{round($bill->due)}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-12 text-right" style="margin-top: 20px; text-transform: capitalize">
+                            {{Auth::user()->name}}
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+            <script type="text/php">
+                if ( isset($pdf) ) {
+                $font = Font_Metrics::get_font("helvetica", "bold");
+                $pdf->page_text(72, 18, "Header: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
+            }
+        </script>
+        </div>
     </div>
-    <script type="text/php">
-        if ( isset($pdf) ) {
-            $font = Font_Metrics::get_font("helvetica", "bold");
-            $pdf->page_text(72, 18, "Header: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
-        }
-    </script> 
-</div>
+</body>
+
+</html>

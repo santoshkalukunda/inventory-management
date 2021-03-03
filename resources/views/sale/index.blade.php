@@ -248,11 +248,7 @@ Sales List
                             <td class="text-right">{{$sale->vat}}%</td>
                             <td class="text-right">{{number_format((float)$sale->total,2,'.', '')}}</td>
                             <td>
-                                @php
-                                $customer=$sale->customer_id;
-                                $bill=$sale->bill_id;
-                                @endphp
-                                <a href="{{route('bills.create', compact('customer','bill'))}}" class="text-muted"><i
+                                <a href="{{route('bills.create',$sale->bill_id)}}" class="text-muted"><i
                                         class="fa fa-edit"></i></a>
                             </td>
                             {{-- <td>
