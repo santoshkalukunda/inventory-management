@@ -42,16 +42,15 @@ class SaleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(SaleRequest $request, Customer $customer, Bill $bill)
+    public function store(SaleRequest $request, Bill $bill)
     {
         $store = Store::where('id', $request->store_id)->first();
         if ($store->quantity >= $request->quantity) {
             $total_cost = $request->quantity * $request->rate;
             $total =  $total_cost -  ($total_cost * ($request->discount / 100));
             $total = $total + ($total * ($request->vat / 100));
-            Sale::create([
-                'customer_id' => $customer->id,
-                'bill_id' => $bill->id,
+            $bill->sale()->create([
+                'customer_id' => $bill->customer_id,
                 'store_id' => $request->store_id,
                 'quantity' => $request->quantity,
                 'unit_id' => $request->unit_id,

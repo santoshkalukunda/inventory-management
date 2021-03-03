@@ -31,7 +31,7 @@ class BillController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Customer $customer, Sale $sale = null, Bill $bill)
+    public function create(Sale $sale = null, Bill $bill)
     {
         // $bill=Bill::where('uuid',$bill)->firstOrFail();
 
@@ -39,12 +39,12 @@ class BillController extends Controller
         if (!$sale) {
             $sale = new Sale;
         }
-        $sales = Sale::with('store', 'unit', 'product')->where('customer_id', $customer->id)->where('bill_id', $bill->id)->get();
+        $sales = $bill->sale()->with('store', 'unit', 'product')->get();
         $net_tatal = 0;
         foreach ($sales as $total) {
             $net_tatal = $net_tatal + $total->total;
         }
-        return view('bill.create', compact('customer', 'bill', 'sale', 'stores', 'sales', 'net_tatal'));
+        return view('bill.create', compact('bill', 'sale', 'stores', 'sales', 'net_tatal'));
     }
 
     /**
@@ -55,12 +55,11 @@ class BillController extends Controller
      */
     public function store(Customer $customer)
     {
-        $bill = Bill::create([
-            'customer_id' => $customer->id,
+        $bill = $customer->bill()->create([
             'user_id' => Auth::user()->id,
             'status' => 'incomplete',
         ]);
-        return redirect()->route('bills.create', compact('customer', 'bill'))->with('success', 'New Bill Created');
+        return redirect()->route('bills.create', compact('bill'))->with('success', 'New Bill Created');
     }
 
     /**
@@ -71,7 +70,7 @@ class BillController extends Controller
      */
     public function show(Bill $bill)
     {
-        $saleDues = $bill->saleDeu()->latest()->paginate();
+        $saleDues = $bill->saleDue()->latest()->paginate();
         return view('bill.show', compact('bill', 'saleDues'));
     }
 

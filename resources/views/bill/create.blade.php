@@ -30,11 +30,11 @@ Bill Create
                 <div class="ibox-title">Customer Details</div>
             </div>
             <div class="ibox-body  text-center">
-                <b>{{$customer->name}}</b>
-                <div> {{$customer->address}}</div>
-                <div>{{$customer->phone}}, {{$customer->email}}</div>
-                @if ($customer->pan_vat)
-                <div>{{$customer->pan_vat}}</div>
+                <b>{{$bill->customer->name}}</b>
+                <div> {{$bill->customer->address}}</div>
+                <div>{{$bill->customer->phone}}, {{$bill->customer->email}}</div>
+                @if ($bill->customer->pan_vat)
+                <div>{{$bill->customer->pan_vat}}</div>
                 @endif
             </div>
         </div>

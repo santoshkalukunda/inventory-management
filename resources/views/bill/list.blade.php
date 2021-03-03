@@ -33,17 +33,11 @@
                     <td>{{$bill->user->name}}</td>
                     @if ($bill->status =="complete")
                     <td>
-                        @php
-                        $customer=$bill->customer_id;
-                        @endphp
                         <a href="{{route('bills.show', $bill)}}" class="text-muted"><i class="fa fa-eye"></i></a>
                     </td>
                     @endif
                     <td>
-                        @php
-                        $customer=$bill->customer_id;
-                        @endphp
-                        <a href="{{route('bills.create', compact('customer','bill'))}}" class="text-muted"><i
+                        <a href="{{route('bills.create', compact('bill'))}}" class="text-muted"><i
                                 class="fa fa-edit"></i></a>
                     </td>
                     @if ($bill->status =="complete")

@@ -41,7 +41,7 @@ class Bill extends Model
     public function sale(){
         return $this->hasMany(Sale::class);
     }
-    public function saleDeu(){
+    public function saleDue(){
         return $this->hasMany(SaleDue::class);
     }
 }

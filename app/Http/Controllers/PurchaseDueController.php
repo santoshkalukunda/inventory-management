@@ -43,8 +43,7 @@ class PurchaseDueController extends Controller
     {
 
         $due = $purchase->due - $request->payment;
-        $purchaseDue = PurchaseDue::create([
-            'purchase_id' => $purchase->id,
+        $purchase->purchaseDue()->create([
             'dealer_id' => $purchase->dealer_id,
             'date' => $request->date,
             'due_amount' => $request->due_amount,

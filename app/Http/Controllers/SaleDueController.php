@@ -41,12 +41,11 @@ class SaleDueController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(SaleDueRequest $request, Customer $customer, Bill $bill)
+    public function store(SaleDueRequest $request, Bill $bill)
     {
         $due = $bill->due - $request->payment;
-        $saleDue=SaleDue::create([
-            'customer_id' => $customer->id,
-            'bill_id' => $bill->id,
+        $bill->saleDue()->create([
+            'customer_id' => $bill->customer_id,
             'date' => $request->date,
             'due_amount' => $bill->due,
             'payment' => $request->payment,

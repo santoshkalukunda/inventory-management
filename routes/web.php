@@ -65,6 +65,7 @@ Route::put('purchase/{purchase}',[PurchaseController::class,'update'])->name('pu
 Route::post('purchase/find',[PurchaseController::class,'find'])->name('purchase.find');
 Route::get('purchase/search',[PurchaseController::class,'search'])->name('purchase.search');
 
+//PDF
 Route::get('purchase/pdf',[PurchaseController::class,'pdf'])->name('purchase.pdf');
 Route::get('purchase/excel',[PurchaseController::class,'exp'])->name('purchase.excel');
 
@@ -76,7 +77,7 @@ Route::resource('customers',CustomerController::class);
 //sales route
 Route::get('bills',[BillController::class,'index'])->name('bills.index');
 Route::get('bills/search',[BillController::class,'search'])->name('bills.search');
-Route::get('bills/{customer}/create/{bill}',[BillController::class,'create'])->name('bills.create');
+Route::get('bills/create/{bill}',[BillController::class,'create'])->name('bills.create');
 Route::put('bills/{bill}',[BillController::class,'update'])->name('bills.update');
 Route::delete('bills/{bill}',[BillController::class,'destroy'])->name('bills.destroy');
 Route::get('bills/{customer}',[BillController::class,'store'])->name('bills.store');
@@ -87,8 +88,8 @@ Route::get('bills/{bill}/show',[BillController::class,'show'])->name('bills.show
 
 //sales route
 Route::get('sales',[SaleController::class,'index'])->name('sales.index');
-Route::get('sales/{customer}/create',[SaleController::class,'create'])->name('sales.create');
-Route::post('sales/{customer}/store/{bill}',[SaleController::class,'store'])->name('sales.store');
+Route::get('sales/create',[SaleController::class,'create'])->name('sales.create');
+Route::post('sales/store/{bill}',[SaleController::class,'store'])->name('sales.store');
 Route::delete('sales/{sale}',[SaleController::class,'destroy'])->name('sales.destroy');
 // Route::get('sales/{sale}',[SaleController::class,'edit'])->name('sales.edit');
 Route::put('sales/{sale}',[SaleController::class,'update'])->name('sales.update');
@@ -102,7 +103,7 @@ Route::get('stores/search',[StoreController::class,'search'])->name('stores.sear
 
 //saledeu
 Route::get('sale-dues',[SaleDueController::class,'index'])->name('sale-dues.index');
-Route::post('sale-dues/{customer}/create/{bill}',[SaleDueController::class,'store'])->name('sale-dues.store');
+Route::post('sale-dues/create/{bill}',[SaleDueController::class,'store'])->name('sale-dues.store');
 Route::delete('sale-dues/{saleDue}',[SaleDueController::class,'destroy'])->name('sale-dues.destroy');
 Route::get('sale-dues/search',[SaleDueController::class,'search'])->name('sale-dues.search');
 

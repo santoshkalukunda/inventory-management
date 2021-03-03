@@ -255,7 +255,7 @@ Sales List
                                 <a href="{{route('bills.create', compact('customer','bill'))}}" class="text-muted"><i
                                         class="fa fa-edit"></i></a>
                             </td>
-                            <td>
+                            {{-- <td>
                                 <form action="{{route('sales.destroy',$sale)}}"
                                     onsubmit="return confirm('Are you sure to delete?')" method="POST" class="d-inline">
                                     @csrf
@@ -263,7 +263,7 @@ Sales List
                                     <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
                                             class="fa fa-trash-alt"></i></button>
                                 </form>
-                            </td>
+                            </td> --}}
                         </tr>
                         @empty
                         <tr>

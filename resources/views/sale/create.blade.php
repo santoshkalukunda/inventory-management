@@ -3,7 +3,7 @@
         <div class="ibox-title">Add Product</div>
     </div>
     <div class="ibox-body">
-        <form action="{{route('sales.store',compact('customer','bill'))}}" method="post">
+        <form action="{{route('sales.store',compact('bill'))}}" method="post">
             @csrf
             @include('sale.input')
         </form>

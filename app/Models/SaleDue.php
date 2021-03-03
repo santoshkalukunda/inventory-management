@@ -17,6 +17,6 @@ class SaleDue extends Model
         return $this->belongsTo(User::class);
     }
     public function bill(){
-        return $this->belongsTo(bill::class);
+        return $this->belongsTo(Bill::class);
     }
 }

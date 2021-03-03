@@ -17,16 +17,21 @@ Sale Deu Payment
     }
 </style>
 <div class="row">
+    <div class="col-md-12 text-center mb-2">
+        <h3>{{$bill->customer->name}}</h3>
+        <div>{{$bill->customer->address}}</div>
+        <div>{{$bill->customer->phone}}, {{$bill->customer->email}}</div>
+        <div><b>PAN/VAT :</b>{{$bill->customer->pan_vat}}</div>
+
+    </div>
+
     <div class="col-md-12 mb-2">
         <div class="ibox">
             <div class="ibox-head">
                 <div class="ibox-title">Deu Pay [Invoice No. {{$bill->invoice_no}}]</div>
             </div>
-            @php
-                $customer=$bill->customer_id;
-            @endphp
             <div class="ibox-body">
-                <form action="{{route('sale-dues.store',compact('customer','bill'))}}" method="post">
+                <form action="{{route('sale-dues.store',compact('bill'))}}" method="post">
                     @csrf
                     <div class="row">
                         <div class="col-md-3 form-group">
