@@ -58,6 +58,10 @@
                     <span class="nav-label">Units</span></a>
             </li>
             <li>
+                <a href="{{route('companies.edit')}}"><i class="sidebar-item-icon fa fa-building"></i>
+                    <span class="nav-label">Company Profile</span></a>
+            </li>
+            <li>
                 <a href=""><i class="sidebar-item-icon fa fa-users"></i>
                     <span class="nav-label">Users</span></a>
             </li>

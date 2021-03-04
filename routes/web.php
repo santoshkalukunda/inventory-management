@@ -3,6 +3,7 @@
 use App\Http\Controllers\BillController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DealerController;
 use App\Http\Controllers\ProductController;
@@ -113,3 +114,7 @@ Route::get('purchase-dues',[PurchaseDueController::class,'index'])->name('purcha
 Route::get('purchase-dues/search',[PurchaseDueController::class,'search'])->name('purchase-dues.search');
 Route::post('purchase-dues/{purchase}/create',[PurchaseDueController::class,'store'])->name('purchase-dues.store');
 Route::delete('purchase-dues/{purchaseDue}',[PurchaseDueController::class,'destroy'])->name('purchase-dues.destroy');
+
+//company profile
+Route::get('companies',[CompanyController::class,'edit'])->name('companies.edit');
+Route::post('companies',[CompanyController::class,'store'])->name('companies.store');
