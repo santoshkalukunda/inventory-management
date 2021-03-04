@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BillRequest;
 use App\Models\Bill;
+use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Sale;
 use App\Models\Store;
@@ -200,8 +201,9 @@ class BillController extends Controller
     }
 
     public function pdf(Bill $bill){
+        $company = Company::findOrFail(1);
        $sales=$bill->sale()->get();
-       $pdf = PDF::loadView('pdf.bill-pdf',compact('sales','bill'));
+       $pdf = PDF::loadView('pdf.bill-pdf',compact('sales','bill','company'));
        return $pdf->setPaper('A4')->stream($bill->customer->name.$bill->id.".pdf");
     //    return view('pdf.bill-pdf',compact('sales','bill'));
     }

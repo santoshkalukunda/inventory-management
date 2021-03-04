@@ -52,10 +52,11 @@
     <div class="container">
         <div class="row my-5">
             <div class="col-md-12 text-center" style="">
-                <b style="font-size: 20px;">ABC Traders</b>
-                <div>Butwal-1, Rupandehi, Lumbini Province</div>
-                <div>98xxxxxxxx,, email@gmail.com</div>
-                <div><b>PAN/VAT :</b>684837849</div>
+                <b style="font-size: 20px;">{{$company->name}}</b>
+                <div>{{$company->address}}</div>
+                <div>{{$company->contact}},  {{$company->email}}</div>
+                <div>{{$company->website}}</div>
+                <div><b>{{$company->type}} :</b>{{$company->pan_vat}}</div>
                 <h4>INVOICE</h4>
             </div>
             <div class="col-md-6">
