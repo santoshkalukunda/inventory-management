@@ -44,7 +44,7 @@ Bill Create
                 @if ($bill->status=="incomplete")
                 <div class="btn btn-primary text-capitalize">{{$bill->status}}</div>
                 @elseif($bill->status=="complete")
-                <div class="btn btn-success text-capitalize">{{$bill->status}}</div>
+                <span class="bg-success text-capitalize px-2 py-1">{{$bill->status}}</span>
                 <div class="my-3"> <span class="badge-primary p-2 mx-1"><b>Net-total :</b> {{$bill->net_total}}/- </span> <span class="badge-primary p-2 mx-1"><b>Pay Amount :</b> {{$bill->payment}}/- </span> <span class="badge-primary p-2 mx-1"><b>Due :</b> {{$bill->due}}</span></div>
                 <div class="col-md-2">
                     <a href="{{route('bills.pdf',$bill)}}"  class="btn btn-success form-control btn-rounded"><i class="fa fa-print"></i> Invoice Print</a>
