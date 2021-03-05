@@ -127,6 +127,9 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::post('users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::get('users/{user}/change-password', [UserController::class, 'changePasswordShow'])->name('users.changePasswordShow');
     Route::post('users/{user}/change-password', [UserController::class, 'changePassword'])->name('users.changePassword');
+
+    //log route
+    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 });
 
 //user role
