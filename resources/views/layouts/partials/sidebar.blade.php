@@ -62,7 +62,7 @@
                     <span class="nav-label">Company Profile</span></a>
             </li>
             <li>
-                <a href=""><i class="sidebar-item-icon fa fa-users"></i>
+                <a href="{{route('users.index')}}"><i class="sidebar-item-icon fa fa-users"></i>
                     <span class="nav-label">Users</span></a>
             </li>
             <li>
