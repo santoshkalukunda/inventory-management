@@ -19,12 +19,12 @@ Dealer Registration
     </style>
 @endpush
     <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="ibox">
-                <div class="ibox-body">
+        <div class="col-md-12 text-center mb-3">
+            <div >
+                <div >
                     <h3 class=" text-capitalize">{{$dealer->name}}</h3>
-                    <div><b>Address:</b> {{$dealer->address}}</div>
-                    <div><b>Phone:</b> {{$dealer->phone}}</div>
+                    <div> {{$dealer->address}}</div>
+                    <div>{{$dealer->phone}}, {{$dealer->email}}</div>
                     <div><b>PAN/VAT :</b> {{$dealer->pan_vat}}</div>
                     <div><b>Reg. no :</b> {{$dealer->reg_no}}</div>
                 </div>

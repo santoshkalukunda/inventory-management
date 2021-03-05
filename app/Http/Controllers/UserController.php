@@ -66,7 +66,7 @@ class UserController extends Controller
                 if ($user->id == Auth::user()->id) {
                     $user->update(['password' => Hash::make($request->password)]);
                 } else {
-                    return redirect()->back()->with('error', "You can your password only!");
+                    return redirect()->route('users.changePasswordShow',Auth::user()->id)->with('error', "You can change your password only!");
                 }
             }
             return redirect()->back()->with('success', "Password change successfull");
