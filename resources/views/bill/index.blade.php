@@ -41,6 +41,9 @@ Customer List
         $payment=0;
         foreach($bills as $bill)
         {
+            if ($bill->status == "cancel") {
+              continue;
+            }
         $total = $total + $bill->net_total;
         $payment = $payment + $bill->payment;
         $due = $due + $bill->due;

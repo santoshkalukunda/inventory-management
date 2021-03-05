@@ -14,7 +14,7 @@ class Sale extends Model
         return $this->belongsTo(Customer::class);
     }
     public function bill(){
-        return $this->belongsTo(bill::class);
+        return $this->belongsTo(Bill::class);
     }
     public function store(){
         return $this->belongsTo(Store::class);
