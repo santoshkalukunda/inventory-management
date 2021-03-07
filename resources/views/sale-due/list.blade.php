@@ -23,13 +23,8 @@
                     <td>{{$saleDue->payment}}</td>
                     <td>{{$saleDue->due}}</td>
                     <td>{{$saleDue->user->name}}</td>
-                    
-                    <td>
-                        @php
-                            $bill=$saleDue->bill_id;
-                            $customer=$saleDue->customer_id;
-                        @endphp
-                        <a href="{{route('bills.create',compact('customer','bill'))}}" class="text-muted"><i class="fa fa-eye"></i></a>
+                    <td> 
+                        <a href="{{route('bills.create',$saleDue->bill_id)}}" class="text-muted"><i class="fa fa-eye"></i>Due Pay</a>
                     </td>
                     <td>
                         <form action="{{route('sale-dues.destroy',$saleDue)}}"

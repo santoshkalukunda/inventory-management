@@ -39,7 +39,7 @@
             </li> 
             <li>
                 <a href="{{route('stores.index')}}"><i class="sidebar-item-icon fa fa-warehouse"></i>
-                    <span class="nav-label">Store</span></a>
+                    <span class="nav-label">Inventories</span></a>
             </li> 
             <li>
                 <a href="{{route('products.index')}}"><i class="sidebar-item-icon fa fa-file-alt"></i>

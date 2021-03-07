@@ -61,7 +61,7 @@
                     <td class="text-right">{{number_format((float)$purchase->due,2,'.', '')}}</td>
                     <td class="text-right">{{number_format((float)$purchase->mrp,2,'.', '')}}</td>
                     <td>
-                        <a href="{{route('purchase.show',$purchase)}}" class="text-muted"><i class="fa fa-eye"></i></a>
+                        <a href="{{route('purchase.show',$purchase)}}" class="btn btn-primary"><i class="fa fa-eye"></i> Deu pay</a>
                     </td>
                     <td>
                         <a href="{{route('purchase.edit',$purchase)}}" class="text-muted"><i

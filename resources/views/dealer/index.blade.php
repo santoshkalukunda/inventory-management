@@ -78,12 +78,12 @@ Dealer List
                             <td>{{$dealer->pan_vat}}</td>
                             <td>{{$dealer->reg_no}}</td>
                             <td>
-                                <a href="{{route('purchase.create',$dealer)}}" class="text-muted"><i
-                                        class="fa fa-file"></i></a>
+                                <a href="{{route('purchase.create',$dealer)}}" class="btn btn-success"><i
+                                        class="fa fa-file"></i>New Purchase</a>
                             </td>
                             <td>
-                                <a href="{{route('dealers.show',$dealer)}}" class="text-muted"><i
-                                        class="fa fa-eye"></i></a>
+                                <a href="{{route('dealers.show',$dealer)}}" class="btn btn-primary"><i
+                                        class="fa fa-eye"></i> Show</a>
                             </td>
                             <td>
                                 <a href="{{route('dealers.edit',$dealer)}}" class="text-muted"><i

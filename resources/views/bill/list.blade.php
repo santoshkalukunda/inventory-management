@@ -33,20 +33,18 @@
                     <td>{{$bill->user->name}}</td>
                     @if ($bill->status =="complete")
                     <td>
-                        <a href="{{route('bills.show', $bill)}}" class="text-muted"><i class="fa fa-eye"></i></a>
+                        <a href="{{route('bills.show', $bill)}}" class="btn btn-primary">Due Pay</a>
                     </td>
                     @endif
                     <td>
-                        <a href="{{route('bills.create', compact('bill'))}}" class="text-muted"><i
-                                class="fa fa-edit"></i></a>
+                        <a href="{{route('bills.create', compact('bill'))}}" class="btn btn-success">Edit</a>
                     </td>
                     @if ($bill->status =="complete")
                     <td>
                         <form action="{{route('bills.cancel',$bill)}}"
                             onsubmit="return confirm('Are you sure to cancel bill?')" method="POST" class="d-inline">
                             @csrf
-                            <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
-                                    class="fa fa-window-close"></i></button>
+                            <button type="submit" class="btn-sm btn-danger">Cancel</button>
                         </form>
                     </td>
                     @endif
@@ -56,8 +54,7 @@
                             onsubmit="return confirm('Are you sure to delete bill?')" method="POST" class="d-inline">
                             @csrf
                             @method('delete')
-                            <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
-                                    class="fa fa-trash-alt"></i></button>
+                            <button type="submit" class="btn-sm btn-danger ">Delete</button>
                         </form>
                     </td>
                     @endif

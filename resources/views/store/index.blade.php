@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 @section('title')
-Product
+Inventories Product List
 @endsection
 @section('content')
 <div class="row">
@@ -82,7 +82,7 @@ Product
         </div>
         <div class="ibox">
             <div class="ibox-head d-flex">
-                <div class="ibox-title">Store ProDuct List</div>
+                <div class="ibox-title">Inventories Product List</div>
                 <div>Total Result: {{$stores->total()}}</div>
             </div>
             <div class="ibox-body table-responsive">

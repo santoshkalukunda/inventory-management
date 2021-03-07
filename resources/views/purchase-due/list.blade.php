@@ -23,7 +23,7 @@
                     <td>{{$purchaseDue->due}}</td>
                     <td>
                         <a href="{{route('purchase.show',$purchaseDue->purchase_id)}}" class="text-muted"><i
-                                class="fa fa-eye"></i></a>
+                                class="fa fa-eye"></i> Deu Pay</a>
                     </td>
                     <td>
                         <form action="{{route('purchase-dues.destroy',$purchaseDue)}}"

@@ -79,12 +79,12 @@ Customer List
                             <td>{{$customer->email}}</td>
                             <td>{{$customer->pan_vat}}</td>
                             <td>
-                                <a href="{{route('bills.store',$customer)}}" class="text-muted"><i
-                                        class="fa fa-file"></i></a>
+                                <a href="{{route('bills.store',$customer)}}" class="btn btn-primary"><i
+                                        class="fa fa-file"></i> New Bill</a>
                             </td>
                             <td>
-                                <a href="{{route('customers.show',$customer)}}" class="text-muted"><i
-                                        class="fa fa-eye"></i></a>
+                                <a href="{{route('customers.show',$customer)}}" class="btn btn-success"><i
+                                        class="fa fa-eye"></i> Show Bill</a>
                             </td>
                        
                             <td>
