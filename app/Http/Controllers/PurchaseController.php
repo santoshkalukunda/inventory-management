@@ -63,8 +63,8 @@ class PurchaseController extends Controller
         // $purchase = new Purchase($request->validated());
         // $dealer->purchase()->save($purchase);
         $total = $data['quantity'] * $data['rate'];
-        $total= $total - $total * $data['discount'] / 100;
-        $total= $total + $total * $data['vat'] / 100;
+        $total = $total - $total * $data['discount'] / 100;
+        $total = $total + $total * $data['vat'] / 100;
         $due = $total - $data['payment'];
 
         Purchase::create([
@@ -87,13 +87,15 @@ class PurchaseController extends Controller
             'mrp' => $data['mrp'],
             'details' => $data['details'],
         ]);
-        $store = Store::where('product_id', $data['product_id'])->first();
+        $store = Store::where('product_id', $data['product_id'])->where('batch_no', $data['batch_no'])->where('mf_date', $data['mf_date'])->where('exp_date', $data['exp_date'])->first();
         if ($store) {
-
             $total = $store->quantity + $data['quantity'];
             $store->update([
                 'quantity' => $total,
                 'unit_id' => $data['unit_id'],
+                'batch_no' => $data['batch_no'],
+                'mf_date' => $data['mf_date'],
+                'exp_date' => $data['exp_date'],
                 'mrp' => $data['mrp'],
             ]);
         } else {
@@ -101,6 +103,9 @@ class PurchaseController extends Controller
                 'product_id' => $data['product_id'],
                 'quantity' => $data['quantity'],
                 'unit_id' => $data['unit_id'],
+                'batch_no' => $data['batch_no'],
+                'mf_date' => $data['mf_date'],
+                'exp_date' => $data['exp_date'],
                 'mrp' => $data['mrp'],
             ]);
         }
@@ -115,8 +120,8 @@ class PurchaseController extends Controller
      */
     public function show(Purchase $purchase)
     {
-        $purchaseDues=$purchase->purchaseDue()->latest()->paginate();
-        return view('purchase.show',compact('purchase','purchaseDues'));
+        $purchaseDues = $purchase->purchaseDue()->latest()->paginate();
+        return view('purchase.show', compact('purchase', 'purchaseDues'));
     }
 
     /**
@@ -147,28 +152,28 @@ class PurchaseController extends Controller
         $data = $request->validated();
         // $total = $data['quantity'] * $data['rate'] - (($data['quantity'] * $data['rate']) * $data['discount'] / 100) + (($data['quantity'] * $data['rate']) * $data['vat'] / 100);
         $total = $data['quantity'] * $data['rate'];
-        $total= $total - $total * $data['discount'] / 100;
-        $total= $total + $total * $data['vat'] / 100;
+        $total = $total - $total * $data['discount'] / 100;
+        $total = $total + $total * $data['vat'] / 100;
         $due = $total - $data['payment'];
         // $purchase->update($request->validated());
         if ($purchase->product_id == $data['product_id']) {
             $store = Store::where('product_id', $data['product_id'])->first();
             if ($purchase->quantity != $data['quantity']) {
-                    $total = $store->quantity + $data['quantity'] - $purchase->quantity;
-                    $store->update([
-                        'quantity' => $total,
-                        'unit_id' => $data['unit_id'],
-                        'mrp' => $data['mrp'],
-                    ]);
+                $total = $store->quantity + $data['quantity'] - $purchase->quantity;
+                $store->update([
+                    'quantity' => $total,
+                    'unit_id' => $data['unit_id'],
+                    'mrp' => $data['mrp'],
+                ]);
             }
-            if($purchase->mrp != $data['mrp'] or $purchase->unit_id != $data['unit_id']) {
-                   
-                    $store->update([
-                        'unit_id' => $data['unit_id'],
-                        'mrp' => $data['mrp'],
-                    ]);
+            if ($purchase->mrp != $data['mrp'] or $purchase->unit_id != $data['unit_id']) {
+
+                $store->update([
+                    'unit_id' => $data['unit_id'],
+                    'mrp' => $data['mrp'],
+                ]);
             }
-        }else{
+        } else {
             $store = Store::where('product_id', $purchase->product_id)->first();
             $total = $store->quantity - $purchase->quantity;
             $store->update([

@@ -24,8 +24,20 @@
                     <br>Code: {{$store->product->code}}
                     <br>Category: {{$store->product->category->name}}
                     <br>Brand: {{$store->product->brand->name}}
-                    <br>Model: {{$store->product->model_no}}
+                    @if($store->product->model_no)
+                    <br>model: {{$store->product->model_no}}
+                    @endif
+                    @if($store->batch_no)
+                    <br>Batch: {{$store->batch_no}}
+                    @endif
+                    @if($store->mf_date)
+                    <br>mf.: {{$store->mf_date}}
+                    @endif
+                    @if($store->exp_date)
+                    <br>Exp.: {{$store->exp_date}}
+                    @endif
                     <br>Quantity: {{$store->quantity}} {{$store->unit->name}}
+
                 </span>" {{$sale->store_id == $store->id ? "selected" : '' }}>{{$store->name}}
             </option>
             @endforeach
@@ -39,7 +51,8 @@
     <div class="col-md-3 form-group">
         <label for="quantity" class="required">Quantity</label>
         <input type="number" min="0" step="any" class="form-control text-right @error('quantity') is-invalid @enderror"
-            name="quantity" value="{{old('quantity',$sale->quantity)}}" id="quantity" placeholder="0" onkeyup="Productfunction()">
+            name="quantity" value="{{old('quantity',$sale->quantity)}}" id="quantity" placeholder="0"
+            onkeyup="Productfunction()">
         @error('quantity')
         <div class="invalid-feedback">
             {{ $message }}
@@ -48,9 +61,9 @@
     </div>
     <div class="col-md-2 form-group">
         <label for="unit_id1" class="required">Unit</label>
-        <select  class="form-control @error('unit_id') is-invalid @enderror" name="unit_id"   id="unit_id">
+        <select class="form-control @error('unit_id') is-invalid @enderror" name="unit_id" id="unit_id">
             <option value="" selected>Unit</option>
-       </select>
+        </select>
         @error('unit_id')
         <div class="invalid-feedback">
             {{ $message }}
@@ -69,8 +82,10 @@
     </div>
     <div class="col-md-3 form-group">
         <label for="total_cost" class="required">Total Cost</label>
-        <input type="number" min="0" step="any" class="form-control text-right @error('total_cost') is-invalid @enderror"
-            name="total_cost" value="{{old('total_cost',$sale->total_cost)}}" id="total_cost" placeholder="0" onkeyup="Productfunction()" disabled>
+        <input type="number" min="0" step="any"
+            class="form-control text-right @error('total_cost') is-invalid @enderror" name="total_cost"
+            value="{{old('total_cost',$sale->total_cost)}}" id="total_cost" placeholder="0" onkeyup="Productfunction()"
+            disabled>
         @error('total_cost')
         <div class="invalid-feedback">
             {{ $message }}
@@ -79,9 +94,8 @@
     </div>
     <div class="col-md-3 form-group">
         <label for="discount">Discount in %</label>
-        <input type="number" min="0" step="any"
-            class="form-control text-right @error('discount') is-invalid @enderror" name="discount"
-            value="{{old('discount',$sale->discount)}}" id="discount" placeholder="Discount in %"
+        <input type="number" min="0" step="any" class="form-control text-right @error('discount') is-invalid @enderror"
+            name="discount" value="{{old('discount',$sale->discount)}}" id="discount" placeholder="Discount in %"
             onkeyup="Productfunction()">
         @error('discount')
         <div class="invalid-feedback">
@@ -91,9 +105,8 @@
     </div>
     <div class="col-md-3 form-group">
         <label for="vat">VAT in %</label>
-        <input type="number" min="0" step="any"
-            class="form-control text-right @error('vat') is-invalid @enderror" name="vat"
-            value="{{old('vat',$sale->vat)}}" id="vat" placeholder="VAT in %" onkeyup="Productfunction()">
+        <input type="number" min="0" step="any" class="form-control text-right @error('vat') is-invalid @enderror"
+            name="vat" value="{{old('vat',$sale->vat)}}" id="vat" placeholder="VAT in %" onkeyup="Productfunction()">
         @error('vat')
         <div class="invalid-feedback">
             {{ $message }}
@@ -102,9 +115,8 @@
     </div>
     <div class="col-md-3 form-group">
         <label for="total">Net-Total</label>
-        <input step="any" type="number" min="0"
-            class="form-control text-right @error('total') is-invalid @enderror" name="total"
-            value="{{old('total',$sale->total)}}" id="total" placeholder="Net-Total" readonly>
+        <input step="any" type="number" min="0" class="form-control text-right @error('total') is-invalid @enderror"
+            name="total" value="{{old('total',$sale->total)}}" id="total" placeholder="Net-Total" readonly>
         @error('total')
         <div class="invalid-feedback">
             {{ $message }}
@@ -120,7 +132,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 @foreach ($stores as $store)
 <script>
-$(document).ready(function () {
+    $(document).ready(function () {
     $("#quantity1").change(function () {
         var val = $(this).val();
         if (val == "{{$store->id}}") {

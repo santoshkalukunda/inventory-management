@@ -110,6 +110,19 @@ class StoreController extends Controller
             if ($request->unit_id != null)
                 $stores = $stores->where('unit_id', "$request->unit_id");
         }
+        if ($request->has('batch_no')) {
+            if ($request->batch_no != null)
+                $stores = $stores->where('batch_no', ["$request->batch_no"]);
+        }
+        if ($request->has('mf_date_from')) {
+            if ($request->mf_date_from != null && $request->mf_date_to != null)
+                $stores = $stores->whereBetween('mf_date', [$request->mf_date_from, $request->mf_date_to]);
+        }
+        if ($request->has('exp_date_from')) {
+            if ($request->exp_date_from != null && $request->exp_date_to != null)
+                $stores = $stores->whereBetween('exp_date', [$request->exp_date_from, $request->exp_date_to]);
+        }
+
         $stores = $stores->when($request->has('mrp_min') && !is_null($request->mrp_min), function ($query) use ($request) {
             $query->where('mrp', '>=', $request->mrp_min);
         })

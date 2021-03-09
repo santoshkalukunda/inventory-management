@@ -44,7 +44,7 @@ class SaleController extends Controller
      */
     public function store(SaleRequest $request, Bill $bill)
     {
-        $store = Store::where('id', $request->store_id)->first();
+        $store = Store::where('id', $request->store_id)->where('id', $request->store_id)->first();
         if ($store->quantity >= $request->quantity) {
             $total_cost = $request->quantity * $request->rate;
             $total =  $total_cost -  ($total_cost * ($request->discount / 100));

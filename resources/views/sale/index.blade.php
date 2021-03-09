@@ -18,6 +18,7 @@ Sales List
     }
 </style>
 @endpush
+
 <div class="row mx-1">
     <div class="col-md-2">
         <button class="btn btn-primary mb-2 form-control" data-toggle="modal" data-target="#new-bill"> <i
@@ -69,14 +70,25 @@ Sales List
                         <div class="col-md-3 form-group">
                             <label for="store_id">Product</label>
                             <select class="selectpicker form-control @error('store_id') is-invalid @enderror"
-                                name="store_id" id="store_id" data-live-search="true" data-size="4">
+                                name="store_id" id="store_id" data-live-search="true" data-size="3">
                                 <option value="" selected>Select Product</option>
                                 @foreach ($stores as $store)
                                 <option value="{{$store->id}}" data-content="<b>{{$store->product->name}}</b>
                                     <br>{{$store->product->code}}
                                     <br>{{$store->product->brand->name}}
                                     <br>{{$store->product->category->name}}
+                                    @if($store->product->model_no)
                                     <br>{{$store->product->model_no}}
+                                    @endif
+                                    @if($store->batch_no)
+                                    <br><b>Batch </b> {{$store->batch_no}}
+                                    @endif
+                                    @if($store->mf_date)
+                                    <br> <b>mf. </b>{{$store->mf_date}}
+                                    @endif
+                                    @if($store->exp_date)
+                                    <br> <b>Exp. </b> {{$store->exp_date}}
+                                    @endif
                                     "></option>
                                 @endforeach
                             </select>
@@ -117,8 +129,8 @@ Sales List
                         </div>
                         <div class="col-md-2 form-group">
                             <label for="unit_id">Unit</label>
-                            <select class="selectpicker form-control @error('unit_id') is-invalid @enderror" name="unit_id"
-                                id="unit_id" data-live-search="true" data-size="5">
+                            <select class="selectpicker form-control @error('unit_id') is-invalid @enderror"
+                                name="unit_id" id="unit_id" data-live-search="true" data-size="5">
                                 <option value="" selected>Select Unit</option>
                                 @foreach ($units as $unit)
                                 <option value="{{$unit->id}}">
@@ -143,14 +155,14 @@ Sales List
                         <div class="col-md-2 form-group">
                             <label for="total_cost_min">Total Min.</label>
                             <input step="any" type="number" min="0"
-                                class="form-control text-right @error('total_cost_min') is-invalid @enderror" name="total_cost_min"
-                                id="total_cost_min" placeholder="total Min.">
+                                class="form-control text-right @error('total_cost_min') is-invalid @enderror"
+                                name="total_cost_min" id="total_cost_min" placeholder="total Min.">
                         </div>
                         <div class="col-md-2 form-group">
                             <label for="total_cost_max">Net total_cost Max.</label>
                             <input step="any" type="number" min="0"
-                                class="form-control text-right @error('total_cost_max') is-invalid @enderror" name="total_cost_max"
-                                id="total_cost_max" placeholder="total Max.">
+                                class="form-control text-right @error('total_cost_max') is-invalid @enderror"
+                                name="total_cost_max" id="total_cost_max" placeholder="total Max.">
                         </div>
                         <div class="col-md-2 form-group">
                             <label for="discount_min">Discount Min. in %</label>
@@ -179,14 +191,14 @@ Sales List
                         <div class="col-md-2 form-group">
                             <label for="total_min">Net Total Min.</label>
                             <input step="any" type="number" min="0"
-                                class="form-control text-right @error('total_min') is-invalid @enderror" name="total_min"
-                                id="total_min" placeholder="Net-Total Min.">
+                                class="form-control text-right @error('total_min') is-invalid @enderror"
+                                name="total_min" id="total_min" placeholder="Net-Total Min.">
                         </div>
                         <div class="col-md-2 form-group">
                             <label for="total_max">Net Total Max.</label>
                             <input step="any" type="number" min="0"
-                                class="form-control text-right @error('total_max') is-invalid @enderror" name="total_max"
-                                id="total_max" placeholder="Net-Total Max.">
+                                class="form-control text-right @error('total_max') is-invalid @enderror"
+                                name="total_max" id="total_max" placeholder="Net-Total Max.">
                         </div>
                     </div>
                     <div class="row">
@@ -212,6 +224,9 @@ Sales List
                             <th>Invoice No.</th>
                             <th>Customer</th>
                             <th>Product</th>
+                            <th>Batch_No.</th>
+                            <th>Mf_date</th>
+                            <th>Exp._date</th>
                             <th class="text-right">Quantity</th>
                             <th class="text-right">Rate</th>
                             <th class="text-right">Total</th>
@@ -231,16 +246,17 @@ Sales List
                                 <span class=""> <br>{{$sale->customer->pan_vat}}</span>
                             </td>
                             <td>
-                                {{$sale->store->product->code}}
-                                <br>
-                                <b>{{$sale->store->product->name}}</b>
-                                <br>
-                                {{$sale->store->product->category->name}}
-                                <br>
-                                {{$sale->store->product->brand->name}}
-                                <br>
-                                {{$sale->store->product->model_no}}
+                                {{$sale->store->product->code}}<br>
+                                <b>{{$sale->store->product->name}}</b><br>
+                                {{$sale->store->product->category->name}}<br>
+                                {{$sale->store->product->brand->name}}<br>
+                                @if ($sale->store->product->model_no)
+                                <b>Model: </b>{{$sale->store->product->model_no}}<br>
+                                @endif
                             </td>
+                            <td>{{$sale->store->batch_no}} </td>
+                            <td>{{$sale->store->mf_date}}</td>
+                            <td>{{$sale->store->exp_date}} </td>
                             <td class="text-right">{{$sale->quantity}} {{$sale->unit->name}}</td>
                             <td class="text-right">{{number_format((float)$sale->rate,2,'.', '')}}</td>
                             <td class="text-right">{{$sale->quantity * $sale->rate }}</td>
@@ -253,12 +269,12 @@ Sales List
                             </td>
                             {{-- <td>
                                 <form action="{{route('sales.destroy',$sale)}}"
-                                    onsubmit="return confirm('Are you sure to delete?')" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
-                                            class="fa fa-trash-alt"></i></button>
-                                </form>
+                            onsubmit="return confirm('Are you sure to delete?')" method="POST" class="d-inline">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
+                                    class="fa fa-trash-alt"></i></button>
+                            </form>
                             </td> --}}
                         </tr>
                         @empty
@@ -274,4 +290,5 @@ Sales List
         {{$sales->links()}}
     </div>
 </div>
+
 @endsection

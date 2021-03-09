@@ -46,7 +46,7 @@ Inventories Product List
                                     class="form-control text-right @error('quantity_max') is-invalid @enderror"
                                     name="quantity_max" id="quantity_max" placeholder="Quantity Max">
                             </div>
-                            <div class="col-md-1 form-group">
+                            <div class="col-md-2 form-group">
                                 <label for="unit_id">Unit</label>
                                 <select class="selectpicker form-control @error('unit_id') is-invalid @enderror"
                                     name="unit_id" id="unit_id" data-live-search="true" data-size="5">
@@ -56,7 +56,31 @@ Inventories Product List
                                         {{$unit->name}}</option>
                                     @endforeach
                                 </select>
-
+                            </div>
+                            <div class="col-md-2 form-group">
+                                <label for="batch_no">Batch No.</label>
+                                <input type="text" class="form-control @error('batch_no') is-invalid @enderror" name="batch_no"
+                                    id="batch_no" placeholder="Batch No.">
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="mf_date_from">Manufacture Date From</label>
+                                <input type="date" class="form-control @error('mf_date_from') is-invalid @enderror"
+                                    name="mf_date_from" id="mf_date_from">
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="mf_date_to">Manufacture Date to</label>
+                                <input type="date" class="form-control @error('mf_date_to') is-invalid @enderror"
+                                    name="mf_date_to" id="mf_date_to">
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="exp_date_from"> Expiry Date From</label>
+                                <input type="date" class="form-control @error('exp_date_from') is-invalid @enderror"
+                                    name="exp_date_from" id="exp_date_from">
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="exp_date_to"> Expiry Date To</label>
+                                <input type="date" class="form-control @error('exp_date_to') is-invalid @enderror"
+                                    name="exp_date_to" id="exp_date_to">
                             </div>
                             <div class="col-md-2 form-group">
                                 <label for="mrp_min">MRP Min.</label>
@@ -89,14 +113,12 @@ Inventories Product List
                 <div class="table-responsive">
                     <table class="table-hover table">
                         <thead class="">
-                            <tr class="text-center bg-light">
-                                <th>Code</th>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th>Brand</th>
-                                <th>Model_No.</th>
-                                <th>Quantity</th>
-                                <th>Unit</th>
+                            <tr class="bg-light">
+                                <th>Product Name</th>
+                                <th class="text-right">Quantity</th>
+                                <th>Batch_No.</th>
+                                <th>Manufacture_date</th>
+                                <th>Expiry_date</th>
                                 <th>MRP</th>
                                 {{-- <th>Action</th> --}}
                             </tr>
@@ -104,13 +126,17 @@ Inventories Product List
                         <tbody>
                             @forelse ($stores as $store)
                             <tr style="white-space:nowrap;">
-                                <td>{{$store->product->code}}</td>
-                                <td>{{$store->product->name}}</td>
-                                <td>{{$store->product->category->name}}</td>
-                                <td>{{$store->product->brand->name}}</td>
-                                <td>{{$store->product->model_no}}</td>
-                                <td class="text-right">{{$store->quantity}}</td>
-                                <td> {{$store->unit->name}}</td>
+                                <td>
+                                    {{$store->product->code}}<br>
+                                    <b>{{$store->product->name}}</b> <br>
+                                    {{$store->product->category->name}} <br>
+                                    {{$store->product->brand->name}} <br>
+                                    {{$store->product->model_no}}
+                                </td>
+                                <td class="text-right">{{$store->quantity}} {{$store->unit->name}}</td>
+                                <td class=" text-center">{{$store->batch_no}}</td>
+                                <td>{{$store->mf_date}}</td>
+                                <td>{{$store->exp_date}}</td>
                                 <td class="text-right">{{$store->mrp}}</td>
                                 {{-- <td>
                                     <a href="{{ route('stores.edit', $product) }}" class="text-muted"><i

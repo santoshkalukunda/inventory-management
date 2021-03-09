@@ -18,6 +18,9 @@ class CreateStoresTable extends Migration
             $table->foreignId('product_id')->constrained('products');
             $table->double('quantity');
             $table->foreignId('unit_id')->constrained('units');
+            $table->string('batch_no')->nullable();
+            $table->string('mf_date')->nullable();
+            $table->string('exp_date')->nullable();
             $table->double('mrp');
             $table->timestamps();
         });

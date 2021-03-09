@@ -25,11 +25,8 @@ Bill Create
     </div>
     @endif
     <div class="{{$bill->status=="incomplete" ? "col-md-3" : "col-md-12"}} ">
-        <div class="ibox">
-            <div class="ibox-head">
-                <div class="ibox-title">Customer Details</div>
-            </div>
-            <div class="ibox-body  text-center">
+        <div class="mb-3">
+            <div class="  text-center">
                 <b>{{$bill->customer->name}}</b>
                 <div> {{$bill->customer->address}}</div>
                 <div>{{$bill->customer->phone}}, {{$bill->customer->email}}</div>
@@ -45,9 +42,12 @@ Bill Create
                 <div class="btn btn-primary text-capitalize">{{$bill->status}}</div>
                 @elseif($bill->status=="complete")
                 <span class="bg-success text-capitalize px-2 py-1">{{$bill->status}}</span>
-                <div class="my-3"> <span class="badge-primary p-2 mx-1"><b>Net-total :</b> {{$bill->net_total}}/- </span> <span class="badge-primary p-2 mx-1"><b>Pay Amount :</b> {{$bill->payment}}/- </span> <span class="badge-primary p-2 mx-1"><b>Due :</b> {{$bill->due}}</span></div>
+                <div class="my-3"> <span class="badge-primary p-2 mx-1"><b>Net-total :</b> {{$bill->net_total}}/-
+                    </span> <span class="badge-primary p-2 mx-1"><b>Pay Amount :</b> {{$bill->payment}}/- </span> <span
+                        class="badge-primary p-2 mx-1"><b>Due :</b> {{$bill->due}}</span></div>
                 <div class="col-md-2">
-                    <a href="{{route('bills.pdf',$bill)}}"  class="btn btn-success form-control btn-rounded"><i class="fa fa-print"></i> Invoice Print</a>
+                    <a href="{{route('bills.pdf',$bill)}}" target="_blank" class="btn btn-success form-control btn-rounded"><i
+                            class="fa fa-print"></i> Invoice Print</a>
                 </div>
                 @else
                 <div class="btn btn-danger text-capitalize">{{$bill->status}}</div>
