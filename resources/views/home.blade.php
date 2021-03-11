@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 @section('title')
-    Dashboard
+Dashboard
 @endsection
 @section('content')
 <div class="container">
@@ -43,16 +43,35 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        
+        <div class="col-md-12 mb-2">
+            <div class="card">
+                <div class="card-header">{{ __('Monthly Sales') }}</div>
+                <div class="card-body">
+                    <div style="width:100%;">
+                        {!! $chartjs->render() !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mb-2">
+            <div class="card">
+                <div class="card-header">{{ __('Yearly Purchase') }}</div>
+                <div class="card-body">
+                    <div style="width:100%;">
+                        {!! $purchaseChart->render() !!}
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">{{ __('Dashboard') }}</div>
 
                 <div class="card-body">
                     @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
                     @endif
 
                     {{ __('You are logged in!') }}

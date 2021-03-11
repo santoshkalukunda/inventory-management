@@ -22,7 +22,12 @@ class CustomerFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->name,
+            'address' => $this->faker->address,
+            'phone' => $this->faker->phoneNumber,
+            'email' => $this->faker->email,
+            'pan_vat' => $this->faker->swiftBicNumber,
+            'created_at' => $this->faker->dateTimeThisYear,
         ];
     }
 }
