@@ -111,7 +111,7 @@ class BillController extends Controller
     {
         $invoice_no = Bill::max('invoice_no');
         $invoice_no = $invoice_no + 1;
-        $due = $request->net_total - $request->payment;
+        $due = $request->due;
         $bill->update([
             'date' => $request->date,
             'invoice_no' => $invoice_no,

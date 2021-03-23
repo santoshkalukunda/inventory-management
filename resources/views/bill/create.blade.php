@@ -139,7 +139,7 @@ Bill Create
                             <input step="any" type="number" min="0"
                                 class="form-control text-right @error('net_total') is-invalid @enderror"
                                 name="net_total" value="{{round($net_tatal, 2)}}" id="net_total" placeholder="Net-Total"
-                                readonly>
+                                >
                             @error('net_total')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -163,7 +163,7 @@ Bill Create
                             <label for="due">Due Amount</label>
                             <input type="number" step="any"
                                 class="form-control text-right @error('due') is-invalid @enderror" name="due"
-                                value="{{old('due')}}" id="due" placeholder="Due Amount" readonly>
+                                value="{{old('due')}}" id="due" placeholder="Due Amount">
                             @error('due')
                             <div class="invalid-feedback">
                                 {{ $message }}
