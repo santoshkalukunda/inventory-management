@@ -18,7 +18,7 @@ class StoreController extends Controller
      */
     public function index()
     {
-        $stores=Store::with('product', 'category', 'brand', 'unit')->latest()->paginate(20);
+        $stores=Store::with('product', 'category', 'brand', 'unit')->latest()->paginate(200);
         $products = Product::with('category', 'brand',)->orderBy('name')->get();
         $categories = Category::orderBy('name')->get();
         $brands = Brand::orderBy('name')->get();
@@ -129,7 +129,7 @@ class StoreController extends Controller
             ->when($request->has('mrp_max') && !is_null($request->mrp_max), function ($query) use ($request) {
                 $query->where('mrp', '<=', (int)$request->mrp_max);
             });
-            $stores = $stores->with('product', 'category', 'brand', 'unit')->paginate();
+            $stores = $stores->with('product', 'category', 'brand', 'unit')->paginate(1000);
             $products = Product::with('category', 'brand',)->orderBy('name')->get();
             $categories = Category::orderBy('name')->get();
             $brands = Brand::orderBy('name')->get();

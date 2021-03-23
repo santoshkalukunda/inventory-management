@@ -160,9 +160,9 @@ Inventories Product List
                         </tbody>
                     </table>
                 </div>
-                {{$stores->links()}}
             </div>
         </div>
     </div>
+    {{$stores->links()}}
 </div>
 @endsection

@@ -26,18 +26,18 @@ Dashboard
         <div class="col-lg-3 col-md-6">
             <div class="ibox bg-warning color-white widget-stat">
                 <div class="ibox-body">
-                    <h2 class="m-b-5 font-strong">{{$totalIncome}}</h2>
+                    <h2 class="m-b-5 font-strong">{{ round($totalIncome, 2)}}</h2>
                     <div class="m-b-5">TOTAL INCOME</div><i class="fa fa-money-check-alt widget-stat-icon"></i>
-                    <div><i class="fa fa-level-up m-r-5"></i><small>Due : {{$dueBill}} </small></div>
+                    <div><i class="fa fa-level-up m-r-5"></i><small>Due : {{ round($dueBill, 2)}} </small></div>
                 </div>
             </div>
         </div>
         <div class="col-lg-3 col-md-6">
             <div class="ibox bg-danger color-white widget-stat">
                 <div class="ibox-body">
-                    <h2 class="m-b-5 font-strong">{{$totalPurchase}}</h2>
+                    <h2 class="m-b-5 font-strong">{{round($totalPurchase, 2)}}</h2>
                     <div class="m-b-5">Expenditure</div><i class="fa fa-hand-holding-usd widget-stat-icon"></i>
-                    <div><i class="fa fa-level-down m-r-5"></i><small>Due : {{$duePurchase}}</small></div>
+                    <div><i class="fa fa-level-down m-r-5"></i><small>Due : {{ round($duePurchase, 2)}}</small></div>
                 </div>
             </div>
         </div>
