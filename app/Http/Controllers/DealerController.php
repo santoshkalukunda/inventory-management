@@ -57,8 +57,20 @@ class DealerController extends Controller
      */
     public function show(Dealer $dealer)
     {
-        $purchases=$dealer->purchase()->with('dealer', 'product', 'category', 'brand', 'unit')->latest()->paginate(20);
-        return view('dealer.show',compact('purchases','dealer'));
+        $purchases=$dealer->purchase()->get();
+        $total=0;
+        $due=0;
+        $payment=0;
+        $quantity=0;
+        foreach($purchases as $purchase)
+        {
+        $total=$total+$purchase->total;
+        $due=$due+$purchase->due;
+        $payment=$payment+$purchase->payment;
+        $quantity=$quantity+$purchase->quantity;
+        }
+        $purchases=$dealer->purchase()->with('dealer', 'product', 'category', 'brand', 'unit')->latest()->paginate(200);
+        return view('dealer.show',compact('purchases','dealer','total','due','payment','quantity'));
     }
 
     /**

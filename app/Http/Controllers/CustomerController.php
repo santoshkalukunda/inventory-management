@@ -63,8 +63,21 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        $bills=$customer->bill()->latest()->paginate();
-        return view('customer.show',compact('customer','bills'));
+        $bills=$customer->bill()->get();
+        $total=0;
+        $due=0;
+        $payment=0;
+        foreach($bills as $bill)
+        {
+            if ($bill->status == "cancel") {
+              continue;
+            }
+        $total = $total + $bill->net_total;
+        $payment = $payment + $bill->payment;
+        $due = $due + $bill->due;
+        }
+        $bills=$customer->bill()->latest()->paginate(200);
+        return view('customer.show',compact('customer','bills','total','due','payment'));
     }
 
     /**
