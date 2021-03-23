@@ -14,12 +14,12 @@
                     <span class="nav-label">Bills</span></a>
             </li> 
             <li>
-                <a href="{{route('sales.index')}}"><i class="sidebar-item-icon fa fa-money-check-alt"></i>
-                    <span class="nav-label">Sales</span></a>
+                <a href="{{route('sale-dues.index')}}"><i class="sidebar-item-icon fa fa-redo"></i>
+                    <span class="nav-label">Bill Due Logs</span></a>
             </li> 
             <li>
-                <a href="{{route('sale-dues.index')}}"><i class="sidebar-item-icon fa fa-redo"></i>
-                    <span class="nav-label">Sale Due Logs</span></a>
+                <a href="{{route('sales.index')}}"><i class="sidebar-item-icon fa fa-money-check-alt"></i>
+                    <span class="nav-label">Sales</span></a>
             </li> 
             <li>
                 <a href="{{route('customers.index')}}"><i class="sidebar-item-icon fa fa-user-friends"></i>
