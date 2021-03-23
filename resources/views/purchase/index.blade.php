@@ -42,19 +42,6 @@ Purchase List
     </a>
 </div> --}}
 <div class="col-md-9 form-group text-right">
-    @php
-    $total=0;
-    $due=0;
-    $payment=0;
-    $quantity=0;
-    foreach($purchases as $purchase)
-    {
-    $total=$total+$purchase->total;
-    $due=$due+$purchase->due;
-    $payment=$payment+$purchase->payment;
-    $quantity=$quantity+$purchase->quantity;
-    }
-    @endphp
     <span class="bg-blue-light p-2"><b>Total Product: </b>{{$quantity}}</span>
     <span class="bg-blue-light p-2"><b>Total Amount: </b>{{$total}}/-</span>
     <span class="bg-blue-light p-2"><b>Payment :</b> {{$payment}}/-</span>

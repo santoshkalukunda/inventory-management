@@ -19,7 +19,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::latest()->paginate(20);
+        $customers = Customer::latest()->paginate(100);
         return view('customer.index', compact('customers'));
     }
 
@@ -136,7 +136,7 @@ class CustomerController extends Controller
             ->when($request->has('age_max') && !is_null($request->age_max), function ($query) use ($request) {
                 $query->where('age', '<=', (int)$request->age_max);
             });
-        $customers = $customers->paginate();
+        $customers = $customers->paginate(100000);
         return view('customer.index', compact('customers'));
     }
     public function find(Request $request)

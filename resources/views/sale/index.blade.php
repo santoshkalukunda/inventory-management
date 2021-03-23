@@ -34,17 +34,6 @@ Sales List
         </button>
     </div>
     <div class="col-md-9 form-group text-right">
-        @php
-        $total=0;
-        $due=0;
-        $payment=0;
-        $quantity=0;
-        foreach($sales as $sale)
-        {
-        $total=$total+$sale->total;
-        $quantity=$quantity+$sale->quantity;
-        }
-        @endphp
         <span class="bg-blue-light p-2"><b>Product Quantity: </b>{{$quantity}}</span>
         <span class="bg-blue-light p-2"><b>Total Amount: </b>{{$total}}/-</span>
     </div>

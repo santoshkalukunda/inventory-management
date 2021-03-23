@@ -30,8 +30,19 @@ class PurchaseController extends Controller
         $brands = Brand::orderBy('name')->get();
         $units = Unit::orderBy('name')->get();
         $dealers = Dealer::orderBy('name')->get();
-        $purchases = Purchase::with('dealer', 'product', 'category', 'brand', 'unit')->latest()->paginate(20);
-        return view('purchase.index', compact('purchases', 'dealers', 'products', 'categories', 'brands', 'units'));
+        $purchases = Purchase::with('dealer', 'product', 'category', 'brand', 'unit')->get();
+        $total = 0;
+        $due = 0;
+        $payment = 0;
+        $quantity = 0;
+        foreach ($purchases as $purchase) {
+            $total = $total + $purchase->total;
+            $due = $due + $purchase->due;
+            $payment = $payment + $purchase->payment;
+            $quantity = $quantity + $purchase->quantity;
+        }
+        $purchases = Purchase::with('dealer', 'product', 'category', 'brand', 'unit')->latest()->paginate(200);
+        return view('purchase.index', compact('purchases', 'dealers', 'products', 'categories', 'brands', 'units', 'total', 'due', 'payment', 'quantity'));
     }
 
     /**
@@ -251,6 +262,17 @@ class PurchaseController extends Controller
     }
     public function search(Request $request)
     {
+        $purchases = Purchase::get();
+        $total = 0;
+        $due = 0;
+        $payment = 0;
+        $quantity = 0;
+        foreach ($purchases as $purchase) {
+            $total = $total + $purchase->total;
+            $due = $due + $purchase->due;
+            $payment = $payment + $purchase->payment;
+            $quantity = $quantity + $purchase->quantity;
+        }
         $purchases = new Purchase;
         if ($request->has('dealer_id')) {
             if ($request->dealer_id != null)
@@ -345,13 +367,13 @@ class PurchaseController extends Controller
                 $query->where('mrp', '<=', (int)$request->mrp_max);
             });
 
-        $purchases = $purchases->with('dealer', 'product', 'category', 'brand', 'unit')->paginate();
+        $purchases = $purchases->with('dealer', 'product', 'category', 'brand', 'unit')->paginate(1000);
         $products = Product::with('category', 'brand',)->orderBy('name')->get();
         $categories = Category::orderBy('name')->get();
         $brands = Brand::orderBy('name')->get();
         $units = Unit::orderBy('name')->get();
         $dealers = Dealer::orderBy('name')->get();
-        return view('purchase.index', compact('purchases', 'dealers', 'products', 'categories', 'brands', 'units'));
+        return view('purchase.index', compact('purchases', 'dealers', 'products', 'categories', 'brands', 'units', 'total', 'due', 'payment', 'quantity'));
     }
 
     public function pdf()

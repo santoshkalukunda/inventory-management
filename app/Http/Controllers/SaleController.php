@@ -20,11 +20,21 @@ class SaleController extends Controller
      */
     public function index()
     {
+        $sales=Sale::get();
+        $total=0;
+        $due=0;
+        $payment=0;
+        $quantity=0;
+        foreach($sales as $sale)
+        {
+        $total=$total+$sale->total;
+        $quantity=$quantity+$sale->quantity;
+        }
         $customers = Customer::get();
         $stores = Store::get();
         $units = Unit::get();
-        $sales=Sale::with('customer','store','bill','unit')->latest()->paginate(20);
-        return view('sale.index',compact('sales','customers','stores','units'));
+        $sales=Sale::with('customer','store','bill','unit')->latest()->paginate(500);
+        return view('sale.index',compact('sales','customers','stores','units','total','due','payment','quantity'));
     }
 
     /**
@@ -153,7 +163,16 @@ class SaleController extends Controller
     }
 
     public function search(Request $request){
-        
+        $sales=Sale::get();
+        $total=0;
+        $due=0;
+        $payment=0;
+        $quantity=0;
+        foreach($sales as $sale)
+        {
+        $total=$total+$sale->total;
+        $quantity=$quantity+$sale->quantity;
+        }
         $sales = new Sale;
         if ($request->has('customer_id')) {
             if ($request->customer_id != null)
@@ -219,7 +238,7 @@ class SaleController extends Controller
             $customers = Customer::get();
             $stores = Store::get();
             $units = Unit::get();
-            $sales = $sales->with('customer','store','bill','unit')->latest()->paginate();
-            return view('sale.index',compact('sales','customers','stores','units')); 
+            $sales = $sales->with('customer','store','bill','unit')->latest()->paginate(1000);
+            return view('sale.index',compact('sales','customers','stores','units','total','due','payment','quantity')); 
     }
 }
