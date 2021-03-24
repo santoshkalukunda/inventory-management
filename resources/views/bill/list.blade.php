@@ -50,18 +50,18 @@
                     <td>{{$bill->user->name}}</td>
                     @if ($bill->status =="complete")
                     <td>
-                        <a href="{{route('bills.show', $bill)}}" class="btn btn-primary">Due Pay</a>
+                        <a href="{{route('bills.show', $bill)}}" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Due Pay"><i class="fa fa-redo"></i></a>
                     </td>
                     @endif
                     <td>
-                        <a href="{{route('bills.create', compact('bill'))}}" class="btn btn-success">Edit</a>
+                        <a href="{{route('bills.create', compact('bill'))}}" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Edit Bill"><i class="fa fa-edit"></i></a>
                     </td>
                     @if ($bill->status =="complete")
                     <td>
                         <form action="{{route('bills.cancel',$bill)}}"
                             onsubmit="return confirm('Are you sure to cancel bill?')" method="POST" class="d-inline">
                             @csrf
-                            <button type="submit" class="btn-sm btn-danger">Cancel</button>
+                            <button type="submit" class="btn-sm btn-danger fa fa-window-close" data-toggle="tooltip" data-placement="top" title="Cancel Bill"></button>
                         </form>
                     </td>
                     @endif
@@ -71,7 +71,7 @@
                             onsubmit="return confirm('Are you sure to delete bill?')" method="POST" class="d-inline">
                             @csrf
                             @method('delete')
-                            <button type="submit" class="btn-sm btn-danger ">Delete</button>
+                            <button type="submit" class="btn-sm btn-danger fa fa-trash" data-toggle="tooltip" data-placement="top" title="Delete Bill"></button>
                         </form>
                     </td>
                     @endif

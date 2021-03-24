@@ -21,7 +21,7 @@
                     <th colspan="2">Action</th>
                 </tr>
                 @forelse ($purchases as $purchase)
-                <tr style="white-space:nowrap;">
+                <tr style="white-space:nowrap;" class="{{$purchase->purchaseBill->status == "incomplete" ? "table-warning" : ""}}">
                     <td>
                         <a href="{{route('purchase.show',$purchase->dealer_id)}}"
                             class="font-14"><b>{{$purchase->dealer->name}}</b></a>

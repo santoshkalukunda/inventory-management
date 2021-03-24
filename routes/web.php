@@ -60,15 +60,15 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::resource('units', UnitController::class);
 
     //purches route
-    Route::get('purchase/{dealer}/create', [PurchaseController::class, 'create'])->name('purchase.create');
-    Route::post('purchase/{purchaseBill}/store', [PurchaseController::class, 'store'])->name('purchase.store');
-    Route::get('purchase', [PurchaseController::class, 'index'])->name('purchase.index');
-    Route::delete('purchase/{purchase}', [PurchaseController::class, 'destroy'])->name('purchase.destroy');
+    Route::get('purchases/{dealer}/create', [PurchaseController::class, 'create'])->name('purchase.create');
+    Route::post('purchases/{purchaseBill}/store', [PurchaseController::class, 'store'])->name('purchase.store');
+    Route::get('purchases', [PurchaseController::class, 'index'])->name('purchase.index');
+    Route::delete('purchases/{purchase}', [PurchaseController::class, 'destroy'])->name('purchase.destroy');
     // Route::get('purchase/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchase.edit');
-    Route::get('purchase/{dealer}/show', [PurchaseController::class, 'show'])->name('purchase.show');
+    Route::get('purchases/{dealer}/show', [PurchaseController::class, 'show'])->name('purchase.show');
     // Route::put('purchase/{purchase}', [PurchaseController::class, 'update'])->name('purchase.update');
-    Route::post('purchase/find', [PurchaseController::class, 'find'])->name('purchase.find');
-    Route::get('purchase/search', [PurchaseController::class, 'search'])->name('purchase.search');
+    Route::post('purchases/find', [PurchaseController::class, 'find'])->name('purchase.find');
+    Route::get('purchases/search', [PurchaseController::class, 'search'])->name('purchase.search');
 
     //PDF
     Route::get('purchase/pdf', [PurchaseController::class, 'pdf'])->name('purchase.pdf');
@@ -186,12 +186,12 @@ Route::group(['middleware' => ['role:user|admin']], function () {
     Route::put('products/{product}/update', [ProductController::class, 'update'])->name('products.update');
 
     //purches route
-    Route::get('purchase/{dealer}/create', [PurchaseController::class, 'create'])->name('purchase.create');
-    Route::post('purchase/{purchaseBill}/store', [PurchaseController::class, 'store'])->name('purchase.store');
-    Route::get('purchase', [PurchaseController::class, 'index'])->name('purchase.index');
-    Route::get('purchase/{dealer}/show', [PurchaseController::class, 'show'])->name('purchase.show');
-    Route::post('purchase/find', [PurchaseController::class, 'find'])->name('purchase.find');
-    Route::get('purchase/search', [PurchaseController::class, 'search'])->name('purchase.search');
+    Route::get('purchases/{dealer}/create', [PurchaseController::class, 'create'])->name('purchase.create');
+    Route::post('purchases/{purchaseBill}/store', [PurchaseController::class, 'store'])->name('purchase.store');
+    Route::get('purchases', [PurchaseController::class, 'index'])->name('purchase.index');
+    Route::get('purchases/{dealer}/show', [PurchaseController::class, 'show'])->name('purchase.show');
+    Route::post('purchases/find', [PurchaseController::class, 'find'])->name('purchase.find');
+    Route::get('purchases/search', [PurchaseController::class, 'search'])->name('purchase.search');
 
     //customers route
     Route::post('customers/find', [CustomerController::class, 'find'])->name('customers.find');

@@ -79,16 +79,17 @@ Customer List
                             <td>{{$customer->email}}</td>
                             <td>{{$customer->pan_vat}}</td>
                             <td>
-                                <a href="{{route('bills.store',$customer)}}" class="btn btn-primary"><i
-                                        class="fa fa-file"></i> New Bill</a>
+                                <a href="{{route('bills.store',$customer)}}" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="New Bill"><i
+                                        class="fa fa-file"></i></a>
                             </td>
                             <td>
-                                <a href="{{route('customers.show',$customer)}}" class="btn btn-success"><i
-                                        class="fa fa-eye"></i> Show Bill</a>
+                                <a href="{{route('customers.show',$customer)}}" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Show Bill">
+                                    <i class="fa fa-eye"></i>
+                                    </a>
                             </td>
                        
                             <td>
-                                <a href="{{route('customers.edit',$customer)}}" class="text-muted"><i
+                                <a href="{{route('customers.edit',$customer)}}" class="btn btn-primary " data-toggle="tooltip" data-placement="top" title="Edit Customer"><i
                                         class="fa fa-edit"></i></a>
                             </td>
                             <td>
@@ -96,7 +97,7 @@ Customer List
                                     onsubmit="return confirm('Are you sure to delete?')" method="POST" class="d-inline">
                                     @csrf
                                     @method('delete')
-                                    <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
+                                    <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete Customer"><i
                                             class="fa fa-trash-alt"></i></button>
                                 </form>
                             </td>

@@ -225,7 +225,18 @@ Sales List
                             <th colspan="3">Action</th>
                         </tr>
                         @forelse ($sales as $sale)
-                        <tr style="white-space:nowrap;">
+                        @php
+                        if ($sale->bill->status == "incomplete"){
+                            $color = "table-warning";
+                        }
+                        elseif($sale->bill->status == "cancel"){
+                            $color = "table-danger";
+                        }
+                        else {
+                            $color = "";
+                        }
+                        @endphp
+                        <tr style="white-space:nowrap;" class="{{$color}}">
                             <td>{{$sale->date}}</td>
                             <td>{{$sale->invoice_no}}</td>
                             <td>
