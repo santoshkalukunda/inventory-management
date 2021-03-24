@@ -127,10 +127,10 @@ Inventories Product List
                             @forelse ($stores as $store)
                             @php
                             $color ="";
-                            if($store->exp_date < date('Y-m-d')){
+                            if( $store->exp_date && $store->exp_date < date('Y-m-d')){
                                 $color = "table-danger";
                             }
-                            elseif ($store->exp_date <= now()->addDays(30)) {
+                            elseif ($store->exp_date &&  $store->exp_date <= now()->addDays(30)) {
                                 $color = "table-warning";
                             }
                             else {
