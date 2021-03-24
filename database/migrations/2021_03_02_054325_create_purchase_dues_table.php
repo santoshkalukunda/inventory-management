@@ -15,7 +15,7 @@ class CreatePurchaseDuesTable extends Migration
     {
         Schema::create('purchase_dues', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('purchase_bill_id')->constrained('purchase_bills');
+            $table->foreignId('purchase_bill_id')->constrained('purchase_bills')->cascadeOnDelete();
             $table->foreignId('dealer_id')->constrained('dealers');
             $table->string('date')->nullable();
             $table->double('due_amount')->nullable();
