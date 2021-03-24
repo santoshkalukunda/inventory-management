@@ -4,7 +4,7 @@ Dashboard
 @endsection
 @section('content')
 <div class="container">
-    {{-- <div class="row">
+    <div class="row">
         <div class="col-lg-3 col-md-6">
             <div class="ibox bg-success color-white widget-stat">
                 <div class="ibox-body">
@@ -35,14 +35,14 @@ Dashboard
         <div class="col-lg-3 col-md-6">
             <div class="ibox bg-danger color-white widget-stat">
                 <div class="ibox-body">
-                    <h2 class="m-b-5 font-strong">{{round($totalPurchase, 2)}}</h2>
+                    <h2 class="m-b-5 font-strong">{{round($totalPurchaseBill, 2)}}</h2>
                     <div class="m-b-5">Expenditure</div><i class="fa fa-hand-holding-usd widget-stat-icon"></i>
-                    <div><i class="fa fa-level-down m-r-5"></i><small>Due : {{ round($duePurchase, 2)}}</small></div>
+                    <div><i class="fa fa-level-down m-r-5"></i><small>Due : {{ round($duePurchaseBill, 2)}}</small></div>
                 </div>
             </div>
         </div>
-    </div> --}}
-    {{-- <div class="row justify-content-center">
+    </div>
+    <div class="row justify-content-center">
         <div class="col-md-12 mb-2">
             <div class="card">
                 <div class="card-header">{{ __('Daily Sales') }}</div>
@@ -58,7 +58,7 @@ Dashboard
                 <div class="card-header">{{ __('Monthely Purchase') }}</div>
                 <div class="card-body">
                     <div style="width:100%;">
-                        {!! $purchaseChart->render() !!}
+                        {!! $PurchaseBillChart->render() !!}
                     </div>
                 </div>
             </div>
@@ -88,6 +88,6 @@ Dashboard
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 </div>
 @endsection
