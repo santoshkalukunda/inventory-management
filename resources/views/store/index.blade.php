@@ -125,7 +125,19 @@ Inventories Product List
                         </thead>
                         <tbody>
                             @forelse ($stores as $store)
-                            <tr style="white-space:nowrap;">
+                            @php
+                            $color ="";
+                            if($store->exp_date < date('Y-m-d')){
+                                $color = "table-danger";
+                            }
+                            elseif ($store->exp_date <= now()->addDays(30)) {
+                                $color = "table-warning";
+                            }
+                            else {
+                                $color = "";
+                            }  
+                            @endphp
+                            <tr style="white-space:nowrap;" class="{{$color}}">
                                 <td>
                                     {{$store->product->code}}<br>
                                     <b>{{$store->product->name}}</b> <br>
@@ -138,18 +150,6 @@ Inventories Product List
                                 <td>{{$store->mf_date}}</td>
                                 <td>{{$store->exp_date}}</td>
                                 <td class="text-right">{{$store->mrp}}</td>
-                                {{-- <td>
-                                    <a href="{{ route('stores.edit', $product) }}" class="text-muted"><i
-                                    class="fa fa-edit"></i></a>
-                                <span class="mx-3">|</span>
-                                <form action="{{route('stores.destroy', $product) }}"
-                                    onsubmit="return confirm('Are you sure to delete?')" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
-                                            class="fa fa-trash-alt"></i></button>
-                                </form>
-                                </td> --}}
                             </tr>
                             @empty
                             <tr>
