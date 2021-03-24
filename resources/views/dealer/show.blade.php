@@ -12,15 +12,14 @@ Dealer List
        <div><b>Reg. No. :</b> {{$dealer->reg_no}}</div>
     </div>
     <div class="col-md-12 form-group text-center">
-        <span class="bg-blue-light p-2"><b>Total Product: </b>{{$quantity}}</span>
-        <span class="bg-blue-light p-2"><b>Total Amount: </b>{{$total}}/-</span>
+        <span class="bg-blue-light p-2"><b>Net Total: </b>{{$net_total}}/-</span>
         <span class="bg-blue-light p-2"><b>Payment :</b> {{$payment}}/-</span>
         <span class="bg-blue-light p-2"> <b>Due :</b> {{$due}}/-</span>
     </div>
 
 </div>
 <div class="col-md-12 justify-content-center">
-    @include('purchase.list')
+    @include('purchase-bill.list')
 </div>
 
 @endsection

@@ -15,9 +15,7 @@ class CreatePurchasesTable extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
-            $table->string('order_date');
-            $table->string('shipping_date');
-            $table->string('bill_no');
+            $table->foreignId('purchase_bill_id')->constrained('purchase_bills');
             $table->foreignId('product_id')->constrained('products');
             $table->foreignId('dealer_id')->constrained('dealers');
             $table->string('batch_no')->nullable();
@@ -29,10 +27,7 @@ class CreatePurchasesTable extends Migration
             $table->double('discount')->nullable();
             $table->double('vat')->nullable();
             $table->double('total');
-            $table->double('payment');
-            $table->double('due');
             $table->double('mrp')->nullable();
-            $table->text('details')->nullable();
             $table->timestamps();
         });
     }

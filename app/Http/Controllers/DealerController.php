@@ -20,7 +20,7 @@ class DealerController extends Controller
      */
     public function index()
     {
-        $dealers=Dealer::latest()->paginate(20);
+        $dealers=Dealer::latest()->paginate(100);
         return view('dealer.index',compact('dealers'));
     }
 
@@ -45,8 +45,8 @@ class DealerController extends Controller
      */
     public function store(DealerRequest $request)
     {
-        $dealers=Dealer::create($request->validated());
-        return redirect()->route('dealers.index')->with('success','Dealers Registration Successfull');
+        $dealer=Dealer::create($request->validated());
+        return redirect()->route('purchase-bills.store', $dealer)->with('success','Dealers Registration Successfull');
     }
 
     /**
@@ -57,20 +57,20 @@ class DealerController extends Controller
      */
     public function show(Dealer $dealer)
     {
-        $purchases=$dealer->purchase()->get();
-        $total=0;
+        $purchaseBills=$dealer->purchaseBill()->get();
+        $net_total=0;
         $due=0;
         $payment=0;
         $quantity=0;
-        foreach($purchases as $purchase)
+        foreach($purchaseBills as $purchaseBill)
         {
-        $total=$total+$purchase->total;
-        $due=$due+$purchase->due;
-        $payment=$payment+$purchase->payment;
-        $quantity=$quantity+$purchase->quantity;
+        $net_total = $net_total + $purchaseBill->total;
+        $due = $due + $purchaseBill->due;
+        $payment = $payment + $purchaseBill->payment;
+        $quantity = $quantity + $purchaseBill->quantity;
         }
-        $purchases=$dealer->purchase()->with('dealer', 'product', 'category', 'brand', 'unit')->latest()->paginate(200);
-        return view('dealer.show',compact('purchases','dealer','total','due','payment','quantity'));
+        $purchaseBills=$dealer->purchaseBill()->with('dealer','user')->latest()->paginate(200);
+        return view('dealer.show',compact('purchaseBills','dealer','net_total','due','payment','quantity'));
     }
 
     /**
@@ -136,7 +136,7 @@ class DealerController extends Controller
             if ($request->reg_no != null)
                 $dealers = $dealers->where('reg_no', ["$request->reg_no"]);
         }
-        $dealers = $dealers->paginate();
+        $dealers = $dealers->paginate(100);
         return view('dealer.index', compact('dealers'));
     }
 }

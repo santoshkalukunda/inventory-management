@@ -66,8 +66,8 @@ class SaleController extends Controller
                 'unit_id' => $request->unit_id,
                 'rate' => $request->rate,
                 'total_cost' => $total_cost,
-                'discount' => $request->discount ?? "0",
-                'vat' => $request->vat ?? "0",
+                'discount' => $request->discount,
+                'vat' => $request->vat,
                 'total' => $total,
             ]);
             $store->update([

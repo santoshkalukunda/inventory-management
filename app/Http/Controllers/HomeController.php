@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bill;
 use App\Models\Customer;
 use App\Models\Dealer;
-use App\Models\Purchase;
+use App\Models\PurchaseBill;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -31,8 +31,8 @@ class HomeController extends Controller
     {
         $totalIncome = 0;
         $dueBill = 0;
-        $totalPurchase = 0;
-        $duePurchase = 0;
+        $totalPurchaseBill = 0;
+        $duePurchaseBill = 0;
 
         $customers = Customer::get();
         $dealers = Dealer::get();
@@ -41,13 +41,13 @@ class HomeController extends Controller
             $totalIncome = $totalIncome + $bill->net_total;
             $dueBill = $dueBill + $bill->due;
         }
-        $purchases = Purchase::get();
-        foreach ($purchases as $purchase) {
-            $totalPurchase = $totalPurchase + $purchase->total;
-            $duePurchase = $duePurchase + $purchase->due;
+        $PurchaseBills = PurchaseBill::get();
+        foreach ($PurchaseBills as $PurchaseBill) {
+            $totalPurchaseBill = $totalPurchaseBill + $PurchaseBill->total;
+            $duePurchaseBill = $duePurchaseBill + $PurchaseBill->due;
         }
         $bill_obj = new Bill;
-        $purchase_obj = new Purchase;
+        $PurchaseBill_obj = new PurchaseBill;
         for ($i = 0; $i < 30; $i++) {
             $billNetTotals = $bill_obj->where('status', 'complete')->whereDate('date', today()->subDays($i))->get();
             $billTotal[$i] = 0;
@@ -103,34 +103,34 @@ class HomeController extends Controller
 
         $j = 1;
         for ($i = 0; $i < 12; $i++) {
-            $purchaseNetTotals = $purchase_obj->whereBetween('order_date', [Carbon::now()->subMonths($j), Carbon::now()->subMonths($i)])->get();
+            $PurchaseBillNetTotals = $PurchaseBill_obj->whereBetween('order_date', [Carbon::now()->subMonths($j), Carbon::now()->subMonths($i)])->get();
             $j++;
             $months[$i] = today()->subMonths($i);
             $months[$i] = date("Y-m", strtotime($months[$i]));
-            $purchaseTotal[$i] = 0;
-            $purchaseDue[$i] = 0;
-            $purchasePayment[$i] = 0;
-            foreach ($purchaseNetTotals as $netTotal) {
-                $purchaseTotal[$i] = $purchaseTotal[$i] + $netTotal->total;
-                $purchaseDue[$i] = $purchaseDue[$i] + $netTotal->due;
-                $purchasePayment[$i] = $purchasePayment[$i] + $netTotal->payment;
+            $PurchaseBillTotal[$i] = 0;
+            $PurchaseBillDue[$i] = 0;
+            $PurchaseBillPayment[$i] = 0;
+            foreach ($PurchaseBillNetTotals as $netTotal) {
+                $PurchaseBillTotal[$i] = $PurchaseBillTotal[$i] + $netTotal->total;
+                $PurchaseBillDue[$i] = $PurchaseBillDue[$i] + $netTotal->due;
+                $PurchaseBillPayment[$i] = $PurchaseBillPayment[$i] + $netTotal->payment;
             }
         }
-        $purchaseChart = app()->chartjs
-            ->name('purchaseLineChart')
+        $PurchaseBillChart = app()->chartjs
+            ->name('PurchaseBillLineChart')
             ->type('line')
             ->size(['width' => 400, 'height' => 100])
             ->labels(array_reverse($months))
             ->datasets([
                 [
-                    "label" => "Total Purchase",
+                    "label" => "Total PurchaseBill",
                     'backgroundColor' => "rgba(38, 185, 154, 0.31)",
                     'borderColor' => "rgba(38, 185, 154, 0.7)",
                     "pointBorderColor" => "rgba(38, 185, 154, 0.7)",
                     "pointBackgroundColor" => "rgba(38, 185, 154, 0.7)",
                     "pointHoverBackgroundColor" => "#fff",
                     "pointHoverBorderColor" => "rgba(220,220,220,1)",
-                    'data' => array_reverse($purchaseTotal),
+                    'data' => array_reverse($PurchaseBillTotal),
                 ],
                 [
                     "label" => "Payment",
@@ -140,7 +140,7 @@ class HomeController extends Controller
                     "pointBackgroundColor" => "rgba(38, 185, 154, 0.7)",
                     "pointHoverBackgroundColor" => "#fff",
                     "pointHoverBorderColor" => "rgba(220,220,220,1)",
-                    'data' => array_reverse($purchasePayment),
+                    'data' => array_reverse($PurchaseBillPayment),
                 ],
                 [
                     "label" => "Due",
@@ -150,7 +150,7 @@ class HomeController extends Controller
                     "pointBackgroundColor" => "rgba(38, 185, 154, 0.7)",
                     "pointHoverBackgroundColor" => "#fff",
                     "pointHoverBorderColor" => "rgba(220,220,220,1)",
-                    'data' => array_reverse($purchaseDue),
+                    'data' => array_reverse($PurchaseBillDue),
                 ],
 
             ])
@@ -158,7 +158,7 @@ class HomeController extends Controller
 
         $j = 1;
         for ($i = 0; $i < 5; $i++) {
-            $purchaseNetTotals = $purchase_obj->whereBetween('order_date', [Carbon::now()->subYears($j), Carbon::now()->subYears($i)])->get();
+            $PurchaseBillNetTotals = $PurchaseBill_obj->whereBetween('order_date', [Carbon::now()->subYears($j), Carbon::now()->subYears($i)])->get();
             $billNetTotals = $bill_obj->where('status', 'complete')->whereBetween('date', [Carbon::now()->subYears($j), Carbon::now()->subYears($i)])->get();
 
             $j++;
@@ -169,9 +169,9 @@ class HomeController extends Controller
             foreach ($billNetTotals as $netTotal) {
                 $billTotalYear[$i] = $billTotalYear[$i] + $netTotal->net_total;
             }
-            $purchaseTotalYear[$i] = 0;
-            foreach ($purchaseNetTotals as $netTotal) {
-                $purchaseTotalYear[$i] = $purchaseTotalYear[$i] + $netTotal->total;
+            $PurchaseBillTotalYear[$i] = 0;
+            foreach ($PurchaseBillNetTotals as $netTotal) {
+                $PurchaseBillTotalYear[$i] = $PurchaseBillTotalYear[$i] + $netTotal->total;
             }
         }
 
@@ -182,9 +182,9 @@ class HomeController extends Controller
             ->labels(array_reverse($years))
             ->datasets([
                 [
-                    "label" => "Purchase",
+                    "label" => "PurchaseBill",
                     'backgroundColor' => ['rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)'],
-                    'data' => array_reverse($purchaseTotalYear)  
+                    'data' => array_reverse($PurchaseBillTotalYear)  
                 ],
                 [
                     "label" => "Sale",
@@ -194,6 +194,6 @@ class HomeController extends Controller
             ])
             ->options([]);
 
-        return view('home', compact('customers', 'dealers', 'totalIncome', 'dueBill', 'totalPurchase', 'duePurchase', 'chartjs', 'purchaseChart', 'barChart'));
+        return view('home', compact('customers', 'dealers', 'totalIncome', 'dueBill', 'totalPurchaseBill', 'duePurchaseBill', 'chartjs', 'PurchaseBillChart', 'barChart'));
     }
 }

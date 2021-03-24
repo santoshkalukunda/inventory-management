@@ -46,13 +46,6 @@ class CustomerController extends Controller
     {
         $customer = Customer::create($request->validated());
         return redirect()->route('bills.store', compact('customer'))->with('success', 'Customer Registration Successfull');
-
-        // $bill = Bill::create([
-        //     'customer_id' => $customer->id,
-        //     'user_id' => Auth::user()->id,
-        //     'status' => 'incomplete',
-        // ]);
-        // return redirect()->route('bills.create', compact('customer','bill'))->with('success', 'Customer Registration Successfull');
     }
 
     /**
@@ -63,21 +56,20 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        $bills=$customer->bill()->get();
-        $total=0;
-        $due=0;
-        $payment=0;
-        foreach($bills as $bill)
-        {
+        $bills = $customer->bill()->get();
+        $total = 0;
+        $due = 0;
+        $payment = 0;
+        foreach ($bills as $bill) {
             if ($bill->status == "cancel") {
-              continue;
+                continue;
             }
-        $total = $total + $bill->net_total;
-        $payment = $payment + $bill->payment;
-        $due = $due + $bill->due;
+            $total = $total + $bill->net_total;
+            $payment = $payment + $bill->payment;
+            $due = $due + $bill->due;
         }
-        $bills=$customer->bill()->latest()->paginate(200);
-        return view('customer.show',compact('customer','bills','total','due','payment'));
+        $bills = $customer->bill()->latest()->paginate(200);
+        return view('customer.show', compact('customer', 'bills', 'total', 'due', 'payment'));
     }
 
     /**

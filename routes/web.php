@@ -7,6 +7,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DealerController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PurchaseBillController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\PurchaseDueController;
 use App\Http\Controllers\SaleController;
@@ -60,12 +61,12 @@ Route::group(['middleware' => ['role:admin']], function () {
 
     //purches route
     Route::get('purchase/{dealer}/create', [PurchaseController::class, 'create'])->name('purchase.create');
-    Route::post('purchase/{dealer}/store', [PurchaseController::class, 'store'])->name('purchase.store');
+    Route::post('purchase/{purchaseBill}/store', [PurchaseController::class, 'store'])->name('purchase.store');
     Route::get('purchase', [PurchaseController::class, 'index'])->name('purchase.index');
     Route::delete('purchase/{purchase}', [PurchaseController::class, 'destroy'])->name('purchase.destroy');
-    Route::get('purchase/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchase.edit');
-    Route::get('purchase/{purchase}/show', [PurchaseController::class, 'show'])->name('purchase.show');
-    Route::put('purchase/{purchase}', [PurchaseController::class, 'update'])->name('purchase.update');
+    // Route::get('purchase/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchase.edit');
+    Route::get('purchase/{dealer}/show', [PurchaseController::class, 'show'])->name('purchase.show');
+    // Route::put('purchase/{purchase}', [PurchaseController::class, 'update'])->name('purchase.update');
     Route::post('purchase/find', [PurchaseController::class, 'find'])->name('purchase.find');
     Route::get('purchase/search', [PurchaseController::class, 'search'])->name('purchase.search');
 
@@ -112,7 +113,7 @@ Route::group(['middleware' => ['role:admin']], function () {
     //parchase route
     Route::get('purchase-dues', [PurchaseDueController::class, 'index'])->name('purchase-dues.index');
     Route::get('purchase-dues/search', [PurchaseDueController::class, 'search'])->name('purchase-dues.search');
-    Route::post('purchase-dues/{purchase}/create', [PurchaseDueController::class, 'store'])->name('purchase-dues.store');
+    Route::post('purchase-dues/{purchaseBill}/create', [PurchaseDueController::class, 'store'])->name('purchase-dues.store');
     Route::delete('purchase-dues/{purchaseDue}', [PurchaseDueController::class, 'destroy'])->name('purchase-dues.destroy');
 
     //company profile
@@ -130,6 +131,15 @@ Route::group(['middleware' => ['role:admin']], function () {
 
     //log route
     Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
+    //route purchaceBill
+    Route::get('purchase-bills/search', [PurchaseBillController::class, 'search'])->name('purchase-bills.search');
+    Route::get('purchase-bills/{dealer}', [PurchaseBillController::class, 'store'])->name('purchase-bills.store');
+    Route::get('purchase-bills/create/{purchaseBill}', [PurchaseBillController::class, 'create'])->name('purchase-bills.create');
+    Route::put('purchase-bills/{purchaseBill}', [PurchaseBillController::class, 'update'])->name('purchase-bills.update');
+    Route::get('purchase-bills', [PurchaseBillController::class, 'index'])->name('purchase-bills.index');
+    Route::delete('purchase-bills/{purchaseBill}', [PurchaseBillController::class, 'destroy'])->name('purchase-bills.destroy');
+    Route::get('purchase-bills/{purchaseBill}/show', [PurchaseBillController::class, 'show'])->name('purchase-bills.show');
 });
 
 //user role
@@ -177,10 +187,9 @@ Route::group(['middleware' => ['role:user|admin']], function () {
 
     //purches route
     Route::get('purchase/{dealer}/create', [PurchaseController::class, 'create'])->name('purchase.create');
-    Route::post('purchase/{dealer}/store', [PurchaseController::class, 'store'])->name('purchase.store');
+    Route::post('purchase/{purchaseBill}/store', [PurchaseController::class, 'store'])->name('purchase.store');
     Route::get('purchase', [PurchaseController::class, 'index'])->name('purchase.index');
-    Route::get('purchase/{purchase}/show', [PurchaseController::class, 'show'])->name('purchase.show');
-    Route::put('purchase/{purchase}', [PurchaseController::class, 'update'])->name('purchase.update');
+    Route::get('purchase/{dealer}/show', [PurchaseController::class, 'show'])->name('purchase.show');
     Route::post('purchase/find', [PurchaseController::class, 'find'])->name('purchase.find');
     Route::get('purchase/search', [PurchaseController::class, 'search'])->name('purchase.search');
 
@@ -210,8 +219,6 @@ Route::group(['middleware' => ['role:user|admin']], function () {
     Route::get('sales/create', [SaleController::class, 'create'])->name('sales.create');
     Route::post('sales/store/{bill}', [SaleController::class, 'store'])->name('sales.store');
     Route::delete('sales/{sale}', [SaleController::class, 'destroy'])->name('sales.destroy');
-    // Route::get('sales/{sale}',[SaleController::class,'edit'])->name('sales.edit');
-    // Route::put('sales/{sale}', [SaleController::class, 'update'])->name('sales.update');
     Route::get('sales/search', [SaleController::class, 'search'])->name('sales.search');
 
 
@@ -227,9 +234,17 @@ Route::group(['middleware' => ['role:user|admin']], function () {
     //parchase route
     Route::get('purchase-dues', [PurchaseDueController::class, 'index'])->name('purchase-dues.index');
     Route::get('purchase-dues/search', [PurchaseDueController::class, 'search'])->name('purchase-dues.search');
-    Route::post('purchase-dues/{purchase}/create', [PurchaseDueController::class, 'store'])->name('purchase-dues.store');
+    Route::post('purchase-dues/{purchaseBill}/create', [PurchaseDueController::class, 'store'])->name('purchase-dues.store');
 
     //user route
     Route::get('users/{user}/change-password', [UserController::class, 'changePasswordShow'])->name('users.changePasswordShow');
     Route::post('users/{user}/change-password', [UserController::class, 'changePassword'])->name('users.changePassword');
+
+    //route purchaceBill
+    Route::get('purchase-bills/search', [PurchaseBillController::class, 'search'])->name('purchase-bills.search');
+    Route::get('purchase-bills/{dealer}', [PurchaseBillController::class, 'store'])->name('purchase-bills.store');
+    Route::get('purchase-bills/create/{purchaseBill}', [PurchaseBillController::class, 'create'])->name('purchase-bills.create');
+    Route::put('purchase-bills/{purchaseBill}', [PurchaseBillController::class, 'update'])->name('purchase-bills.update');
+    Route::get('purchase-bills', [PurchaseBillController::class, 'index'])->name('purchase-bills.index');
+    Route::get('purchase-bills/{purchaseBill}/show', [PurchaseBillController::class, 'show'])->name('purchase-bills.show');
 });

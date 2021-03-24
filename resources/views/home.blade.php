@@ -4,7 +4,7 @@ Dashboard
 @endsection
 @section('content')
 <div class="container">
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-lg-3 col-md-6">
             <div class="ibox bg-success color-white widget-stat">
                 <div class="ibox-body">
@@ -41,8 +41,8 @@ Dashboard
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row justify-content-center">
+    </div> --}}
+    {{-- <div class="row justify-content-center">
         <div class="col-md-12 mb-2">
             <div class="card">
                 <div class="card-header">{{ __('Daily Sales') }}</div>
@@ -88,6 +88,6 @@ Dashboard
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 @endsection

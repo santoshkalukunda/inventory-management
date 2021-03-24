@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 @section('title')
-Bill Create
+Purchase Bill Create
 @endsection
 @section('content')
 @push('style')
@@ -19,120 +19,100 @@ Bill Create
 </style>
 @endpush
 <div class="row justify-content-center">
-    @if ($bill->status=="incomplete")
+    @if ($purchaseBill->status == "incomplete")
     <div class="col-md-9">
-        @include('sale.create')
+        <div class="ibox">
+            <div class="ibox-head">
+                <div class="ibox-title">Product Buy</div>
+            </div>
+            <div class="ibox-body">
+                <form action="{{route('purchase.store', $purchaseBill)}}" method="post">
+                    @csrf
+                    @include('purchase.input')
+                </form>
+            </div>
+        </div>
     </div>
     @endif
-    <div class="{{$bill->status=="incomplete" ? "col-md-3" : "col-md-12"}} ">
-        <div class="mb-3">
-            <div class="  text-center">
-                <b>{{$bill->customer->name}}</b>
-                <div> {{$bill->customer->address}}</div>
-                <div>{{$bill->customer->phone}}, {{$bill->customer->email}}</div>
-                @if ($bill->customer->pan_vat)
-                <div>{{$bill->customer->pan_vat}}</div>
+    <div class="{{$purchaseBill->status == "incomplete" ? "col-md-3" : "col-md-12"}} text-center">
+        <div class="mb-3 bg-primary text-white p-3">
+            <div class="text-center">
+                <b>{{$purchaseBill->dealer->name}}</b>
+                <div> {{$purchaseBill->dealer->address}}</div>
+                <div>{{$purchaseBill->dealer->phone}}, {{$purchaseBill->dealer->email}}</div>
+                @if ($purchaseBill->dealer->pan_vat)
+                <div>{{$purchaseBill->dealer->pan_vat}}</div>
                 @endif
             </div>
         </div>
         <div class="ibox">
             <div class="text-center font-bold">Bill Status</div>
             <div class="ibox-body  text-center">
-                @if ($bill->status=="incomplete")
-                <div class="bg-primary text-capitalize text-white">{{$bill->status}}</div>
-                @elseif($bill->status=="complete")
-                <span class="bg-success text-capitalize px-2 py-1 text-white">{{$bill->status}}</span>
-                <div class="my-3 row text-center">
-                    <div class="badge-primary p-1 m-1 col-md"> <b>Bill Date: </b> <br> {{$bill->date}} </div> 
-                    <div class="badge-primary  p-1 m-1 col-md"> <b>Invoice No.: </b> <br> {{$bill->invoice_no}} </div> 
-                    <div class="badge-primary p-1 m-1 col-md"> <b>Total: </b><br> {{$bill->total}} </div> 
-                    <div class="badge-primary  p-1 m-1 col-md"> <b>Discount: </b> <br> {{$bill->discount}} </div> 
-                    <div class="badge-primary  p-1 m-1 col-md"> <b>VAT: </b><br> {{$bill->vat}} </div> 
-                     <div class="badge-primary p-1 m-1 col-md"> <b>Net-total : </b><br> {{$bill->net_total}}/-  </div> 
-                    <div class="badge-primary  p-1 m-1 col-md"><b>Pay Amount :</b><br> {{$bill->payment}}/- </div>
-                    <div class="badge-primary p-1 m-1 col-md"><b>Due :</b><br> {{$bill->due}}</div>
-                </div>
-                <div class="col-md-2">
-                    <a href="{{route('bills.pdf',$bill)}}" target="_blank"
-                        class="btn btn-success form-control btn-rounded"><i class="fa fa-print"></i> Invoice Print</a>
+                @if ($purchaseBill->status=="incomplete")
+                <div class="bg-primary text-capitalize px-2 py-1 text-white">{{$purchaseBill->status}}</div>
+                @elseif($purchaseBill->status=="complete")
+                <div class="row  text-center">
+                    <div class="col-md-4">
+                        <div class="btn btn-primary">Order Date : {{$purchaseBill->order_date}}</div>
+                        <div class="btn btn-primary m-2"><span>PShipping Date :</span> {{$purchaseBill->shipping_date}}</div>
+                        <div class="btn btn-primary m-2"><span>Bill No. :</span> {{$purchaseBill->bill_no}}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div><span class="bg-success text-capitalize px-2 py-1 text-white">{{$purchaseBill->status}}</span></div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="btn btn-primary">Net-Total : {{$purchaseBill->net_total}}</div>
+                        <div class="btn btn-primary m-2"><span>Payment :</span>{{$purchaseBill->payment}}</div>
+                        <div class="btn btn-primary m-2"><span>Due :</span>{{$purchaseBill->due}}</div>
+                    </div>
                 </div>
                 @else
-                <div class="bg-danger text-capitalize text-white">{{$bill->status}}</div>
+                <div class="bg-danger text-capitalize px-2 py-1 text-white">{{$purchaseBill->status}}</div>
                 @endif
-
             </div>
         </div>
     </div>
-
     <div class="col-md-12">
-        <div class="ibox">
-            <div class="ibox-head">
-                <div class="ibox-title">Product List</div>
-            </div>
-            <div class="ibox-body table-responsive">
-                <table class="table">
-                    <tr>
-                        <th class="text-right">S.N.</th>
-                        <th>Produtct</th>
-                        <th class="text-right">Quantity</th>
-                        <th class="text-right">Rate</th>
-                        <th class="text-right">Total</th>
-                        <th class="text-right">Discount</th>
-                        <th class="text-right">Tax/VAT</th>
-                        <th class="text-right">Net Total</th>
-                        <th colspan="2">Action</th>
-                    </tr>
-                    @php
-                    $i=1;
-                    @endphp
-                    @forelse ($sales as $sale)
-                    <tr>
-                        <td class="text-right">{{$i++}}</td>
-                        <td>{{$sale->store->product->name}}</td>
-                        <td class="text-right">{{$sale->quantity}} {{$sale->unit->name}}</td>
-                        <td class="text-right">{{$sale->rate}}</td>
-                        <td class="text-right">{{$sale->total_cost}}</td>
-                        <td class="text-right">{{$sale->discount}}</td>
-                        <td class="text-right">{{$sale->vat}}</td>
-                        <td class="text-right">{{round($sale->total, 2)}}</td>
-                        @if ($bill->status == "incomplete")
-                        <td>
-                            <form action="{{route('sales.destroy',$sale)}}"
-                                onsubmit="return confirm('Are you sure to delete?')" method="POST" class="d-inline">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
-                                        class="fa fa-trash-alt"></i></button>
-                            </form>
-                        </td>
-                        @endif
-                    </tr>
-                    @empty
-                    <tr>
-                        <td class=" text-danger text-center" colspan="48">*No product Added</td>
-                    </tr>
-                    @endforelse
-
-                </table>
-            </div>
-        </div>
+        @include('purchase.list')
     </div>
-    @if ($bill->status == "incomplete")
+    @if ($purchaseBill->status == "incomplete")
     <div class="col-md-12">
         <div class="ibox">
             <div class="ibox-head">
-                <div class="ibox-title">Product Sale</div>
+                <div class="ibox-title">Purchase Bill Pay</div>
             </div>
             <div class="ibox-body">
-                <form action="{{route('bills.update',$bill)}}" method="post">
+                <form action="{{route('purchase-bills.update',$purchaseBill)}}" method="post">
                     @csrf
                     @method('put')
                     <div class="row">
                         <div class="col-md-3 form-group">
-                            <label for="date" class="required">Billing Date</label>
-                            <input type="date" class="form-control @error('date') is-invalid @enderror"
-                                value="{{old('date',date('Y-m-d'))}}" name="date" id="date" placeholder="Order Date">
-                            @error('date')
+                            <label for="order_date" class="required">Order Date</label>
+                            <input type="date" class="form-control @error('order_date') is-invalid @enderror"
+                                value="{{old('order_date')}}" name="order_date" id="order_date"
+                                placeholder="Order Date">
+                            @error('order_date')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label for="shpping_date" class="required">Shipping Date</label>
+                            <input type="date" class="form-control @error('shipping_date') is-invalid @enderror"
+                                value="{{old('shipping_date')}}" name="shipping_date" id="shipping_date"
+                                placeholder="Shipping Date">
+                            @error('shipping_date')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                        <div class="col-md-2 form-group">
+                            <label for="bill_no" class="required">Bill No.</label>
+                            <input type="number" min="0" class="form-control @error('bill_no') is-invalid @enderror"
+                                value="{{old('bill_no')}}" name="bill_no" id="bill_no" placeholder="Bill No.">
+                            @error('bill_no')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -142,7 +122,7 @@ Bill Create
                             <label for="total">Total</label>
                             <input step="any" type="number" min="0"
                                 class="form-control text-right @error('total') is-invalid @enderror" name="total"
-                                value="{{round($salestotal, 2)}}" id="ptotal" placeholder="Total" onkeyup="funn()">
+                                value="{{old('total',$total)}}" id="ptotal" placeholder="Total" onkeyup="funn()">
                             @error('total')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -175,15 +155,14 @@ Bill Create
                             <label for="net_total">Net-Total</label>
                             <input step="any" type="number" min="0"
                                 class="form-control text-right @error('net_total') is-invalid @enderror"
-                                name="net_total" value="{{round($salestotal, 2)}}" id="net_total"
-                                placeholder="Net-Total" onkeyup="funn()">
+                                name="net_total" value="{{old('net_total', $total)}}" id="net_total"
+                                placeholder="Net-Total">
                             @error('net_total')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
                             @enderror
                         </div>
-
                         <div class="col-md-2 form-group">
                             <label for="payment" class="required">Payment Amount</label>
                             <input type="number" min="0" step="any"
@@ -207,8 +186,6 @@ Bill Create
                             </div>
                             @enderror
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="form-group col-md-2">
                             <label for="" class="mb-4"></label>
                             <button type="submit" class="btn btn-success form-control btn-rounded">Pay</button>
@@ -219,7 +196,6 @@ Bill Create
         </div>
     </div>
     @endif
-
 </div>
 <script>
     function funn(){
@@ -227,12 +203,11 @@ Bill Create
     var discount = document.getElementById("pdiscount").value;
     var vat = document.getElementById("pvat").value;
     var payment = document.getElementById("payment").value;
-    var net_total = document.getElementById("net_total").value;
     total = total - ((total * (discount)/100));
      var total = total + ((total * (vat)/100));
     document.getElementById("net_total").value = total.toFixed(2);
     document.getElementById("due").value = (total - payment).toFixed(2);
-      }
+    }
 </script>
 
 @endsection

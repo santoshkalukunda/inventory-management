@@ -54,7 +54,7 @@
             <div class="col-md-12 text-center" style="">
                 <b style="font-size: 20px;">{{$company->name}}</b>
                 <div>{{$company->address}}</div>
-                <div>{{$company->contact}},  {{$company->email}}</div>
+                <div>{{$company->contact}}, {{$company->email}}</div>
                 <div>{{$company->website}}</div>
                 <div><b>{{$company->type}} :</b>{{$company->pan_vat}}</div>
                 <h4>INVOICE</h4>
@@ -103,17 +103,32 @@
                                     <td>{{$sale->store->product->name}}</td>
                                     <td class="text-right">{{$sale->quantity}} {{$sale->unit->name}}</td>
                                     <td class="text-right">{{$sale->rate}}</td>
-                                    <td class="text-right">{{$sale->discount ?? "0"}}%</td>
-                                    <td class="text-right">{{$sale->vat ?? "0"}}%</td>
+                                    <td class="text-right">{{$sale->discount}}</td>
+                                    <td class="text-right">{{$sale->vat}}</td>
                                     <td class="text-right">{{round($sale->total, 2)}}</td>
                                 </tr>
                                 @endforeach
+
                                 <tr>
-                                    <td colspan="5" rowspan="3">
-                                        <span style="text-transform: capitalize"><b>In-word Rs.:</b> {{Terbilang::make( round($bill->net_total))}} Only.</span> 
+                                    <td colspan="5" rowspan="6">
+                                        <span style="text-transform: capitalize"><b>In-word Rs.:</b>
+                                            {{Terbilang::make( round($bill->net_total))}} Only.</span>
                                     </td>
+                                    <td class="text-right">Total</td>
+                                    <td class="text-right">{{round($bill->total,2)}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-right">Discount</td>
+                                    <td class="text-right">{{$bill->discount ?? "-"}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">VAT</td>
+                                    <td class="text-right">{{$bill->vat ?? "-"}}</td>
+                                </tr>
+                                <tr>
                                     <td class="text-right">Grand Total</td>
-                                    <td class="text-right">{{round($bill->net_total)}}</td>
+                                    <td class="text-right">{{round($bill->net_total,2)}}</td>
                                 </tr>
                                 <tr>
                                     <td class="text-right">Pyment</td>
@@ -123,12 +138,13 @@
                                     <td class="text-right">Due</td>
                                     <td class="text-right">{{round($bill->due)}}</td>
                                 </tr>
+
                             </table>
                         </div>
                         <div class="col-md-12 text-right" style="margin-top: 20px; text-transform: capitalize">
                             {{Auth::user()->name}}
                         </div>
-                       
+
                     </div>
                 </div>
             </div>

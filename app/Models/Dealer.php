@@ -14,6 +14,9 @@ protected $guarded=['id'];
 public function purchase(){
     return $this->hasMany(Purchase::class);
 }
+public function purchaseBill(){
+    return $this->hasMany(PurchaseBill::class);
+}
 public function purchaseDue(){
     return $this->hasMany(PurchaseDue::class);
 }

@@ -31,26 +31,16 @@ Purchase List
             <i class="fa fa-filter"></i> Filter
         </button>
     </div>
-    {{-- <div class="col-md-1 form-group">
-        <a class="btn btn-primary" href="{{route('purchase.pdf')}}">
-    <i class="fa fa-pdf"></i> PDF
-    </a>
-</div>
-<div class="col-md-1 form-group">
-    <a class="btn btn-primary" href="{{route('purchase.excel')}}">
-        <i class="fa fa-pdf"></i> Excel
-    </a>
-</div> --}}
-<div class="col-md-9 form-group text-right">
-    <span class="bg-blue-light p-2"><b>Total Product: </b>{{$quantity}}</span>
-    <span class="bg-blue-light p-2"><b>Total Amount: </b>{{$total}}/-</span>
-    <span class="bg-blue-light p-2"><b>Payment :</b> {{$payment}}/-</span>
-    <span class="bg-blue-light p-2"> <b>Due :</b> {{$due}}/-</span>
-</div>
+    <div class="col-md-9 form-group text-right">
+        <span class="bg-blue-light p-2"><b>Total Product: </b>{{$quantity}}</span>
+        <span class="bg-blue-light p-2"><b>Total Amount: </b>{{$total}}/-</span>
+        <span class="bg-blue-light p-2"><b>Payment :</b> {{$payment}}/-</span>
+        <span class="bg-blue-light p-2"> <b>Due :</b> {{$due}}/-</span>
+    </div>
 
 </div>
 @include('purchase.filter-input')
 <div class="col-md-12 justify-content-center">
-@include('purchase.list')
+    @include('purchase.list')
 </div>
 @endsection

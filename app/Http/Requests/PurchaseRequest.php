@@ -24,9 +24,6 @@ class PurchaseRequest extends FormRequest
     public function rules()
     {
         return [
-        'order_date' => 'required',
-        'shipping_date' => 'required',
-        'bill_no' => 'required|numeric',
         'product_id' => 'required|exists:products,id',
         'batch_no' => 'nullable',
         'mf_date' => 'nullable',
@@ -37,10 +34,7 @@ class PurchaseRequest extends FormRequest
         'discount'=> 'nullable|numeric',
         'vat' => 'nullable|numeric',
         'total' => 'required|numeric',
-        'payment' => 'required|numeric',
-        'due' => 'required|numeric',
         'mrp' => 'required|numeric',
-        'details' => 'nullable'
         ];
     }
 }

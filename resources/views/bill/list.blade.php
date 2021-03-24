@@ -5,20 +5,34 @@
     </div>
     <div class="ibox-body">
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover table-bordered">
                 <tr>
-                    <th>Bill Date</th>
-                    <th>Invoice No.</th>
+                    <th>Bill_Date</th>
+                    <th>Invoice_No.</th>
                     <th>Customer</th>
-                    <th>Net Total</th>
+                    <th>Total</th>
+                    <th>Discount</th>
+                    <th>VAT</th>
+                    <th>Net_Total</th>
                     <th>Payment</th>
                     <th>Due</th>
                     <th>Status</th>
-                    <th>User Name</th>
+                    <th>User</th>
                     <th colspan="4">Action</th>
                 </tr>
                 @forelse ($bills as $bill)
-                <tr>
+                @php
+                if ($bill->status == "incomplete"){
+                    $color = "table-warning";
+                }
+                elseif($bill->status == "cancel"){
+                    $color = "table-danger";
+                }
+                else {
+                    $color = "";
+                }
+                @endphp
+                <tr class="{{$color}}"  style="white-space:nowrap;">
                     <td>{{$bill->date}}</td>
                     <td>{{$bill->invoice_no}}</td>
                     <td><a href="{{route('customers.show',$bill->customer_id)}}">
@@ -26,9 +40,12 @@
                         <span class=""> <br>{{$bill->customer->address}}</span>
                         <span class=""> <br>{{$bill->customer->phone}}</span>
                     </td>
-                    <td>{{$bill->net_total}}</td>
-                    <td>{{$bill->payment}}</td>
-                    <td>{{$bill->due}}</td>
+                    <td class="text-right">{{$bill->total}}</td>
+                    <td class="text-right">{{$bill->discount ?? "0" }}%</td>
+                    <td class="text-right">{{$bill->vat ?? "0"}}%</td>
+                    <td class="text-right">{{$bill->net_total}}</td>
+                    <td class="text-right">{{$bill->payment}}</td>
+                    <td class="text-right">{{$bill->due}}</td>
                     <td>{{$bill->status}}</td>
                     <td>{{$bill->user->name}}</td>
                     @if ($bill->status =="complete")

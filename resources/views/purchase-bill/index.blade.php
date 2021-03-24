@@ -1,7 +1,8 @@
 @extends('layouts.backend')
 @section('title')
-Customer List
+Purchase Bill List
 @endsection
+@section('content')
 @push('style')
 <style>
     /* Chrome, Safari, Edge, Opera */
@@ -17,56 +18,72 @@ Customer List
     }
 </style>
 @endpush
-@section('content')
-<div class="row">
-    <div class="col-md-2">
-        <button class="btn btn-primary mb-2 form-control" data-toggle="modal" data-target="#new-bill"> <i
-                class="fa fa-plus"></i> New
+<div class="row mx-2">
+    <div class="col-md-2 form-group">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> <i class="fa fa-plus"></i> New
             Bill
         </button>
-        @include('modal.bill-create')
     </div>
-    <div class="col-md-2">
-        <p>
-            <a class="btn btn-primary" data-toggle="collapse" href="#filter" role="button" aria-expanded="false"
-                aria-controls="filter">
-                <i class="fa fa-filter"></i> Filter
-            </a>
-        </p>
+    @include('modal.purchase-modal')
+    <div class="col-md-1 form-group">
+        <button class="btn btn-primary" data-toggle="collapse" href="#filter" role="button" aria-expanded="false"
+            aria-controls="filter">
+            <i class="fa fa-filter"></i> Filter
+        </button>
     </div>
-    <div class="col-md-8 form-group text-right">
-        <span class="bg-blue-light p-2"><b>Net Total : </b>{{$total}}/-</span>
-        <span class="bg-blue-light p-2"><b>Payment : </b>{{$payment}}</span>
-        <span class="bg-blue-light p-2"><b>Due Amount : </b>{{$due}}</span>
+    <div class="col-md-9 form-group text-right">
+        <span class="bg-blue-light p-2"><b>Net Total : </b>{{$net_total}}/-</span>
+        <span class="bg-blue-light p-2"><b>Payment :</b> {{$payment}}/-</span>
+        <span class="bg-blue-light p-2"> <b>Due :</b> {{$due}}/-</span>
     </div>
     <div class="col-md-12 mb-2">
         <div class="collapse" id="filter">
             <div class="card card-body">
-                <form action="{{route('bills.search')}}" method="get">
+                <form action="{{route('purchase-bills.search')}}" method="get">
                     <div class="row">
                         <div class="col-md-3 form-group">
-                            <label for="customer_id">Customer Name</label>br
-                            <select class="selectpicker form-control @error('customer_id') is-invalid @enderror"
-                                name="customer_id" id="product" data-live-search="true" data-size="4">
-                                <option value="" selected>Select Customer</option>
-                                @foreach ($customers as $customer)
-                                <option value="{{$customer->id}}" data-content="<b>{{$customer->name}}</b>
-                                    <br>{{$customer->address}}
-                                    <br>{{$customer->phone}}
-                                    <br>{{$customer->pan_vat}}
+                            <label for="dealer_id">Dealer Name</label>br
+                            <select class="selectpicker form-control @error('dealer_id') is-invalid @enderror"
+                                name="dealer_id" id="product" data-live-search="true" data-size="4">
+                                <option value="" selected>Select Dealer</option>
+                                @foreach ($dealers as $dealer)
+                                <option value="{{$dealer->id}}" data-content="<b>{{$dealer->name}}</b>
+                                    <br>{{$dealer->address}}
+                                    <br>{{$dealer->phone}}
+                                    <br>{{$dealer->pan_vat}}
                                     "></option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-3 form-group">
-                            <label for="bill_date_from">Bill Date From</label>
-                            <input type="date" class="form-control" name="bill_date_from" id="bill_date_from"
-                                placeholder="Bill Date From" autofocus>
+                            <label for="user_id">User Name</label>
+                            <select class="selectpicker form-control @error('user_id') is-invalid @enderror"
+                                name="user_id" id="product" data-live-search="true" data-size="4">
+                                <option value="" selected>Select User</option>
+                                @foreach ($users as $user)
+                                <option value="{{$user->id}}"data-content="<b>{{$user->name}}</b>"></option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-md-3 form-group">
-                            <label for="bill_date_to">Bill Date To</label>
-                            <input type="date" class="form-control" name="bill_date_to" id="bill_date_to"
-                                placeholder="Bill Date To" autofocus>
+                            <label for="order_date_from">Order Date From</label>
+                            <input type="date" class="form-control" name="order_date_from" id="order_date_from"
+                                placeholder="Order Date From" autofocus>
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label for="order_date_to">Order Date To</label>
+                            <input type="date" class="form-control" name="order_date_to" id="order_date_to"
+                                placeholder="Order Date" autofocus>
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label for="shipping_date_from">Shipping Date From</label>
+                            <input type="date" class="form-control @error('shipping_date_from') is-invalid @enderror"
+                                name="shipping_date_from" id="shipping_date_from" placeholder="Shipping Date">
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label for="shpping_date">Shipping Date To</label>
+                            <input type="date" class="form-control @error('shipping_date_to') is-invalid @enderror"
+                                name="shipping_date_to" id="shipping_date_to" placeholder="Shipping Date">
                         </div>
                         <div class="col-md-3 form-group">
                             <label for="status">Status Name</label>
@@ -75,32 +92,13 @@ Customer List
                                 <option value="" selected>Select Satus</option>
                                 <option value="incomplete">Incomplete</option>
                                 <option value="complete">Complete</option>
-                                <option value="cancel">Cancel</option>
                             </select>
                         </div>
-                        <div class="col-md-2 form-group">
-                            <label for="invoice_no_min">Invoice No. Min.</label>
-                            <input type="number" min="0" step="any"
-                                class="form-control text-right @error('invoice_no_min') is-invalid @enderror"
-                                name="invoice_no_min" id="invoice_no_min" placeholder="Invoice No. Min">
-                        </div>
-                        <div class="col-md-2 form-group">
-                            <label for="invoice_no_max">Invoice No Max</label>
-                            <input type="number" min="0" step="any"
-                                class="form-control text-right @error('invoice_no_max') is-invalid @enderror"
-                                name="invoice_no_max" id="invoice_no_max" placeholder="Invoice No. Max">
-                        </div>
-                        <div class="col-md-2 form-group">
-                            <label for="total_min">Total Min.</label>
-                            <input step="any" type="number" min="0"
-                                class="form-control text-right @error('total_min') is-invalid @enderror"
-                                name="total_min" id="total_min" placeholder="Net-Total Min.">
-                        </div>
-                        <div class="col-md-2 form-group">
-                            <label for="total_max">Total Max.</label>
-                            <input step="any" type="number" min="0"
-                                class="form-control text-right @error('total_max') is-invalid @enderror"
-                                name="total_max" id="total_max" placeholder="Net-Total Max.">
+                        <div class="col-md-3 form-group">
+                            <label for="bill_no">Bill No.</label>
+                            <input type="number" min="0" class="form-control @error('bill_no') is-invalid @enderror"
+                                name="bill_no" id="bill_no" placeholder="Bill No." autofocus>
+    
                         </div>
                         <div class="col-md-2 form-group">
                             <label for="discount_min">Discount Min. in %</label>
@@ -126,7 +124,18 @@ Customer List
                                 class="form-control text-right @error('vat_max') is-invalid @enderror" name="vat_max"
                                 id="vat_max" placeholder="TAX/VAT Max.">
                         </div>
-
+                        <div class="col-md-2 form-group">
+                            <label for="total_min">Total Min.</label>
+                            <input step="any" type="number" min="0"
+                                class="form-control text-right @error('total_min') is-invalid @enderror" name="total_min"
+                                id="total_min" placeholder="Net-Total Min.">
+                        </div>
+                        <div class="col-md-2 form-group">
+                            <label for="total_max">Total Max.</label>
+                            <input step="any" type="number" min="0"
+                                class="form-control text-right @error('total_max') is-invalid @enderror" name="total_max"
+                                id="total_max" placeholder="Net-Total Max.">
+                        </div>
                         <div class="col-md-2 form-group">
                             <label for="net_total_min">Net Total Min.</label>
                             <input type="number" min="0" step="any"
@@ -163,16 +172,7 @@ Customer List
                                 class="form-control text-right @error('due_max') is-invalid @enderror" name="due_max"
                                 id="due_max" placeholder="Due Max. Rs.">
                         </div>
-                        <div class="col-md-3 form-group">
-                            <label for="user_id">User Name</label>
-                            <select class="selectpicker form-control @error('user_id') is-invalid @enderror"
-                                name="user_id" id="product" data-live-search="true" data-size="4">
-                                <option value="" selected>Select User</option>
-                                @foreach ($users as $user)
-                                <option value="{{$user->id}}" data-content="<b>{{$user->name}}</b>"></option>
-                                @endforeach
-                            </select>
-                        </div>
+                        
                     </div>
                     <div class="row">
                         <div class="col-md-2">
@@ -183,9 +183,8 @@ Customer List
             </div>
         </div>
     </div>
-    <div class="col-md-12 justify-content-center">
-        @include('bill.list')
-    </div>
 </div>
-
+<div class="col-md-12 justify-content-center">
+   @include('purchase-bill.list')
+</div>
 @endsection

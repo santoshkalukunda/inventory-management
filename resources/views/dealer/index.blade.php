@@ -78,7 +78,7 @@ Dealer List
                             <td>{{$dealer->pan_vat}}</td>
                             <td>{{$dealer->reg_no}}</td>
                             <td>
-                                <a href="{{route('purchase.create',$dealer)}}" class="btn btn-success"><i
+                                <a href="{{route('purchase-bills.store',$dealer)}}" class="btn btn-success"><i
                                         class="fa fa-file"></i>New Purchase</a>
                             </td>
                             <td>

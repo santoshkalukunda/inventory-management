@@ -16,4 +16,7 @@ class PurchaseDue extends Model
     public function purchase(){
         return $this->belongsTo(purchase::class);
     }
+    public function PurchaseBill(){
+        return $this->belongsTo(PurchaseBill::class);
+    }
 }

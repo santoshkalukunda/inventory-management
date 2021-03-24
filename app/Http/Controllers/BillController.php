@@ -48,18 +48,18 @@ class BillController extends Controller
      */
     public function create(Sale $sale = null, Bill $bill)
     {
-        // $bill=Bill::where('uuid',$bill)->firstOrFail();
 
         $stores = Store::with('product', 'category', 'brand', 'unit')->where('quantity', '>', 0)->latest()->get();
         if (!$sale) {
             $sale = new Sale;
         }
         $sales = $bill->sale()->with('store', 'unit', 'product')->get();
-        $net_tatal = 0;
+        $salestotal = 0;
         foreach ($sales as $total) {
-            $net_tatal = $net_tatal + $total->total;
+            $salestotal = $salestotal + $total->total;
         }
-        return view('bill.create', compact('bill', 'sale', 'stores', 'sales', 'net_tatal'));
+       
+        return view('bill.create', compact('bill', 'sale', 'stores', 'sales', 'salestotal'));
     }
 
     /**
@@ -115,6 +115,9 @@ class BillController extends Controller
         $bill->update([
             'date' => $request->date,
             'invoice_no' => $invoice_no,
+            "total" => $request->total,
+            "discount" => $request->discount,
+            "vat" => $request->vat,
             'net_total' => $request->net_total,
             'payment' => $request->payment,
             'due' => $due,
@@ -201,7 +204,25 @@ class BillController extends Controller
             ->when($request->has('invoice_no_max') && !is_null($request->invoice_no_max), function ($query) use ($request) {
                 $query->where('invoice_no', '<=', (int)$request->invoice_no_max);
             });
-
+            $bills = $bills->when($request->has('discount_min') && !is_null($request->discount_min), function ($query) use ($request) {
+                $query->where('discount', '>=', $request->discount_min);
+            })
+                ->when($request->has('discount_max') && !is_null($request->discount_max), function ($query) use ($request) {
+                    $query->where('discount', '<=', (int)$request->discount_max);
+                });
+            $bills = $bills->when($request->has('vat_min') && !is_null($request->vat_min), function ($query) use ($request) {
+                $query->where('vat', '>=', $request->vat_min);
+            })
+                ->when($request->has('vat_max') && !is_null($request->vat_max), function ($query) use ($request) {
+                    $query->where('vat', '<=', (int)$request->vat_max);
+                });
+    
+            $bills = $bills->when($request->has('total_min') && !is_null($request->total_min), function ($query) use ($request) {
+                $query->where('total', '>=', $request->total_min);
+            })
+                ->when($request->has('total_max') && !is_null($request->total_max), function ($query) use ($request) {
+                    $query->where('total', '<=', (int)$request->total_max);
+                });
         $bills = $bills->when($request->has('net_total_min') && !is_null($request->net_total_min), function ($query) use ($request) {
             $query->where('net_total', '>=', $request->net_total_min);
         })

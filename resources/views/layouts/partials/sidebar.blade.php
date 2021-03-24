@@ -2,45 +2,49 @@
     <div id="sidebar-collapse">
 
         <ul class="side-menu metismenu">
+
             <li>
                 <a class="active" href="{{route('home')}}"><i class="sidebar-item-icon fa fa-th-large"></i>
                     <span class="nav-label">Dashboard</span>
                 </a>
             </li>
             <li class="heading">FEATURES</li>
-        
             <li>
                 <a href="{{route('bills.index')}}"><i class="sidebar-item-icon fa fa-file"></i>
-                    <span class="nav-label">Bills</span></a>
-            </li> 
+                    <span class="nav-label">Sales Bills</span></a>
+            </li>
             <li>
                 <a href="{{route('sale-dues.index')}}"><i class="sidebar-item-icon fa fa-redo"></i>
-                    <span class="nav-label">Bill Due Logs</span></a>
-            </li> 
+                    <span class="nav-label">Sales Bill Due Logs</span></a>
+            </li>
             <li>
                 <a href="{{route('sales.index')}}"><i class="sidebar-item-icon fa fa-money-check-alt"></i>
-                    <span class="nav-label">Sales</span></a>
-            </li> 
+                    <span class="nav-label">Sales Product List</span></a>
+            </li>
             <li>
                 <a href="{{route('customers.index')}}"><i class="sidebar-item-icon fa fa-user-friends"></i>
                     <span class="nav-label">Customers</span></a>
-            </li> 
+            </li>
             <li>
-                <a href="{{route('purchase.index')}}"><i class="sidebar-item-icon fa fa-shopping-cart"></i>
-                    <span class="nav-label">Purshase</span></a>
-            </li> 
+                <a href="{{route('purchase-bills.index')}}"><i class="sidebar-item-icon fa fa-file-alt"></i>
+                    <span class="nav-label">Purshase Bill</span></a>
+            </li>
             <li>
                 <a href="{{route('purchase-dues.index')}}"><i class="sidebar-item-icon fa fa-history"></i>
-                    <span class="nav-label">Purshase Due Logs</span></a>
-            </li> 
+                    <span class="nav-label">Purshase Bill Due Logs</span></a>
+            </li>
+            <li>
+                <a href="{{route('purchase.index')}}"><i class="sidebar-item-icon fa fa-shopping-cart"></i>
+                    <span class="nav-label">Purshase Product List</span></a>
+            </li>
             <li>
                 <a href="{{route('dealers.index')}}"><i class="sidebar-item-icon fa fa-user"></i>
                     <span class="nav-label">Dealers</span></a>
-            </li> 
+            </li>
             <li>
                 <a href="{{route('stores.index')}}"><i class="sidebar-item-icon fa fa-warehouse"></i>
                     <span class="nav-label">Inventories</span></a>
-            </li> 
+            </li>
             <li>
                 <a href="{{route('products.index')}}"><i class="sidebar-item-icon fa fa-file-alt"></i>
                     <span class="nav-label">Products</span></a>
@@ -48,11 +52,11 @@
             <li>
                 <a href="{{route('categories.index')}}"><i class="sidebar-item-icon fa fa-code-branch"></i>
                     <span class="nav-label">Categories</span></a>
-            </li> 
+            </li>
             <li>
                 <a href="{{route('brands.index')}}"><i class="sidebar-item-icon fa fa-copyright"></i>
                     <span class="nav-label">Brands</span></a>
-            </li> 
+            </li>
             <li>
                 <a href="{{route('units.index')}}"><i class="sidebar-item-icon fa fa-balance-scale"></i>
                     <span class="nav-label">Units</span></a>

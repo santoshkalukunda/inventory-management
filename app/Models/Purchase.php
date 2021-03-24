@@ -13,7 +13,9 @@ class Purchase extends Model
     public function dealer(){
         return $this->belongsTo(Dealer::class);
     }
-
+    public function PurchaseBill(){
+        return $this->belongsTo(PurchaseBill::class);
+    }
     public function product(){
         return $this->belongsTo(Product::class);
     }

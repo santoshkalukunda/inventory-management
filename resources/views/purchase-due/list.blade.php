@@ -1,7 +1,7 @@
 <div class="ibox">
     <div class="ibox-head d-flex">
         <div class="ibox-title">Purchase Due Pay List</div>
-        <div class="text-right">Total Record: {{$purchaseDues->total()}}</div>
+        <div class="text-right">Total Record: {{$purchaseBillDues->total()}}</div>
     </div>
     <div class="ibox-body">
         <div class="table-responsive">
@@ -14,19 +14,19 @@
                     <th>Due</th>
                     <th colspan="2">Action</th>
                 </tr>
-                @forelse ($purchaseDues as $purchaseDue)
+                @forelse ($purchaseBillDues as $purchaseBillDue)
                 <tr>
-                    <td>{{$purchaseDue->date}}</td>
-                    <td> {{$purchaseDue->dealer->name}}</td>
-                    <td>{{$purchaseDue->due_amount}}</td>
-                    <td>{{$purchaseDue->payment}}</td>
-                    <td>{{$purchaseDue->due}}</td>
+                    <td>{{$purchaseBillDue->date}}</td>
+                    <td> {{$purchaseBillDue->dealer->name}}</td>
+                    <td>{{$purchaseBillDue->due_amount}}</td>
+                    <td>{{$purchaseBillDue->payment}}</td>
+                    <td>{{$purchaseBillDue->due}}</td>
                     <td>
-                        <a href="{{route('purchase.show',$purchaseDue->purchase_id)}}" class="text-muted"><i
-                                class="fa fa-eye"></i> Deu Pay</a>
+                        {{-- <a href="{{route('purchase.show',$purchaseBillDue->purchase_id)}}" class="text-muted"><i
+                                class="fa fa-eye"></i> Deu Pay</a> --}}
                     </td>
                     <td>
-                        <form action="{{route('purchase-dues.destroy',$purchaseDue)}}"
+                        <form action="{{route('purchase-dues.destroy',$purchaseBillDue)}}"
                             onsubmit="return confirm('Are you sure to delete due Payment?')" method="POST"
                             class="d-inline">
                             @csrf
@@ -45,4 +45,4 @@
         </div>
     </div>
 </div>
-{{$purchaseDues->links()}}
+{{$purchaseBillDues->links()}}
