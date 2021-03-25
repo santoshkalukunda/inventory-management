@@ -16,7 +16,7 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->uuid('bill_id')->nullable();
-            $table->foreign('bill_id')->references('id')->on('bills');
+            $table->foreign('bill_id')->references('id')->on('bills')->cascadeOnDelete();
             $table->foreignId('customer_id')->constrained('customers');
             $table->foreignId('store_id')->constrained('stores');
             $table->string('date')->nullable();

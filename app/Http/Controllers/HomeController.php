@@ -36,12 +36,12 @@ class HomeController extends Controller
 
         $customers = Customer::get();
         $dealers = Dealer::get();
-        $bills = Bill::get();
+        $bills = Bill::where('status', 'complete')->get();
         foreach ($bills as $bill) {
             $totalIncome = $totalIncome + $bill->net_total;
             $dueBill = $dueBill + $bill->due;
         }
-        $PurchaseBills = PurchaseBill::get();
+        $PurchaseBills = PurchaseBill::where('status', 'complete')->get();
         foreach ($PurchaseBills as $PurchaseBill) {
             $totalPurchaseBill = $totalPurchaseBill + $PurchaseBill->total;
             $duePurchaseBill = $duePurchaseBill + $PurchaseBill->due;

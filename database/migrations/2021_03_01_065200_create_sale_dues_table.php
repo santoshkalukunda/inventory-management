@@ -16,7 +16,7 @@ class CreateSaleDuesTable extends Migration
         Schema::create('sale_dues', function (Blueprint $table) {
             $table->id();
             $table->uuid('bill_id')->nullable();
-            $table->foreign('bill_id')->references('id')->on('bills');
+            $table->foreign('bill_id')->references('id')->on('bills')->cascadeOnDelete();
             $table->foreignId('customer_id')->constrained('customers');
             $table->string('date')->nullable();
             $table->double('due_amount')->nullable();
