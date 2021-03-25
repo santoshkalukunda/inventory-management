@@ -224,9 +224,12 @@ class PurchaseController extends Controller
     public function destroy(Purchase $purchase)
     {
         $store = Store::where('product_id', $purchase->product_id)->where('batch_no',$purchase->batch_no)->where('mf_date',$purchase->mf_date)->where('exp_date', $purchase->exp_date)->first();
-        $total = $store->quantity - $purchase->quantity;
+        $quantity = $store->quantity - $purchase->quantity;
+        if($quantity <= 0){
+            $quantity = 0;
+           }
         $store->update([
-            'quantity' => $total,
+            'quantity' => $quantity,
         ]);
         $purchase->delete();
         return redirect()->back()->with('success', "Purchase product deleted");

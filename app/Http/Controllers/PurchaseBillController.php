@@ -138,8 +138,12 @@ class PurchaseBillController extends Controller
         $purchases = $purchaseBill->purchase()->get();
         foreach ($purchases as $purchase) {
             $store = Store::where('product_id', $purchase->product_id)->where('batch_no', $purchase->batch_no)->where('mf_date', $purchase->mf_date)->where('exp_date', $purchase->exp_date)->first();
+           $quantity = $store->quantity - $purchase->quantity;
+           if($quantity <= 0){
+            $quantity = 0;
+           }
             $store->update([
-                'quantity' => $store->quantity - $purchase->quantity,
+                'quantity' => $quantity,
             ]);
             $purchase->delete();
         }
