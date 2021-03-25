@@ -78,15 +78,18 @@ Dealer List
                             <td>{{$dealer->pan_vat}}</td>
                             <td>{{$dealer->reg_no}}</td>
                             <td>
-                                <a href="{{route('purchase-bills.store',$dealer)}}" class="btn btn-success"><i
-                                        class="fa fa-file"></i>New Purchase</a>
+                                <a href="{{route('purchase-bills.store',$dealer)}}" class="btn btn-success" data-toggle="tooltip"
+                                data-placement="top" title="New Bill"><i
+                                        class="fa fa-file"></i></a>
                             </td>
                             <td>
-                                <a href="{{route('dealers.show',$dealer)}}" class="btn btn-primary"><i
-                                        class="fa fa-eye"></i> Show</a>
+                                <a href="{{route('dealers.show',$dealer)}}" class="btn btn-primary" data-toggle="tooltip"
+                                data-placement="top" title="Bill List"><i
+                                        class="fa fa-eye"></i></a>
                             </td>
                             <td>
-                                <a href="{{route('dealers.edit',$dealer)}}" class="text-muted"><i
+                                <a href="{{route('dealers.edit',$dealer)}}" class="btn btn-primary"data-toggle="tooltip"
+                                data-placement="top" title="Edit Dealer"><i
                                         class="fa fa-edit"></i></a>
                             </td>
                             
@@ -95,7 +98,8 @@ Dealer List
                                     onsubmit="return confirm('Are you sure to delete?')" method="POST" class="d-inline">
                                     @csrf
                                     @method('delete')
-                                    <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
+                                    <button type="submit" class="btn btn-danger" data-toggle="tooltip"
+                                    data-placement="top" title="Delete Dealers"><i
                                             class="fa fa-trash-alt"></i></button>
                                 </form>
                             </td>
