@@ -136,11 +136,17 @@ class StoreController extends Controller
             ->when($request->has('mrp_max') && !is_null($request->mrp_max), function ($query) use ($request) {
                 $query->where('mrp', '<=', (int)$request->mrp_max);
             });
-            $stores = $stores->with('product', 'category', 'brand', 'unit')->paginate(1000);
+            $stores = $stores->with('product', 'category', 'brand', 'unit')->paginate(10000);
+            $quantity = 0;
+            $total = 0;
+            foreach($stores as $store){
+               $quantity = $quantity + $store->quantity;
+               $total = $total + ($store->quantity * $store->mrp);
+            }
             $products = Product::with('category', 'brand',)->orderBy('name')->get();
             $categories = Category::orderBy('name')->get();
             $brands = Brand::orderBy('name')->get();
             $units = Unit::orderBy('name')->get();
-            return view('store.index',compact('stores','categories','products' ,'brands', 'units'));
+            return view('store.index',compact('stores','categories','products' ,'brands', 'units','quantity','total'));
     }
 }

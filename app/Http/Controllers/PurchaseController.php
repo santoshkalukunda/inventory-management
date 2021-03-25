@@ -245,17 +245,7 @@ class PurchaseController extends Controller
     }
     public function search(Request $request)
     {
-        $purchases = Purchase::get();
-        $total = 0;
-        $due = 0;
-        $payment = 0;
-        $quantity = 0;
-        foreach ($purchases as $purchase) {
-            $total = $total + $purchase->total;
-            $due = $due + $purchase->due;
-            $payment = $payment + $purchase->payment;
-            $quantity = $quantity + $purchase->quantity;
-        }
+      
         $purchases = new Purchase;
         if ($request->has('dealer_id')) {
             if ($request->dealer_id != null)
@@ -315,7 +305,17 @@ class PurchaseController extends Controller
                 $query->where('mrp', '<=', (int)$request->mrp_max);
             });
 
-        $purchases = $purchases->with('dealer', 'product', 'category', 'brand', 'unit')->paginate(1000);
+        $purchases = $purchases->with('dealer', 'product', 'category', 'brand', 'unit')->paginate(10000);
+        $total = 0;
+        $due = 0;
+        $payment = 0;
+        $quantity = 0;
+        foreach ($purchases as $purchase) {
+            $total = $total + $purchase->total;
+            $due = $due + $purchase->due;
+            $payment = $payment + $purchase->payment;
+            $quantity = $quantity + $purchase->quantity;
+        }
         $products = Product::with('category', 'brand',)->orderBy('name')->get();
         $categories = Category::orderBy('name')->get();
         $brands = Brand::orderBy('name')->get();

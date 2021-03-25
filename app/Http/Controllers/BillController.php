@@ -168,19 +168,7 @@ class BillController extends Controller
 
     public function search(Request $request)
     {
-        $bills = Bill::get();
-        $total=0;
-        $due=0;
-        $payment=0;
-        foreach($bills as $bill)
-        {
-            if ($bill->status == "cancel") {
-              continue;
-            }
-        $total = $total + $bill->net_total;
-        $payment = $payment + $bill->payment;
-        $due = $due + $bill->due;
-        }
+      
         $bills = new Bill;
         if ($request->has('customer_id')) {
             if ($request->customer_id != null)
@@ -243,7 +231,20 @@ class BillController extends Controller
             });
         $customers = Customer::get();
         $users = User::get();
-        $bills = $bills->with('customer', 'user', 'sale')->latest()->paginate(1000);
+
+        $bills = $bills->with('customer', 'user', 'sale')->latest()->paginate(10000);
+        $total=0;
+        $due=0;
+        $payment=0;
+        foreach($bills as $bill)
+        {
+            if ($bill->status == "cancel") {
+              continue;
+            }
+        $total = $total + $bill->net_total;
+        $payment = $payment + $bill->payment;
+        $due = $due + $bill->due;
+        }
         return view('bill.index', compact('bills', 'customers', 'users','total','due','payment'));
     }
 

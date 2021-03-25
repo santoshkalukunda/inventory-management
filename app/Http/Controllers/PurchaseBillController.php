@@ -138,10 +138,10 @@ class PurchaseBillController extends Controller
         $purchases = $purchaseBill->purchase()->get();
         foreach ($purchases as $purchase) {
             $store = Store::where('product_id', $purchase->product_id)->where('batch_no', $purchase->batch_no)->where('mf_date', $purchase->mf_date)->where('exp_date', $purchase->exp_date)->first();
-           $quantity = $store->quantity - $purchase->quantity;
-           if($quantity <= 0){
-            $quantity = 0;
-           }
+            $quantity = $store->quantity - $purchase->quantity;
+            if ($quantity <= 0) {
+                $quantity = 0;
+            }
             $store->update([
                 'quantity' => $quantity,
             ]);
@@ -153,17 +153,6 @@ class PurchaseBillController extends Controller
 
     public function search(Request $request)
     {
-        $purchaseBills = PurchaseBill::get();
-        $net_total = 0;
-        $due = 0;
-        $payment = 0;
-        $quantity = 0;
-        foreach ($purchaseBills as $purchaseBill) {
-            $net_total = $net_total + $purchaseBill->net_total;
-            $due = $due + $purchaseBill->due;
-            $payment = $payment + $purchaseBill->payment;
-            $quantity = $quantity + $purchaseBill->quantity;
-        }
         $products = Product::with('category', 'brand',)->orderBy('name')->get();
         $dealers = Dealer::orderBy('name')->get();
         $users = User::orderBy('name')->get();
@@ -237,7 +226,17 @@ class PurchaseBillController extends Controller
             ->when($request->has('due_max') && !is_null($request->due_max), function ($query) use ($request) {
                 $query->where('due', '<=', (int)$request->due_max);
             });
-        $purchaseBills = $purchaseBills->with('dealer', 'user')->latest()->paginate(1000);
+        $purchaseBills = $purchaseBills->with('dealer', 'user')->latest()->paginate(10000);
+        $net_total = 0;
+        $due = 0;
+        $payment = 0;
+        $quantity = 0;
+        foreach ($purchaseBills as $purchaseBill) {
+            $net_total = $net_total + $purchaseBill->net_total;
+            $due = $due + $purchaseBill->due;
+            $payment = $payment + $purchaseBill->payment;
+            $quantity = $quantity + $purchaseBill->quantity;
+        }
         return view('purchase-bill.index', compact('purchaseBills', 'dealers', 'products', 'net_total', 'due', 'payment', 'quantity', 'users'));
     }
 }

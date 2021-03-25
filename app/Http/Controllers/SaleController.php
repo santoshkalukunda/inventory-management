@@ -163,16 +163,7 @@ class SaleController extends Controller
     }
 
     public function search(Request $request){
-        $sales=Sale::get();
-        $total=0;
-        $due=0;
-        $payment=0;
-        $quantity=0;
-        foreach($sales as $sale)
-        {
-        $total=$total+$sale->total;
-        $quantity=$quantity+$sale->quantity;
-        }
+      
         $sales = new Sale;
         if ($request->has('customer_id')) {
             if ($request->customer_id != null)
@@ -238,7 +229,16 @@ class SaleController extends Controller
             $customers = Customer::get();
             $stores = Store::get();
             $units = Unit::get();
-            $sales = $sales->with('customer','store','bill','unit')->latest()->paginate(1000);
+            $sales = $sales->with('customer','store','bill','unit')->latest()->paginate(10000);
+            $total=0;
+            $due=0;
+            $payment=0;
+            $quantity=0;
+            foreach($sales as $sale)
+            {
+            $total=$total+$sale->total;
+            $quantity=$quantity+$sale->quantity;
+            }
             return view('sale.index',compact('sales','customers','stores','units','total','due','payment','quantity')); 
     }
 }
