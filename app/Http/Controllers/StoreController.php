@@ -19,12 +19,18 @@ class StoreController extends Controller
     public function index()
     {
         $stores = Store::get();
+        $quantity = 0;
+        $total = 0;
+        foreach($stores as $store){
+           $quantity = $quantity + $store->quantity;
+           $total = $total + ($store->quantity * $store->mrp);
+        }
         $stores=Store::with('product', 'category', 'brand', 'unit')->latest()->paginate(200);
         $products = Product::with('category', 'brand',)->orderBy('name')->get();
         $categories = Category::orderBy('name')->get();
         $brands = Brand::orderBy('name')->get();
         $units = Unit::orderBy('name')->get();
-        return view('store.index',compact('stores','categories','products' ,'brands', 'units'));
+        return view('store.index',compact('stores','categories','products' ,'brands', 'units','quantity','total'));
     }
 
     /**

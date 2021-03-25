@@ -13,8 +13,8 @@ Inventories Product List
         </p>
     </div>
     <div class="col-md-11 form-group text-right">
-        <span class="bg-blue-light p-2"><b>Product Quantity: </b>{{$quantity=1}}</span>
-        <span class="bg-blue-light p-2"><b>Total Amount: </b>{{$total=2}}/-</span>
+        <span class="bg-blue-light p-2"><b>Product Quantity: </b>{{$quantity}}</span>
+        <span class="bg-blue-light p-2"><b>Total Amount: </b>{{$total}}/-</span>
     </div>
     <div class="col-lg-12">
         <div class="mb-2">
