@@ -101,6 +101,61 @@ class HomeController extends Controller
             ->options([]);
 
 
+         $j = 1;
+        for ($i = 0; $i < 12; $i++) {
+            $salesBillNetTotals = $bill_obj->whereBetween('date', [Carbon::now()->subMonths($j), Carbon::now()->subMonths($i)])->get();
+            $j++;
+            $months[$i] = today()->subMonths($i);
+            $months[$i] = date("Y-m", strtotime($months[$i]));
+            $salesBillTotal[$i] = 0;
+            $salesBillDue[$i] = 0;
+            $salesBillPayment[$i] = 0;
+            foreach ($salesBillNetTotals as $netTotal) {
+                $salesBillTotal[$i] = $salesBillTotal[$i] + $netTotal->net_total;
+                $salesBillDue[$i] = $salesBillDue[$i] + $netTotal->due;
+                $salesBillPayment[$i] = $salesBillPayment[$i] + $netTotal->payment;
+            }
+        }
+        $salesBillChart = app()->chartjs
+            ->name('salesBillLineChart')
+            ->type('line')
+            ->size(['width' => 400, 'height' => 100])
+            ->labels(array_reverse($months))
+            ->datasets([
+                [
+                    "label" => "Total PurchaseBill",
+                    'backgroundColor' => "rgba(38, 185, 154, 0.31)",
+                    'borderColor' => "rgba(38, 185, 154, 0.7)",
+                    "pointBorderColor" => "rgba(38, 185, 154, 0.7)",
+                    "pointBackgroundColor" => "rgba(38, 185, 154, 0.7)",
+                    "pointHoverBackgroundColor" => "#fff",
+                    "pointHoverBorderColor" => "rgba(220,220,220,1)",
+                    'data' => array_reverse($salesBillTotal),
+                ],
+                [
+                    "label" => "Payment",
+                    'backgroundColor' => "rgba(149, 159, 196, 0.31)",
+                    'borderColor' => "rgba(149, 159, 196, 0.7)",
+                    "pointBorderColor" => "rgba(38, 185, 154, 0.7)",
+                    "pointBackgroundColor" => "rgba(38, 185, 154, 0.7)",
+                    "pointHoverBackgroundColor" => "#fff",
+                    "pointHoverBorderColor" => "rgba(220,220,220,1)",
+                    'data' => array_reverse($salesBillPayment),
+                ],
+                [
+                    "label" => "Due",
+                    'backgroundColor' => "rgba(230, 147, 115, 0.31)",
+                    'borderColor' => "rgba(230, 147, 115, 0.7)",
+                    "pointBorderColor" => "rgba(38, 185, 154, 0.7)",
+                    "pointBackgroundColor" => "rgba(38, 185, 154, 0.7)",
+                    "pointHoverBackgroundColor" => "#fff",
+                    "pointHoverBorderColor" => "rgba(220,220,220,1)",
+                    'data' => array_reverse($salesBillDue),
+                ],
+
+            ])
+            ->options([]);
+
         $j = 1;
         for ($i = 0; $i < 12; $i++) {
             $PurchaseBillNetTotals = $PurchaseBill_obj->whereBetween('order_date', [Carbon::now()->subMonths($j), Carbon::now()->subMonths($i)])->get();
@@ -194,6 +249,6 @@ class HomeController extends Controller
             ])
             ->options([]);
 
-        return view('home', compact('customers', 'dealers', 'totalIncome', 'dueBill', 'totalPurchaseBill', 'duePurchaseBill', 'chartjs', 'PurchaseBillChart', 'barChart'));
+        return view('home', compact('customers', 'dealers', 'totalIncome', 'dueBill', 'totalPurchaseBill', 'duePurchaseBill', 'chartjs', 'PurchaseBillChart', 'barChart','salesBillChart'));
     }
 }

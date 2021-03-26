@@ -55,6 +55,16 @@ Dashboard
         </div>
         <div class="col-md-12 mb-2">
             <div class="card">
+                <div class="card-header">{{ __('Monthely Sales') }}</div>
+                <div class="card-body">
+                    <div style="width:100%;">
+                        {!! $salesBillChart->render() !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mb-2">
+            <div class="card">
                 <div class="card-header">{{ __('Monthely Purchase') }}</div>
                 <div class="card-body">
                     <div style="width:100%;">
