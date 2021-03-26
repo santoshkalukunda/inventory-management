@@ -213,21 +213,24 @@ class HomeController extends Controller
 
         $j = 1;
         for ($i = 0; $i < 5; $i++) {
-            $PurchaseBillNetTotals = $PurchaseBill_obj->whereBetween('order_date', [Carbon::now()->subYears($j), Carbon::now()->subYears($i)])->get();
-            $billNetTotals = $bill_obj->where('status', 'complete')->whereBetween('date', [Carbon::now()->subYears($j), Carbon::now()->subYears($i)])->get();
+            $date1[$i] = Carbon::now()->subYears($i);
+            $date2[$i] = Carbon::now()->addYears($j);
+            $PurchaseBillNetTotals [$i] = $PurchaseBill_obj->whereBetween('order_date', [date("Y", strtotime($date1[$i])), date("Y", strtotime($date2[$i]))])->get();
+            $billNetTotals[$i] = $bill_obj->where('status', 'complete')->whereBetween('date', [date("Y", strtotime($date1[$i])), date("Y", strtotime($date2[$i]))])->get();
 
-            $j++;
+            $j--;
             $years[$i] = today()->subYears($i);
             $years[$i] = date("Y", strtotime($years[$i]));
             $billTotalYear[$i] = 0;
             
-            foreach ($billNetTotals as $netTotal) {
+            foreach ($billNetTotals[$i] as $netTotal) {
                 $billTotalYear[$i] = $billTotalYear[$i] + $netTotal->net_total;
             }
             $PurchaseBillTotalYear[$i] = 0;
-            foreach ($PurchaseBillNetTotals as $netTotal) {
+            foreach ($PurchaseBillNetTotals[$i] as $netTotal) {
                 $PurchaseBillTotalYear[$i] = $PurchaseBillTotalYear[$i] + $netTotal->total;
             }
+       
         }
 
         $barChart = app()->chartjs
