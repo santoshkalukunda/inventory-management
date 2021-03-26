@@ -123,7 +123,7 @@ class HomeController extends Controller
             ->labels(array_reverse($months))
             ->datasets([
                 [
-                    "label" => "Total PurchaseBill",
+                    "label" => "Total SalesBill",
                     'backgroundColor' => "rgba(38, 185, 154, 0.31)",
                     'borderColor' => "rgba(38, 185, 154, 0.7)",
                     "pointBorderColor" => "rgba(38, 185, 154, 0.7)",
@@ -237,7 +237,7 @@ class HomeController extends Controller
             ->labels(array_reverse($years))
             ->datasets([
                 [
-                    "label" => "PurchaseBill",
+                    "label" => "Purchase",
                     'backgroundColor' => ['rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)'],
                     'data' => array_reverse($PurchaseBillTotalYear)  
                 ],
