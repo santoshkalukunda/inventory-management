@@ -56,6 +56,12 @@ Bill Create
                     <a href="{{route('bills.pdf',$bill)}}" target="_blank"
                         class="btn btn-success form-control btn-rounded"><i class="fa fa-print"></i> Invoice Print</a>
                 </div>
+                @if ($bill->remarks)
+                <label for="" class="font-bold">Remarks</label>
+                <div class="col-md-12 text-left" style="height:80px; border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+                    {!! $bill->remarks !!}
+                </div>
+                @endif
                 @else
                 <div class="bg-danger text-capitalize text-white">{{$bill->status}}</div>
                 @endif
@@ -202,6 +208,17 @@ Bill Create
                                 class="form-control text-right @error('due') is-invalid @enderror" name="due"
                                 value="{{old('due')}}" id="due" placeholder="Due Amount">
                             @error('due')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                        <div class="form-group col-md-7">
+                            <label for="remarks">Remarks</label>
+                            <textarea type="text"  name="remarks"
+                                class="form-control  @error('remarks') is-invalid @enderror"
+                            rows="2" placeholder="write somthing...">{{old('remarks')}}</textarea>
+                            @error('remarks')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>

@@ -26,8 +26,12 @@ class BillRequest extends FormRequest
         return [
             'date' => 'required',
             'payment' => 'required|numeric',
+            'total' => 'required|numeric',
+            "discount" => 'nullable|numerik',
+            "vat" => 'nullable|numerik',
             'net_total' => 'required|numeric',
             'due' => 'required|numeric',
+            'remarks' => 'nullable',
         ];
     }
 }

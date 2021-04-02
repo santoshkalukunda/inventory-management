@@ -123,6 +123,7 @@ class BillController extends Controller
             'due' => $due,
             'status' => 'complete',
             'user_id' => Auth::user()->id,
+            'remarks' => $request->remarks,
         ]);
         $bill->sale()->update([
             'date' => $request->date,
