@@ -103,6 +103,8 @@ Route::group(['middleware' => ['role:admin']], function () {
     //store route
     Route::get('stores', [StoreController::class, 'index'])->name('stores.index');
     Route::get('stores/search', [StoreController::class, 'search'])->name('stores.search');
+    Route::put('stores/{store}', [StoreController::class, 'update'])->name('stores.update');
+
 
     //saledeu
     Route::get('sale-dues', [SaleDueController::class, 'index'])->name('sale-dues.index');

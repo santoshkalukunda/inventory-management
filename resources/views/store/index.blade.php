@@ -63,8 +63,8 @@ Inventories Product List
                             </div>
                             <div class="col-md-2 form-group">
                                 <label for="batch_no">Batch No.</label>
-                                <input type="text" class="form-control @error('batch_no') is-invalid @enderror" name="batch_no"
-                                    id="batch_no" placeholder="Batch No.">
+                                <input type="text" class="form-control @error('batch_no') is-invalid @enderror"
+                                    name="batch_no" id="batch_no" placeholder="Batch No.">
                             </div>
                             <div class="col-md-3 form-group">
                                 <label for="mf_date_from">Manufacture Date From</label>
@@ -124,43 +124,50 @@ Inventories Product List
                                 <th>Manufacture_date</th>
                                 <th>Expiry_date</th>
                                 <th>MRP</th>
-                                {{-- <th>Action</th> --}}
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($stores as $store)
                             @php
                             $color ="";
-                            if( $store->exp_date && $store->exp_date < date('Y-m-d')){
-                                $color = "table-danger";
-                            }
-                            elseif ($store->exp_date &&  $store->exp_date <= now()->addDays(30)) {
-                                $color = "table-warning";
-                            }
-                            else {
-                                $color = "";
-                            }  
-                            @endphp
-                            <tr style="white-space:nowrap;" class="{{$color}}">
-                                <td>
-                                    {{$store->product->code}}<br>
-                                    <b>{{$store->product->name}}</b> <br>
-                                    {{$store->product->category->name}} <br>
-                                    {{$store->product->brand->name}} <br>
-                                    {{$store->product->model_no}}
-                                </td>
-                                <td class="text-right">{{$store->quantity}} {{$store->unit->name}}</td>
-                                <td class=" text-center">{{$store->batch_no}}</td>
-                                <td>{{$store->mf_date}}</td>
-                                <td>{{$store->exp_date}}</td>
-                                <td class="text-right">{{$store->mrp}}</td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="40" class="text-danger text-center"><span>OOPS!! data Not Found !!!</span>
-                                </td>
-                            </tr>
-                            @endforelse
+                            if( $store->exp_date && $store->exp_date < date('Y-m-d')){ $color="table-danger" ; } elseif
+                                ($store->exp_date && $store->exp_date <= now()->addDays(30)) {
+                                    $color = "table-warning";
+                                    }
+                                    else {
+                                    $color = "";
+                                    }
+                                    @endphp
+                                    <tr style="white-space:nowrap;" class="{{$color}}">
+                                        <td>
+                                            {{$store->product->code}}<br>
+                                            <b>{{$store->product->name}}</b> <br>
+                                            {{$store->product->category->name}} <br>
+                                            {{$store->product->brand->name}} <br>
+                                            {{$store->product->model_no}}
+                                        </td>
+                                        <td class="text-right">{{$store->quantity}} {{$store->unit->name}}</td>
+                                        <td class=" text-center">{{$store->batch_no}}</td>
+                                        <td>{{$store->mf_date}}</td>
+                                        <td>{{$store->exp_date}}</td>
+                                        <td class="text-right">{{$store->mrp}}</td>
+                                        <td>
+                                                <!-- Button trigger modal -->
+                                                <button type="button" class="btn btn-primary fa fa-edit" data-toggle="modal"
+                                                    data-target="#staticBackdrop-{{$store->id}}" data-placement="top" title="Edit MRP">
+                                                </button>
+                                          
+                                            @include('modal.mrp-edit')
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="40" class="text-danger text-center"><span>OOPS!! data Not Found
+                                                !!!</span>
+                                        </td>
+                                    </tr>
+                                    @endforelse
                         </tbody>
                     </table>
                 </div>

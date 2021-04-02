@@ -85,7 +85,13 @@ class StoreController extends Controller
      */
     public function update(Request $request, Store $store)
     {
-        //
+        $validatedData = $request->validate([
+            'mrp' => 'required|min:0',
+        ]);
+        $store->update([
+            'mrp' => $validatedData['mrp'],
+        ]);
+        return redirect()->back()->with('success', "MRP updated Successfull");
     }
 
     /**
