@@ -199,6 +199,8 @@ Route::group(['middleware' => ['role:user|admin']], function () {
     Route::get('purchases/{dealer}/show', [PurchaseController::class, 'show'])->name('purchase.show');
     Route::post('purchases/find', [PurchaseController::class, 'find'])->name('purchase.find');
     Route::get('purchases/search', [PurchaseController::class, 'search'])->name('purchase.search');
+    Route::get('purchases/report', [PurchaseController::class, 'report'])->name('purchase.report');
+
 
     //customers route
     Route::post('customers/find', [CustomerController::class, 'find'])->name('customers.find');
@@ -228,6 +230,8 @@ Route::group(['middleware' => ['role:user|admin']], function () {
     Route::post('sales/store/{bill}', [SaleController::class, 'store'])->name('sales.store');
     Route::delete('sales/{sale}', [SaleController::class, 'destroy'])->name('sales.destroy');
     Route::get('sales/search', [SaleController::class, 'search'])->name('sales.search');
+    Route::get('sales/report', [SaleController::class, 'report'])->name('sales.report');
+
 
 
     //store route
@@ -251,6 +255,7 @@ Route::group(['middleware' => ['role:user|admin']], function () {
 
     //route purchaceBill
     Route::get('purchase-bills/search', [PurchaseBillController::class, 'search'])->name('purchase-bills.search');
+    Route::get('purchase-bills/report', [PurchaseBillController::class, 'report'])->name('purchase-bills.report');
     Route::get('purchase-bills/{dealer}', [PurchaseBillController::class, 'store'])->name('purchase-bills.store');
     Route::get('purchase-bills/create/{purchaseBill}', [PurchaseBillController::class, 'create'])->name('purchase-bills.create');
     Route::put('purchase-bills/{purchaseBill}', [PurchaseBillController::class, 'update'])->name('purchase-bills.update');
