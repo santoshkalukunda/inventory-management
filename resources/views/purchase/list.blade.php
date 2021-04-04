@@ -7,6 +7,7 @@
         <div class="table-responsive">
             <table class="table-hover table table-bordered">
                 <tr class="text-center bg-light">
+                    <th>Bill</th>
                     <th>Dealer</th>
                     <th>Product</th>
                     <th>Batch_No.</th>
@@ -22,6 +23,11 @@
                 </tr>
                 @forelse ($purchases as $purchase)
                 <tr style="white-space:nowrap;" class="{{$purchase->purchaseBill->status == "incomplete" ? "table-warning" : ""}}">
+                   <td>
+                     <b>Bill No.</b> {{$purchase->purchaseBill->bill_no}} <br>
+                     <b>Order date</b> {{$purchase->purchaseBill->order_date}} <br>
+                     <b>Shipping Date</b> {{$purchase->purchaseBill->shipping_date}}
+                    </td>
                     <td>
                         <a href="{{route('purchase.show',$purchase->dealer_id)}}"
                             class="font-14"><b>{{$purchase->dealer->name}}</b></a>

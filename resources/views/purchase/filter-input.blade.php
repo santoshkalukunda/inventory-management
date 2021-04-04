@@ -13,6 +13,19 @@
         </select>
     </div>
     <div class="col-md-3 form-group">
+        <label for="purchaseBill_id">Purchase Bill No.</label>br
+        <select class="selectpicker form-control @error('purchaseBill_id') is-invalid @enderror" name="purchaseBill_id" id="product"
+            data-live-search="true" data-size="4">
+            <option value="" selected>Select Purchase Bill No.</option>
+            @foreach ($purchaseBills as $purchaseBill)
+            <option value="{{$purchaseBill->id}}" data-content="<b>{{$purchaseBill->bill_no}}</b>
+                <br>OD- {{$purchaseBill->order_date}}
+                <br>SD-{{$purchaseBill->shipping_date}}
+                "></option>
+            @endforeach
+        </select>
+    </div>
+    <div class="col-md-3 form-group">
         <label for="product_id">Product Name</label>
         <select class="selectpicker form-control @error('product_id') is-invalid @enderror" name="product_id"
             id="product" data-live-search="true" data-size="4">

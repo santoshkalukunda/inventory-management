@@ -32,14 +32,15 @@ class PurchaseController extends Controller
         $units = Unit::orderBy('name')->get();
         $dealers = Dealer::orderBy('name')->get();
         $purchases = Purchase::with('dealer', 'product', 'category', 'brand', 'unit')->get();
+        $purchaseBills =  PurchaseBill::get();
         $total = 0;
         $quantity = 0;
         foreach ($purchases as $purchase) {
             $total = $total + $purchase->total;
             $quantity = $quantity + $purchase->quantity;
         }
-        $purchases = Purchase::with('dealer', 'product', 'category', 'brand', 'unit')->latest()->paginate(200);
-        return view('purchase.index', compact('purchases', 'dealers', 'products', 'categories', 'brands', 'units', 'total', 'quantity'));
+        $purchases = Purchase::with('dealer', 'product', 'category', 'brand', 'unit','purchaseBill')->latest()->paginate(200);
+        return view('purchase.index', compact('purchases', 'dealers', 'products', 'categories', 'brands', 'units', 'total', 'quantity','purchaseBills'));
     }
 
     /**
@@ -248,6 +249,10 @@ class PurchaseController extends Controller
             if ($request->dealer_id != null)
                 $purchases = $purchases->where('dealer_id', ["$request->dealer_id"]);
         }
+        if ($request->has('purchaseBill_id')) {
+            if ($request->purchaseBill_id != null)
+                $purchases = $purchases->where('purchase_bill_id', ["$request->purchaseBill_id"]);
+        }
         if ($request->has('product_id')) {
             if ($request->product_id != null)
                 $purchases = $purchases->where('product_id', ["$request->product_id"]);
@@ -302,7 +307,7 @@ class PurchaseController extends Controller
                 $query->where('mrp', '<=', (int)$request->mrp_max);
             });
 
-        $purchases = $purchases->with('dealer', 'product', 'category', 'brand', 'unit')->paginate(10000);
+        $purchases = $purchases->with('dealer', 'product', 'category', 'brand', 'unit','purchaseBill')->paginate(10000);
         $total = 0;
         $quantity = 0;
         foreach ($purchases as $purchase) {
@@ -314,7 +319,8 @@ class PurchaseController extends Controller
         $brands = Brand::orderBy('name')->get();
         $units = Unit::orderBy('name')->get();
         $dealers = Dealer::orderBy('name')->get();
-        return view('purchase.index', compact('purchases', 'dealers', 'products', 'categories', 'brands', 'units', 'total', 'quantity'));
+        $purchaseBills =  PurchaseBill::get();
+        return view('purchase.index', compact('purchases','purchaseBills', 'dealers', 'products', 'categories', 'brands', 'units', 'total', 'quantity'));
     }
 
     public function report(Request $request)
@@ -324,6 +330,10 @@ class PurchaseController extends Controller
         if ($request->has('dealer_id')) {
             if ($request->dealer_id != null)
                 $purchases = $purchases->where('dealer_id', ["$request->dealer_id"]);
+        }
+        if ($request->has('purchaseBill_id')) {
+            if ($request->purchaseBill_id != null)
+                $purchases = $purchases->where('purchase_bill_id', ["$request->purchaseBill_id"]);
         }
         if ($request->has('product_id')) {
             if ($request->product_id != null)
@@ -379,7 +389,7 @@ class PurchaseController extends Controller
                 $query->where('mrp', '<=', (int)$request->mrp_max);
             });
 
-        $purchases = $purchases->with('dealer', 'product', 'category', 'brand', 'unit')->get();
+        $purchases = $purchases->with('dealer', 'product', 'category', 'brand', 'unit','purchaseBill')->get();
         $total = 0;
         $quantity = 0;
         foreach ($purchases as $purchase) {
