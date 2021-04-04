@@ -13,7 +13,7 @@
         </select>
     </div>
     <div class="col-md-3 form-group">
-        <label for="purchaseBill_id">Purchase Bill No.</label>br
+        <label for="purchaseBill_id">Purchase Bill No.</label>
         <select class="selectpicker form-control @error('purchaseBill_id') is-invalid @enderror" name="purchaseBill_id" id="product"
             data-live-search="true" data-size="4">
             <option value="" selected>Select Purchase Bill No.</option>
