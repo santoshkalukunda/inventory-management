@@ -69,6 +69,7 @@ Route::group(['middleware' => ['role:admin']], function () {
     // Route::put('purchase/{purchase}', [PurchaseController::class, 'update'])->name('purchase.update');
     Route::post('purchases/find', [PurchaseController::class, 'find'])->name('purchase.find');
     Route::get('purchases/search', [PurchaseController::class, 'search'])->name('purchase.search');
+    Route::get('purchases/report', [PurchaseController::class, 'report'])->name('purchase.report');
 
     //PDF
     Route::get('purchase/pdf', [PurchaseController::class, 'pdf'])->name('purchase.pdf');
@@ -83,6 +84,7 @@ Route::group(['middleware' => ['role:admin']], function () {
     //bill route
     Route::get('bills', [BillController::class, 'index'])->name('bills.index');
     Route::get('bills/search', [BillController::class, 'search'])->name('bills.search');
+    Route::get('bills/report', [BillController::class, 'report'])->name('bills.report');
     Route::get('bills/create/{bill}', [BillController::class, 'create'])->name('bills.create');
     Route::put('bills/{bill}', [BillController::class, 'update'])->name('bills.update');
     Route::delete('bills/{bill}', [BillController::class, 'destroy'])->name('bills.destroy');
@@ -98,11 +100,13 @@ Route::group(['middleware' => ['role:admin']], function () {
     // Route::get('sales/{sale}',[SaleController::class,'edit'])->name('sales.edit');
     Route::put('sales/{sale}', [SaleController::class, 'update'])->name('sales.update');
     Route::get('sales/search', [SaleController::class, 'search'])->name('sales.search');
+    Route::get('sales/report', [SaleController::class, 'report'])->name('sales.report');
 
 
     //store route
     Route::get('stores', [StoreController::class, 'index'])->name('stores.index');
     Route::get('stores/search', [StoreController::class, 'search'])->name('stores.search');
+    Route::get('stores/pdf', [StoreController::class, 'pdf'])->name('stores.pdf');
     Route::put('stores/{store}', [StoreController::class, 'update'])->name('stores.update');
 
 
@@ -136,6 +140,7 @@ Route::group(['middleware' => ['role:admin']], function () {
 
     //route purchaceBill
     Route::get('purchase-bills/search', [PurchaseBillController::class, 'search'])->name('purchase-bills.search');
+    Route::get('purchase-bills/report', [PurchaseBillController::class, 'report'])->name('purchase-bills.report');
     Route::get('purchase-bills/{dealer}', [PurchaseBillController::class, 'store'])->name('purchase-bills.store');
     Route::get('purchase-bills/create/{purchaseBill}', [PurchaseBillController::class, 'create'])->name('purchase-bills.create');
     Route::put('purchase-bills/{purchaseBill}', [PurchaseBillController::class, 'update'])->name('purchase-bills.update');
@@ -209,6 +214,7 @@ Route::group(['middleware' => ['role:user|admin']], function () {
     //bill route
     Route::get('bills', [BillController::class, 'index'])->name('bills.index');
     Route::get('bills/search', [BillController::class, 'search'])->name('bills.search');
+    Route::get('bills/report', [BillController::class, 'report'])->name('bills.report');
     Route::get('bills/create/{bill}', [BillController::class, 'create'])->name('bills.create');
     Route::put('bills/{bill}', [BillController::class, 'update'])->name('bills.update');
     Route::delete('bills/{bill}', [BillController::class, 'destroy'])->name('bills.destroy');
@@ -226,6 +232,7 @@ Route::group(['middleware' => ['role:user|admin']], function () {
 
     //store route
     Route::get('stores', [StoreController::class, 'index'])->name('stores.index');
+    Route::get('stores/pdf', [StoreController::class, 'pdf'])->name('stores.pdf');
     Route::get('stores/search', [StoreController::class, 'search'])->name('stores.search');
 
     //saledeu

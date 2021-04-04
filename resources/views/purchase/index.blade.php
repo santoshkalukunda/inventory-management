@@ -25,22 +25,75 @@ Purchase List
         </button>
     </div>
     @include('modal.purchase-modal')
-    <div class="col-md-1 form-group">
-        <button class="btn btn-primary" data-toggle="collapse" href="#filter" role="button" aria-expanded="false"
-            aria-controls="filter">
-            <i class="fa fa-filter"></i> Filter
-        </button>
+    <div class="col-md-1">
+        <p>
+            <a class="btn btn-primary" onclick="btn1()" data-toggle="collapse" href="#filter" role="button"
+                aria-expanded="false" aria-controls="filter">
+                <i class="fa fa-filter"></i> Filter
+            </a>
+        </p>
     </div>
-    <div class="col-md-9 form-group text-right">
+    <div class="col-md-1">
+        <p>
+            <a class="btn btn-primary" onclick="btn2()" data-toggle="collapse" href="#report" role="button"
+                aria-expanded="false" aria-controls="report">
+                <i class="fa fa-file-pdf"></i> Reports
+            </a>
+        </p>
+    </div>
+    <div class="col-md-8 form-group text-right">
         <span class="bg-blue-light p-2"><b>Total Product: </b>{{$quantity}}</span>
         <span class="bg-blue-light p-2"><b>Total Amount: </b>{{$total}}/-</span>
-        <span class="bg-blue-light p-2"><b>Payment :</b> {{$payment}}/-</span>
-        <span class="bg-blue-light p-2"> <b>Due :</b> {{$due}}/-</span>
     </div>
 
 </div>
-@include('purchase.filter-input')
+<div class="col-md-12 mb-2">
+    {{-- filter-search --}}
+    <div class="mb-2" id="demo">
+        <div class="collapse" id="filter">
+            <div class="card card-body">
+                <form action="{{route('purchase.search')}}" method="get">
+                    @include('purchase.filter-input')
+                    <div class="row">
+                        <div class="col-md-2">
+                            <input type="submit" class="form-control btn- btn-primary" value="Search">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="mb-2" id="demo1">
+        {{-- report-generate --}}
+        <div class="collapse" id="report">
+            <div class="card card-body">
+                <form action="{{route('purchase.report')}}" method="get">
+                    @include('purchase.filter-input')
+                    <div class="row">
+                        <div class="col-md-2">
+                            <input type="submit" class="form-control btn- btn-primary" value="Download PDF">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="col-md-12 justify-content-center">
     @include('purchase.list')
 </div>
+<script>
+    function btn1() {
+      var x = document.getElementById("demo1");
+      x.style.display = "none";
+      var x = document.getElementById("demo");
+      x.style.display = "block";
+    }
+    function btn2() {
+      var x = document.getElementById("demo");
+      x.style.display = "none";
+      var x = document.getElementById("demo1");
+      x.style.display = "block";
+    }
+</script>
 @endsection

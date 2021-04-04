@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SaleRequest;
 use App\Models\Bill;
+use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Sale;
 use App\Models\Store;
 use App\Models\Unit;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 
 
@@ -240,5 +242,82 @@ class SaleController extends Controller
             $quantity=$quantity+$sale->quantity;
             }
             return view('sale.index',compact('sales','customers','stores','units','total','due','payment','quantity')); 
+    }
+    public function report(Request $request){
+      
+        $sales = new Sale;
+        if ($request->has('customer_id')) {
+            if ($request->customer_id != null)
+                $sales = $sales->where('customer_id', ["$request->customer_id"]);
+        }
+        if ($request->has('store_id')) {
+            if ($request->store_id != null)
+                $sales = $sales->where('store_id', ["$request->store_id"]);
+        }
+        if ($request->has('bill_date_from')) {
+            if ($request->bill_date_from != null && $request->bill_date_to != null)
+                $sales = $sales->whereBetween('date', [$request->bill_date_from, $request->bill_date_to]);
+        }
+        $sales = $sales->when($request->has('invoice_no_min') && !is_null($request->invoice_no_min), function ($query) use ($request) {
+            $query->where('invoice_no', '>=', $request->invoice_no_min);
+        })
+            ->when($request->has('invoice_no_max') && !is_null($request->invoice_no_max), function ($query) use ($request) {
+                $query->where('invoice_no', '<=', (int)$request->invoice_no_max);
+            });
+        $sales = $sales->when($request->has('quantity_min') && !is_null($request->quantity_min), function ($query) use ($request) {
+            $query->where('quantity', '>=', $request->quantity_min);
+        })
+            ->when($request->has('quantity_max') && !is_null($request->quantity_max), function ($query) use ($request) {
+                $query->where('quantity', '<=', (int)$request->quantity_max);
+            });
+
+        if ($request->has('unit_id')) {
+            if ($request->unit_id != null)
+                $sales = $sales->where('unit_id', "$request->unit_id");
+        }
+        $sales = $sales->when($request->has('rate_min') && !is_null($request->rate_min), function ($query) use ($request) {
+            $query->where('rate', '>=', $request->rate_min);
+        })
+            ->when($request->has('rate_max') && !is_null($request->rate_max), function ($query) use ($request) {
+                $query->where('rate', '<=', (int)$request->rate_max);
+            });
+            $sales = $sales->when($request->has('total_cost_min') && !is_null($request->total_cost_min), function ($query) use ($request) {
+                $query->where('total_cost', '>=', $request->total_cost_min);
+            })
+                ->when($request->has('total_cost_max') && !is_null($request->total_cost_max), function ($query) use ($request) {
+                    $query->where('total_cost', '<=', (int)$request->total_cost_max);
+                });
+        $sales = $sales->when($request->has('discount_min') && !is_null($request->discount_min), function ($query) use ($request) {
+            $query->where('discount', '>=', $request->discount_min);
+        })
+            ->when($request->has('discount_max') && !is_null($request->discount_max), function ($query) use ($request) {
+                $query->where('discount', '<=', (int)$request->discount_max);
+            });
+        $sales = $sales->when($request->has('vat_min') && !is_null($request->vat_min), function ($query) use ($request) {
+            $query->where('vat', '>=', $request->vat_min);
+        })
+            ->when($request->has('vat_max') && !is_null($request->vat_max), function ($query) use ($request) {
+                $query->where('vat', '<=', (int)$request->vat_max);
+            });
+
+        $sales = $sales->when($request->has('total_min') && !is_null($request->total_min), function ($query) use ($request) {
+            $query->where('total', '>=', $request->total_min);
+        })
+            ->when($request->has('total_max') && !is_null($request->total_max), function ($query) use ($request) {
+                $query->where('total', '<=', (int)$request->total_max);
+            });
+
+            $customers = Customer::get();
+            $stores = Store::get();
+            $units = Unit::get();
+            $sales = $sales->with('customer','store','bill','unit')->get();
+            $total=0;
+            foreach($sales as $sale)
+            {
+            $total=$total+$sale->total;
+            }
+            $company = Company::findOrFail(1);
+        $pdf = PDF::loadView('pdf.sale-list-pdf', compact('sales', 'company','total'));
+        return $pdf->setPaper('A4','landscape')->stream("sale-" . now() . ".pdf");
     }
 }

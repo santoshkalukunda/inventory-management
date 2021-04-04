@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PurchaseBillRequest;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Company;
 use App\Models\Dealer;
 use App\Models\Product;
 use App\Models\Purchase;
@@ -15,6 +16,8 @@ use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade as PDF;
+
 
 class PurchaseBillController extends Controller
 {
@@ -238,5 +241,96 @@ class PurchaseBillController extends Controller
             $quantity = $quantity + $purchaseBill->quantity;
         }
         return view('purchase-bill.index', compact('purchaseBills', 'dealers', 'products', 'net_total', 'due', 'payment', 'quantity', 'users'));
+    }
+
+    public function report(Request $request)
+    {
+        $products = Product::with('category', 'brand',)->orderBy('name')->get();
+        $dealers = Dealer::orderBy('name')->get();
+        $users = User::orderBy('name')->get();
+
+        $purchaseBills = new PurchaseBill;
+        if ($request->has('dealer_id')) {
+            if ($request->dealer_id != null)
+                $purchaseBills = $purchaseBills->where('dealer_id', ["$request->dealer_id"]);
+        }
+        if ($request->has('bill_no')) {
+            if ($request->bill_no != null)
+                $purchaseBills = $purchaseBills->where('bill_no', ["$request->bill_no"]);
+        }
+        if ($request->has('status')) {
+            if ($request->status != null)
+                $purchaseBills = $purchaseBills->where('status', ["$request->status"]);
+        }
+        if ($request->has('order_date_from')) {
+            if ($request->order_date_from != null && $request->order_date_to != null)
+                $purchaseBills = $purchaseBills->whereBetween('order_date', [$request->order_date_from, $request->order_date_to]);
+        }
+        if ($request->has('shipping_date_from')) {
+            if ($request->shipping_date_from != null && $request->shipping_date_to != null)
+                $purchaseBills = $purchaseBills->whereBetween('shipping_date', [$request->shipping_date_from, $request->shipping_date_to]);
+        }
+        if ($request->has('mf_date_from')) {
+            if ($request->mf_date_from != null && $request->mf_date_to != null)
+                $purchaseBills = $purchaseBills->whereBetween('mf_date', [$request->mf_date_from, $request->mf_date_to]);
+        }
+        if ($request->has('exp_date_from')) {
+            if ($request->exp_date_from != null && $request->exp_date_to != null)
+                $purchaseBills = $purchaseBills->whereBetween('exp_date', [$request->exp_date_from, $request->exp_date_to]);
+        }
+        $purchaseBills = $purchaseBills->when($request->has('discount_min') && !is_null($request->discount_min), function ($query) use ($request) {
+            $query->where('discount', '>=', $request->discount_min);
+        })
+            ->when($request->has('discount_max') && !is_null($request->discount_max), function ($query) use ($request) {
+                $query->where('discount', '<=', (int)$request->discount_max);
+            });
+        $purchaseBills = $purchaseBills->when($request->has('vat_min') && !is_null($request->vat_min), function ($query) use ($request) {
+            $query->where('vat', '>=', $request->vat_min);
+        })
+            ->when($request->has('vat_max') && !is_null($request->vat_max), function ($query) use ($request) {
+                $query->where('vat', '<=', (int)$request->vat_max);
+            });
+
+        $purchaseBills = $purchaseBills->when($request->has('total_min') && !is_null($request->total_min), function ($query) use ($request) {
+            $query->where('total', '>=', $request->total_min);
+        })
+            ->when($request->has('total_max') && !is_null($request->total_max), function ($query) use ($request) {
+                $query->where('total', '<=', (int)$request->total_max);
+            });
+
+        $purchaseBills = $purchaseBills->when($request->has('net_total_min') && !is_null($request->net_total_min), function ($query) use ($request) {
+            $query->where('net_total', '>=', $request->net_total_min);
+        })
+            ->when($request->has('net_total_max') && !is_null($request->net_total_max), function ($query) use ($request) {
+                $query->where('net_total', '<=', (int)$request->net_total_max);
+            });
+
+        $purchaseBills = $purchaseBills->when($request->has('payment_min') && !is_null($request->payment_min), function ($query) use ($request) {
+            $query->where('payment', '>=', $request->payment_min);
+        })
+            ->when($request->has('payment_max') && !is_null($request->payment_max), function ($query) use ($request) {
+                $query->where('payment', '<=', (int)$request->payment_max);
+            });
+
+        $purchaseBills = $purchaseBills->when($request->has('due_min') && !is_null($request->due_min), function ($query) use ($request) {
+            $query->where('due', '>=', $request->due_min);
+        })
+            ->when($request->has('due_max') && !is_null($request->due_max), function ($query) use ($request) {
+                $query->where('due', '<=', (int)$request->due_max);
+            });
+        $purchaseBills = $purchaseBills->with('dealer', 'user')->get();
+        $net_total = 0;
+        $due = 0;
+        $payment = 0;
+        $quantity = 0;
+        foreach ($purchaseBills as $purchaseBill) {
+            $net_total = $net_total + $purchaseBill->net_total;
+            $due = $due + $purchaseBill->due;
+            $payment = $payment + $purchaseBill->payment;
+            $quantity = $quantity + $purchaseBill->quantity;
+        }
+        $company = Company::findOrFail(1);
+        $pdf = PDF::loadView('pdf.purchase-bill-pdf', compact('purchaseBills', 'company','net_total','due','payment'));
+        return $pdf->setPaper('A4','landscape')->stream("purchaseBills-" . now() . ".pdf");
     }
 }

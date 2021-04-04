@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Company;
 use App\Models\Product;
 use App\Models\Store;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class StoreController extends Controller
 {
@@ -155,4 +157,47 @@ class StoreController extends Controller
             $units = Unit::orderBy('name')->get();
             return view('store.index',compact('stores','categories','products' ,'brands', 'units','quantity','total'));
     }
+
+    public function pdf(Request $request)
+    {
+        $stores=new Store;
+        if ($request->has('product_id')) {
+            if ($request->product_id != null)
+                $stores = $stores->where('product_id', ["$request->product_id"]);
+        }
+        $stores = $stores->when($request->has('quantity_min') && !is_null($request->quantity_min), function ($query) use ($request) {
+            $query->where('quantity', '>=', $request->quantity_min);
+        })
+            ->when($request->has('quantity_max') && !is_null($request->quantity_max), function ($query) use ($request) {
+                $query->where('quantity', '<=', (int)$request->quantity_max);
+            });
+
+        if ($request->has('unit_id')) {
+            if ($request->unit_id != null)
+                $stores = $stores->where('unit_id', "$request->unit_id");
+        }
+        if ($request->has('batch_no')) {
+            if ($request->batch_no != null)
+                $stores = $stores->where('batch_no', ["$request->batch_no"]);
+        }
+        if ($request->has('mf_date_from')) {
+            if ($request->mf_date_from != null && $request->mf_date_to != null)
+                $stores = $stores->whereBetween('mf_date', [$request->mf_date_from, $request->mf_date_to]);
+        }
+        if ($request->has('exp_date_from')) {
+            if ($request->exp_date_from != null && $request->exp_date_to != null)
+                $stores = $stores->whereBetween('exp_date', [$request->exp_date_from, $request->exp_date_to]);
+        }
+
+        $stores = $stores->when($request->has('mrp_min') && !is_null($request->mrp_min), function ($query) use ($request) {
+            $query->where('mrp', '>=', $request->mrp_min);
+        })
+            ->when($request->has('mrp_max') && !is_null($request->mrp_max), function ($query) use ($request) {
+                $query->where('mrp', '<=', (int)$request->mrp_max);
+            });
+            $stores = $stores->with('product', 'category', 'brand', 'unit')->get();
+            $company = Company::findOrFail(1);
+            $pdf = PDF::loadView('pdf.store-pdf',compact('stores','company'));
+            return $pdf->setPaper('A4')->stream("store-".now().".pdf");
+        }
 }
