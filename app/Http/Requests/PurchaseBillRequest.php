@@ -28,6 +28,7 @@ class PurchaseBillRequest extends FormRequest
             'shipping_date' => 'required',
             'bill_no' => 'required|numeric',
             'total' => 'required|numeric',
+            'discount_in' => 'nullable',
             'discount' => 'nullable|numeric',
             'vat' => 'nullable|numeric',
             'net_total' => 'required|numeric',

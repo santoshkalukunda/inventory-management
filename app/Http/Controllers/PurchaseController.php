@@ -67,7 +67,11 @@ class PurchaseController extends Controller
     {
         $data = $request->validated();
         $total = $data['quantity'] * $data['rate'];
-        $total = $total - $total * $data['discount'] / 100;
+        if ($request->discount_in != "fixed") {
+            $total = $total - $total * $data['discount'] / 100;
+        } else {
+            $total = $total -  $data['discount'];
+        }
         $total = $total + $total * $data['vat'] / 100;
         $purchaseBill->purchase()->create([
             'dealer_id' => $purchaseBill->dealer_id,
@@ -78,8 +82,9 @@ class PurchaseController extends Controller
             'quantity' => $data['quantity'],
             'unit_id' => $data['unit_id'],
             'rate' => $data['rate'],
-            'discount' => $data['discount'] ?? '0',
-            'vat' => $data['vat'] ?? '0',
+            'discount_in' => $data['discount_in'],
+            'discount' => $data['discount'],
+            'vat' => $data['vat'],
             'total' => $total,
             'mrp' => $data['mrp'],
         ]);
@@ -261,6 +266,10 @@ class PurchaseController extends Controller
             if ($request->batch_no != null)
                 $purchases = $purchases->where('batch_no', ["$request->batch_no"]);
         }
+        if ($request->has('discount_in')) {
+            if ($request->discount_in != null)
+                $purchases = $purchases->where('discount_in', ["$request->discount_in"]);
+        }
 
         $purchases = $purchases->when($request->has('quantity_min') && !is_null($request->quantity_min), function ($query) use ($request) {
             $query->where('quantity', '>=', $request->quantity_min);
@@ -343,7 +352,10 @@ class PurchaseController extends Controller
             if ($request->batch_no != null)
                 $purchases = $purchases->where('batch_no', ["$request->batch_no"]);
         }
-
+        if ($request->has('discount_in')) {
+            if ($request->discount_in != null)
+                $purchases = $purchases->where('discount_in', ["$request->discount_in"]);
+        }
         $purchases = $purchases->when($request->has('quantity_min') && !is_null($request->quantity_min), function ($query) use ($request) {
             $query->where('quantity', '>=', $request->quantity_min);
         })

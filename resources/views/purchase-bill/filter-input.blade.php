@@ -56,19 +56,27 @@
         <label for="bill_no">Bill No.</label>
         <input type="number" min="0" class="form-control @error('bill_no') is-invalid @enderror"
             name="bill_no" id="bill_no" placeholder="Bill No." autofocus>
-
     </div>
     <div class="col-md-2 form-group">
-        <label for="discount_min">Discount Min. in %</label>
+        <label for="pdiscount_in" class="required">Discoutn in </label>
+        <select class="form-control" name="discount_in"
+            id="pdiscount_in" >
+            <option value="" >Select In</option>
+            <option value="percent">Percent</option>
+            <option value="fixed">Fixed</option>
+        </select>
+    </div>
+    <div class="col-md-2 form-group">
+        <label for="discount_min">Discount Min.</label>
         <input type="number" Min="0" step="any"
             class="form-control text-right @error('discount_min') is-invalid @enderror"
             name="discount_min" id="discount_min" placeholder="Discount Min.">
     </div>
     <div class="col-md-2 form-group">
-        <label for="discount_max">Discount Max. in%</label>
+        <label for="discount_max">Discount Max.</label>
         <input type="number" min="0" step="any"
             class="form-control text-right @error('discount_max') is-invalid @enderror"
-            name="discount_max" id="discount_max" placeholder="Discount Max in %">
+            name="discount_max" id="discount_max" placeholder="Discount Max.">
     </div>
     <div class="col-md-2 form-group">
         <label for="vat_min">TAX/VAT Min. in%</label>

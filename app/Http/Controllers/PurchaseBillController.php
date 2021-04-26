@@ -120,6 +120,7 @@ class PurchaseBillController extends Controller
             "shipping_date" => $request->shipping_date,
             "bill_no" => $request->bill_no,
             "total" => $request->total,
+            "discount_in" => $request->discount_in,
             "discount" => $request->discount,
             "vat" => $request->vat,
             "net_total" => $request->net_total,
@@ -172,6 +173,10 @@ class PurchaseBillController extends Controller
         if ($request->has('status')) {
             if ($request->status != null)
                 $purchaseBills = $purchaseBills->where('status', ["$request->status"]);
+        }
+        if ($request->has('discount_in')) {
+            if ($request->discount_in != null)
+                $purchaseBills = $purchaseBills->where('discount_in', ["$request->discount_in"]);
         }
         if ($request->has('order_date_from')) {
             if ($request->order_date_from != null && $request->order_date_to != null)
@@ -261,6 +266,10 @@ class PurchaseBillController extends Controller
         if ($request->has('status')) {
             if ($request->status != null)
                 $purchaseBills = $purchaseBills->where('status', ["$request->status"]);
+        }
+        if ($request->has('discount_in')) {
+            if ($request->discount_in != null)
+                $purchaseBills = $purchaseBills->where('discount_in', ["$request->discount_in"]);
         }
         if ($request->has('order_date_from')) {
             if ($request->order_date_from != null && $request->order_date_to != null)

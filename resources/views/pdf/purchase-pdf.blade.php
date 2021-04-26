@@ -68,8 +68,12 @@
                             <td class="text-right">{{$purchase->quantity}}</td>
                             <td>{{$purchase->unit->name}}</td>
                             <td class="text-right">{{number_format((float)$purchase->rate,2,'.', '')}}</td>
-                            <td class="text-right">{{$purchase->discount}}%</td>
-                            <td class="text-right">{{$purchase->vat}}%</td>
+                            <td class="text-right">
+                                @if ($purchase->discount)    
+                                {{$purchase->discount}}{{$purchase->discount_in == "fixed" ? '' : '%'}}
+                                @endif
+                            </td>
+                            <td class="text-right">{{$purchase->vat}}</td>
                             <td class="text-right">{{number_format((float)$purchase->total,2,'.', '')}}</td>
                             <td class="text-right">{{number_format((float)$purchase->payment,2,'.', '')}}</td>
                             <td class="text-right">{{number_format((float)$purchase->due,2,'.', '')}}</td>

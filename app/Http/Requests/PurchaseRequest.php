@@ -31,6 +31,7 @@ class PurchaseRequest extends FormRequest
         'quantity' => 'required|numeric',
         'unit_id' => 'required|exists:units,id',
         'rate'=> 'required|numeric',
+        'discount_in' => 'nullable',
         'discount'=> 'nullable|numeric',
         'vat' => 'nullable|numeric',
         'total' => 'required|numeric',

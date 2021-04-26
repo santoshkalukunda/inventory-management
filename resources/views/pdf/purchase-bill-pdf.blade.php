@@ -133,7 +133,7 @@
                                     <td class="text-right" rowspan="{{$rows}}">{{$purchaseBill->total}}</td>
                                     <td class="text-right" rowspan="{{$rows}}">
                                         @if ($purchaseBill->discount)
-                                        {{$purchaseBill->discount }} {{$purchaseBill->discount_in}}
+                                        {{$purchaseBill->discount }}{{$purchaseBill->discount_in == "fixed" ? '' : "%"}}
                                         @endif
                                     </td>
                                     <td class="text-right" rowspan="{{$rows}}">{{$purchaseBill->vat}}</td>

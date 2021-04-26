@@ -54,11 +54,14 @@ Purchase Bill Create
                 <div class="row  text-center">
                     <div class="col-md-4">
                         <div class="btn btn-primary">Order Date : {{$purchaseBill->order_date}}</div>
-                        <div class="btn btn-primary m-2"><span>PShipping Date :</span> {{$purchaseBill->shipping_date}}</div>
+                        <div class="btn btn-primary m-2"><span>PShipping Date :</span> {{$purchaseBill->shipping_date}}
+                        </div>
                         <div class="btn btn-primary m-2"><span>Bill No. :</span> {{$purchaseBill->bill_no}}</div>
                     </div>
                     <div class="col-md-4">
-                        <div><span class="bg-success text-capitalize px-2 py-1 text-white">{{$purchaseBill->status}}</span></div>
+                        <div><span
+                                class="bg-success text-capitalize px-2 py-1 text-white">{{$purchaseBill->status}}</span>
+                        </div>
                     </div>
                     <div class="col-md-4 text-center">
                         <div class="btn btn-primary">Net-Total : {{$purchaseBill->net_total}}</div>
@@ -130,10 +133,23 @@ Purchase Bill Create
                             @enderror
                         </div>
                         <div class="col-md-2 form-group">
-                            <label for="discount">Discount in %</label>
+                            <label for="pdiscount_in" class="required">Discoutn in </label>
+                            <select class="form-control @error('pdiscount_in') is-invalid @enderror" name="discount_in"
+                                id="pdiscount_in" onchange="funn()">
+                                <option value="percent" selected>Percent %</option>
+                                <option value="fixed">Fixed</option>
+                            </select>
+                            @error('discount_in')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                        <div class="col-md-2 form-group">
+                            <label for="discount">Discount</label>
                             <input type="number" min="0" step="any"
                                 class="form-control text-right @error('discount') is-invalid @enderror" name="discount"
-                                value="{{old('discount')}}" id="pdiscount" placeholder="Discount in %" onkeyup="funn()">
+                                value="{{old('discount')}}" id="pdiscount" placeholder="Discount" onkeyup="funn()">
                             @error('discount')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -200,10 +216,15 @@ Purchase Bill Create
 <script>
     function funn(){
     var total = document.getElementById("ptotal").value;
+    var discount_in = document.getElementById("pdiscount_in").value;
     var discount = document.getElementById("pdiscount").value;
     var vat = document.getElementById("pvat").value;
     var payment = document.getElementById("payment").value;
+    if (discount_in != "fixed") {     
     total = total - ((total * (discount)/100));
+    } else {
+        total = total - discount;
+    }
      var total = total + ((total * (vat)/100));
     document.getElementById("net_total").value = total.toFixed(2);
     document.getElementById("due").value = (total - payment).toFixed(2);
