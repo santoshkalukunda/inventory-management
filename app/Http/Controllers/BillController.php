@@ -116,6 +116,7 @@ class BillController extends Controller
             'invoice_no' => $invoice_no,
             "total" => $request->total,
             "discount" => $request->discount,
+            "discount_in" => $request->discount_in,
             "vat" => $request->vat,
             'net_total' => $request->net_total,
             'payment' => $request->payment,
@@ -185,6 +186,10 @@ class BillController extends Controller
         if ($request->has('status')) {
             if ($request->status != null)
                 $bills = $bills->where('status', ["$request->status"]);
+        }
+        if ($request->has('discount_in')) {
+            if ($request->discount_in != null)
+                $bills = $bills->where('discount_in', ["$request->discount_in"]);
         }
         $bills = $bills->when($request->has('invoice_no_min') && !is_null($request->invoice_no_min), function ($query) use ($request) {
             $query->where('invoice_no', '>=', $request->invoice_no_min);
@@ -275,6 +280,10 @@ class BillController extends Controller
         if ($request->has('status')) {
             if ($request->status != null)
                 $bills = $bills->where('status', ["$request->status"]);
+        }
+        if ($request->has('discount_in')) {
+            if ($request->discount_in != null)
+                $bills = $bills->where('discount_in', ["$request->discount_in"]);
         }
         $bills = $bills->when($request->has('invoice_no_min') && !is_null($request->invoice_no_min), function ($query) use ($request) {
             $query->where('invoice_no', '>=', $request->invoice_no_min);

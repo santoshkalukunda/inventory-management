@@ -142,8 +142,12 @@ Sales List
                             <td class="text-right">{{$sale->quantity}} {{$sale->unit->name}}</td>
                             <td class="text-right">{{number_format((float)$sale->rate,2,'.', '')}}</td>
                             <td class="text-right">{{$sale->quantity * $sale->rate }}</td>
-                            <td class="text-right">{{$sale->discount}}%</td>
-                            <td class="text-right">{{$sale->vat}}%</td>
+                            <td class="text-right">
+                                @if ($sale->discount)    
+                                {{$sale->discount}}{{$sale->discount_in == "fixed" ? '' : '%'}}
+                                @endif
+                            </td>
+                            <td class="text-right">{{$sale->vat}}</td>
                             <td class="text-right">{{number_format((float)$sale->total,2,'.', '')}}</td>
                             <td>
                                 <a href="{{route('bills.create',$sale->bill_id)}}" class="text-muted">

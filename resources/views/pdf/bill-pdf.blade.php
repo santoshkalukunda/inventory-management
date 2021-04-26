@@ -103,7 +103,9 @@
                                     <td>{{$sale->store->product->name}}</td>
                                     <td class="text-right">{{$sale->quantity}} {{$sale->unit->name}}</td>
                                     <td class="text-right">{{$sale->rate}}</td>
-                                    <td class="text-right">{{$sale->discount}}</td>
+                                    <td class="text-right">
+                                        {{$sale->discount}}
+                                    </td>
                                     <td class="text-right">{{$sale->vat}}</td>
                                     <td class="text-right">{{round($sale->total, 2)}}</td>
                                 </tr>

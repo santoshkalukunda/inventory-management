@@ -29,6 +29,7 @@ class SaleRequest extends FormRequest
             'quantity' => 'required|numeric',
             'rate'=> 'required|numeric',
             'discount' => 'nullable|numeric',
+            'discount_in' => 'nullable',
             'vat' => 'nullable|numeric',
         ];
     }

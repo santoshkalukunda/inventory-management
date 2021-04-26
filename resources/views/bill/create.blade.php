@@ -43,12 +43,12 @@ Bill Create
                 @elseif($bill->status=="complete")
                 <span class="bg-success text-capitalize px-2 py-1 text-white">{{$bill->status}}</span>
                 <div class="my-3 row text-center">
-                    <div class="badge-primary p-1 m-1 col-md"> <b>Bill Date: </b> <br> {{$bill->date}} </div> 
-                    <div class="badge-primary  p-1 m-1 col-md"> <b>Invoice No.: </b> <br> {{$bill->invoice_no}} </div> 
-                    <div class="badge-primary p-1 m-1 col-md"> <b>Total: </b><br> {{$bill->total}} </div> 
-                    <div class="badge-primary  p-1 m-1 col-md"> <b>Discount: </b> <br> {{$bill->discount}} </div> 
-                    <div class="badge-primary  p-1 m-1 col-md"> <b>VAT: </b><br> {{$bill->vat}} </div> 
-                     <div class="badge-primary p-1 m-1 col-md"> <b>Net-total : </b><br> {{$bill->net_total}}/-  </div> 
+                    <div class="badge-primary p-1 m-1 col-md"> <b>Bill Date: </b> <br> {{$bill->date}} </div>
+                    <div class="badge-primary  p-1 m-1 col-md"> <b>Invoice No.: </b> <br> {{$bill->invoice_no}} </div>
+                    <div class="badge-primary p-1 m-1 col-md"> <b>Total: </b><br> {{$bill->total}} </div>
+                    <div class="badge-primary  p-1 m-1 col-md"> <b>Discount: </b> <br> {{$bill->discount}} {{$bill->discount_in}} </div>
+                    <div class="badge-primary  p-1 m-1 col-md"> <b>VAT: </b><br> {{$bill->vat}} </div>
+                    <div class="badge-primary p-1 m-1 col-md"> <b>Net-total : </b><br> {{$bill->net_total}}/- </div>
                     <div class="badge-primary  p-1 m-1 col-md"><b>Pay Amount :</b><br> {{$bill->payment}}/- </div>
                     <div class="badge-primary p-1 m-1 col-md"><b>Due :</b><br> {{$bill->due}}</div>
                 </div>
@@ -58,7 +58,8 @@ Bill Create
                 </div>
                 @if ($bill->remarks)
                 <label for="" class="font-bold">Remarks</label>
-                <div class="col-md-12 text-left" style="height:80px; border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+                <div class="col-md-12 text-left"
+                    style="height:80px; border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
                     {!! $bill->remarks !!}
                 </div>
                 @endif
@@ -98,7 +99,11 @@ Bill Create
                         <td class="text-right">{{$sale->quantity}} {{$sale->unit->name}}</td>
                         <td class="text-right">{{$sale->rate}}</td>
                         <td class="text-right">{{$sale->total_cost}}</td>
-                        <td class="text-right">{{$sale->discount}}</td>
+                        <td class="text-right">
+                            @if ($sale->discount)
+                            {{$sale->discount}}{{$sale->discount_in == "fixed" ? '' : '%'}}
+                            @endif
+                        </td>
                         <td class="text-right">{{$sale->vat}}</td>
                         <td class="text-right">{{round($sale->total, 2)}}</td>
                         @if ($bill->status == "incomplete")
@@ -156,10 +161,23 @@ Bill Create
                             @enderror
                         </div>
                         <div class="col-md-2 form-group">
-                            <label for="discount">Discount in %</label>
+                            <label for="pdiscount_in" class="required">Discoutn in </label>
+                            <select class="form-control @error('pdiscount_in') is-invalid @enderror" name="discount_in"
+                                id="pdiscount_in" onchange="funn()">
+                                <option value="percent" selected>Percent</option>
+                                <option value="fixed">Fixed</option>
+                            </select>
+                            @error('discount_in')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                        <div class="col-md-2 form-group">
+                            <label for="discount">Discount</label>
                             <input type="number" min="0" step="any"
                                 class="form-control text-right @error('discount') is-invalid @enderror" name="discount"
-                                value="{{old('discount')}}" id="pdiscount" placeholder="Discount in %" onkeyup="funn()">
+                                value="{{old('discount')}}" id="pdiscount" placeholder="Discount" onkeyup="funn()">
                             @error('discount')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -213,11 +231,11 @@ Bill Create
                             </div>
                             @enderror
                         </div>
-                        <div class="form-group col-md-7">
+                        <div class="form-group col-md-5">
                             <label for="remarks">Remarks</label>
-                            <textarea type="text"  name="remarks"
-                                class="form-control  @error('remarks') is-invalid @enderror"
-                            rows="2" placeholder="write somthing...">{{old('remarks')}}</textarea>
+                            <textarea type="text" name="remarks"
+                                class="form-control  @error('remarks') is-invalid @enderror" rows="2"
+                                placeholder="write somthing...">{{old('remarks')}}</textarea>
                             @error('remarks')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -242,10 +260,15 @@ Bill Create
     function funn(){
     var total = document.getElementById("ptotal").value;
     var discount = document.getElementById("pdiscount").value;
+    var discount_in = document.getElementById("pdiscount_in").value;
     var vat = document.getElementById("pvat").value;
     var payment = document.getElementById("payment").value;
     var net_total = document.getElementById("net_total").value;
+    if (discount_in != "fixed") {     
     total = total - ((total * (discount)/100));
+    } else {
+        total = total - discount;
+    }
      var total = total + ((total * (vat)/100));
     document.getElementById("net_total").value = total.toFixed(2);
     document.getElementById("due").value = (total - payment).toFixed(2);

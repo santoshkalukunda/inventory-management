@@ -41,8 +41,12 @@
                         <span class=""> <br>{{$bill->customer->phone}}</span>
                     </td>
                     <td class="text-right">{{$bill->total}}</td>
-                    <td class="text-right">{{$bill->discount ?? "0" }}%</td>
-                    <td class="text-right">{{$bill->vat ?? "0"}}%</td>
+                    <td class="text-right">
+                        @if ($bill->discount)
+                        {{$bill->discount }} {{$bill->discount_in == "fixed" ? '' : "%"}}
+                        @endif
+                     </td>
+                    <td class="text-right">{{$bill->vat}}</td>
                     <td class="text-right">{{$bill->net_total}}</td>
                     <td class="text-right">{{$bill->payment}}</td>
                     <td class="text-right">{{$bill->due}}</td>

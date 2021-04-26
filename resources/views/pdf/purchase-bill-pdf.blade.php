@@ -73,8 +73,8 @@
                                     <th rowspan="2">Dealer</th>
                                     <th colspan="4">Product</th>
                                     <th rowspan="2">Total</th>
-                                    <th rowspan="2">Disc. %</th>
-                                    <th rowspan="2">VAT %</th>
+                                    <th rowspan="2">Disc.</th>
+                                    <th rowspan="2">VAT</th>
                                     <th rowspan="2">Net_Total</th>
                                     <th rowspan="2">Payment</th>
                                     <th rowspan="2">Due</th>
@@ -131,7 +131,11 @@
                                     <td></td>
                                     @endif
                                     <td class="text-right" rowspan="{{$rows}}">{{$purchaseBill->total}}</td>
-                                    <td class="text-right" rowspan="{{$rows}}">{{$purchaseBill->discount  }}</td>
+                                    <td class="text-right" rowspan="{{$rows}}">
+                                        @if ($purchaseBill->discount)
+                                        {{$purchaseBill->discount }} {{$purchaseBill->discount_in}}
+                                        @endif
+                                    </td>
                                     <td class="text-right" rowspan="{{$rows}}">{{$purchaseBill->vat}}</td>
                                     <td class="text-right" rowspan="{{$rows}}">{{$purchaseBill->net_total}}</td>
                                     <td class="text-right" rowspan="{{$rows}}">{{$purchaseBill->payment}}</td>

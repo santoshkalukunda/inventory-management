@@ -22,21 +22,20 @@ class SaleController extends Controller
      */
     public function index()
     {
-        $sales=Sale::get();
-        $total=0;
-        $due=0;
-        $payment=0;
-        $quantity=0;
-        foreach($sales as $sale)
-        {
-        $total=$total+$sale->total;
-        $quantity=$quantity+$sale->quantity;
+        $sales = Sale::get();
+        $total = 0;
+        $due = 0;
+        $payment = 0;
+        $quantity = 0;
+        foreach ($sales as $sale) {
+            $total = $total + $sale->total;
+            $quantity = $quantity + $sale->quantity;
         }
         $customers = Customer::get();
         $stores = Store::get();
         $units = Unit::get();
-        $sales=Sale::with('customer','store','bill','unit')->latest()->paginate(500);
-        return view('sale.index',compact('sales','customers','stores','units','total','due','payment','quantity'));
+        $sales = Sale::with('customer', 'store', 'bill', 'unit')->latest()->paginate(500);
+        return view('sale.index', compact('sales', 'customers', 'stores', 'units', 'total', 'due', 'payment', 'quantity'));
     }
 
     /**
@@ -59,7 +58,11 @@ class SaleController extends Controller
         $store = Store::where('id', $request->store_id)->where('id', $request->store_id)->first();
         if ($store->quantity >= $request->quantity) {
             $total_cost = $request->quantity * $request->rate;
-            $total =  $total_cost -  ($total_cost * ($request->discount / 100));
+            if ($request->discount_in != "fixed") {
+                $total =  $total_cost -  ($total_cost * ($request->discount / 100));
+            } else {
+                $total =  $total_cost -  $request->discount;
+            }
             $total = $total + ($total * ($request->vat / 100));
             $bill->sale()->create([
                 'customer_id' => $bill->customer_id,
@@ -69,6 +72,7 @@ class SaleController extends Controller
                 'rate' => $request->rate,
                 'total_cost' => $total_cost,
                 'discount' => $request->discount,
+                'discount_in' => $request->discount_in,
                 'vat' => $request->vat,
                 'total' => $total,
             ]);
@@ -116,11 +120,11 @@ class SaleController extends Controller
         $request->validate([
             'unit_id' => 'required|exists:units,id',
             'quantity' => 'required|numeric',
-            'rate'=> 'required|numeric',
+            'rate' => 'required|numeric',
             'discount' => 'nullable|numeric',
             'vat' => 'nullable|numeric',
         ]);
-        
+
         $store = Store::where('id', $sale->store_id)->first();
 
         if ($store->quantity >= $request->quantity) {
@@ -129,7 +133,7 @@ class SaleController extends Controller
             $total = $total + ($total * ($request->vat / 100));
 
             $store->update([
-                'quantity' => $store->quantity + $sale->quantity - $request->quantity,   
+                'quantity' => $store->quantity + $sale->quantity - $request->quantity,
             ]);
 
             $sale->update([
@@ -140,9 +144,9 @@ class SaleController extends Controller
                 'vat' => $request->vat,
                 'total' => $total,
             ]);
-            $customer = Customer::where('id',$sale->customer_id)->first();
-            $bill = Bill::where('id',$sale->bill_id)->first();
-            return redirect()->route('bills.create', compact('customer','bill'))->with('success', "Product Updated Success");
+            $customer = Customer::where('id', $sale->customer_id)->first();
+            $bill = Bill::where('id', $sale->bill_id)->first();
+            return redirect()->route('bills.create', compact('customer', 'bill'))->with('success', "Product Updated Success");
         } else {
             return redirect()->back()->with('error', "Product quantity not enough");
         }
@@ -164,8 +168,9 @@ class SaleController extends Controller
         return redirect()->back()->with('success', "Product Item deleted");
     }
 
-    public function search(Request $request){
-      
+    public function search(Request $request)
+    {
+
         $sales = new Sale;
         if ($request->has('customer_id')) {
             if ($request->customer_id != null)
@@ -196,18 +201,22 @@ class SaleController extends Controller
             if ($request->unit_id != null)
                 $sales = $sales->where('unit_id', "$request->unit_id");
         }
+        if ($request->has('discount_in')) {
+            if ($request->discount_in != null)
+                $sales = $sales->where('discount_in', ["$request->discount_in"]);
+        }
         $sales = $sales->when($request->has('rate_min') && !is_null($request->rate_min), function ($query) use ($request) {
             $query->where('rate', '>=', $request->rate_min);
         })
             ->when($request->has('rate_max') && !is_null($request->rate_max), function ($query) use ($request) {
                 $query->where('rate', '<=', (int)$request->rate_max);
             });
-            $sales = $sales->when($request->has('total_cost_min') && !is_null($request->total_cost_min), function ($query) use ($request) {
-                $query->where('total_cost', '>=', $request->total_cost_min);
-            })
-                ->when($request->has('total_cost_max') && !is_null($request->total_cost_max), function ($query) use ($request) {
-                    $query->where('total_cost', '<=', (int)$request->total_cost_max);
-                });
+        $sales = $sales->when($request->has('total_cost_min') && !is_null($request->total_cost_min), function ($query) use ($request) {
+            $query->where('total_cost', '>=', $request->total_cost_min);
+        })
+            ->when($request->has('total_cost_max') && !is_null($request->total_cost_max), function ($query) use ($request) {
+                $query->where('total_cost', '<=', (int)$request->total_cost_max);
+            });
         $sales = $sales->when($request->has('discount_min') && !is_null($request->discount_min), function ($query) use ($request) {
             $query->where('discount', '>=', $request->discount_min);
         })
@@ -228,23 +237,23 @@ class SaleController extends Controller
                 $query->where('total', '<=', (int)$request->total_max);
             });
 
-            $customers = Customer::get();
-            $stores = Store::get();
-            $units = Unit::get();
-            $sales = $sales->with('customer','store','bill','unit')->latest()->paginate(10000);
-            $total=0;
-            $due=0;
-            $payment=0;
-            $quantity=0;
-            foreach($sales as $sale)
-            {
-            $total=$total+$sale->total;
-            $quantity=$quantity+$sale->quantity;
-            }
-            return view('sale.index',compact('sales','customers','stores','units','total','due','payment','quantity')); 
+        $customers = Customer::get();
+        $stores = Store::get();
+        $units = Unit::get();
+        $sales = $sales->with('customer', 'store', 'bill', 'unit')->latest()->paginate(10000);
+        $total = 0;
+        $due = 0;
+        $payment = 0;
+        $quantity = 0;
+        foreach ($sales as $sale) {
+            $total = $total + $sale->total;
+            $quantity = $quantity + $sale->quantity;
+        }
+        return view('sale.index', compact('sales', 'customers', 'stores', 'units', 'total', 'due', 'payment', 'quantity'));
     }
-    public function report(Request $request){
-      
+    public function report(Request $request)
+    {
+
         $sales = new Sale;
         if ($request->has('customer_id')) {
             if ($request->customer_id != null)
@@ -275,18 +284,22 @@ class SaleController extends Controller
             if ($request->unit_id != null)
                 $sales = $sales->where('unit_id', "$request->unit_id");
         }
+        if ($request->has('discount_in')) {
+            if ($request->discount_in != null)
+                $sales = $sales->where('discount_in', ["$request->discount_in"]);
+        }
         $sales = $sales->when($request->has('rate_min') && !is_null($request->rate_min), function ($query) use ($request) {
             $query->where('rate', '>=', $request->rate_min);
         })
             ->when($request->has('rate_max') && !is_null($request->rate_max), function ($query) use ($request) {
                 $query->where('rate', '<=', (int)$request->rate_max);
             });
-            $sales = $sales->when($request->has('total_cost_min') && !is_null($request->total_cost_min), function ($query) use ($request) {
-                $query->where('total_cost', '>=', $request->total_cost_min);
-            })
-                ->when($request->has('total_cost_max') && !is_null($request->total_cost_max), function ($query) use ($request) {
-                    $query->where('total_cost', '<=', (int)$request->total_cost_max);
-                });
+        $sales = $sales->when($request->has('total_cost_min') && !is_null($request->total_cost_min), function ($query) use ($request) {
+            $query->where('total_cost', '>=', $request->total_cost_min);
+        })
+            ->when($request->has('total_cost_max') && !is_null($request->total_cost_max), function ($query) use ($request) {
+                $query->where('total_cost', '<=', (int)$request->total_cost_max);
+            });
         $sales = $sales->when($request->has('discount_min') && !is_null($request->discount_min), function ($query) use ($request) {
             $query->where('discount', '>=', $request->discount_min);
         })
@@ -307,17 +320,16 @@ class SaleController extends Controller
                 $query->where('total', '<=', (int)$request->total_max);
             });
 
-            $customers = Customer::get();
-            $stores = Store::get();
-            $units = Unit::get();
-            $sales = $sales->with('customer','store','bill','unit')->get();
-            $total=0;
-            foreach($sales as $sale)
-            {
-            $total=$total+$sale->total;
-            }
-            $company = Company::findOrFail(1);
-        $pdf = PDF::loadView('pdf.sale-list-pdf', compact('sales', 'company','total'));
-        return $pdf->setPaper('A4','landscape')->stream("sale-" . now() . ".pdf");
+        $customers = Customer::get();
+        $stores = Store::get();
+        $units = Unit::get();
+        $sales = $sales->with('customer', 'store', 'bill', 'unit')->get();
+        $total = 0;
+        foreach ($sales as $sale) {
+            $total = $total + $sale->total;
+        }
+        $company = Company::findOrFail(1);
+        $pdf = PDF::loadView('pdf.sale-list-pdf', compact('sales', 'company', 'total'));
+        return $pdf->setPaper('A4', 'landscape')->stream("sale-" . now() . ".pdf");
     }
 }

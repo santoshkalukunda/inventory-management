@@ -92,8 +92,20 @@
         </div>
         @enderror
     </div>
-    <div class="col-md-3 form-group">
-        <label for="discount">Discount in %</label>
+    <div class="col-md-2 form-group">
+        <label for="discount_in" class="required">Discoutn in </label>
+        <select class="form-control @error('discount_in') is-invalid @enderror" name="discount_in" id="discount_in" onchange="Productfunction()">
+            <option value="percent" selected>Percent</option>
+            <option value="fixed">Fixed</option>
+        </select>
+        @error('discount_in')
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
+    <div class="col-md-2 form-group">
+        <label for="discount">Discount</label>
         <input type="number" min="0" step="any" class="form-control text-right @error('discount') is-invalid @enderror"
             name="discount" value="{{old('discount',$sale->discount)}}" id="discount" placeholder="Discount in %"
             onkeyup="Productfunction()">
@@ -103,7 +115,7 @@
         </div>
         @enderror
     </div>
-    <div class="col-md-3 form-group">
+    <div class="col-md-2 form-group">
         <label for="vat">VAT in %</label>
         <input type="number" min="0" step="any" class="form-control text-right @error('vat') is-invalid @enderror"
             name="vat" value="{{old('vat',$sale->vat)}}" id="vat" placeholder="VAT in %" onkeyup="Productfunction()">
@@ -150,9 +162,14 @@
     var rate = document.getElementById("rate").value;
     var discount = document.getElementById("discount").value;
     var vat = document.getElementById("vat").value;
+    var discount_in = document.getElementById("discount_in").value;
     var calculate = (quantity * rate);
     document.getElementById("total_cost").value = calculate.toFixed(2);
+    if (discount_in != "fixed") {     
     calculate = calculate - ((calculate * (discount)/100));
+    } else {
+    calculate = calculate - discount;
+    }
     calculate = calculate + ((calculate * (vat)/100));
     document.getElementById("total").value = calculate.toFixed(2);
       }
