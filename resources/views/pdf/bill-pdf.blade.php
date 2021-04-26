@@ -104,7 +104,9 @@
                                     <td class="text-right">{{$sale->quantity}} {{$sale->unit->name}}</td>
                                     <td class="text-right">{{$sale->rate}}</td>
                                     <td class="text-right">
-                                        {{$sale->discount}}
+                                        @if ($sale->discount)
+                                        {{$sale->discount }}{{$sale->discount_in == "fixed" ? '' : "%"}}
+                                        @endif
                                     </td>
                                     <td class="text-right">{{$sale->vat}}</td>
                                     <td class="text-right">{{round($sale->total, 2)}}</td>
@@ -122,7 +124,13 @@
 
                                 <tr>
                                     <td class="text-right">Discount</td>
-                                    <td class="text-right">{{$bill->discount ?? "-"}}</td>
+                                    <td class="text-right">
+                                        @if ($bill->discount)
+                                        {{$bill->discount }}{{$bill->discount_in == "fixed" ? '' : "%"}}
+                                        @else
+                                        -
+                                        @endif
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="text-right">VAT</td>
