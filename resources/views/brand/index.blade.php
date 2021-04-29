@@ -18,8 +18,8 @@ Dashbord
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" id="name" name="name"
-                            class="form-control @error('name') is-invalid @enderror" value="{{old('name',$brand->name)}}"
-                            placeholder="brand Name">
+                            class="form-control @error('name') is-invalid @enderror"
+                            value="{{old('name',$brand->name)}}" placeholder="brand Name">
                         @error('name')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -35,13 +35,16 @@ Dashbord
         </div>
     </div>
     <div class="col-lg-8">
+        <div class="col-md-2 px-0">
+
+            <a class="btn btn-primary form-control" data-toggle="collapse" href="#filter" role="button"
+                aria-expanded="false" aria-controls="filter">
+                <i class="fa fa-filter"></i> Filter
+            </a>
+
+        </div>
         <div class="mb-2">
-            <p>
-                <a class="btn btn-primary" data-toggle="collapse" href="#filter" role="button"
-                    aria-expanded="false" aria-controls="filter">
-                    <i class="fa fa-filter"></i> Filter
-                </a>
-            </p>
+
             <div class="collapse" id="filter">
                 <div class="card card-body">
                     <form action="{{route('brands.search')}}" method="get">

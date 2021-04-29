@@ -9,7 +9,7 @@
                 <tr>
                     <th>Date</th>
                     <th>Dealer</th>
-                    <th>Due Amount</th>
+                    <th>Due_Amount</th>
                     <th>Payment</th>
                     <th>Due</th>
                     <th colspan="2">Action</th>
@@ -22,8 +22,7 @@
                     <td>{{$purchaseBillDue->payment}}</td>
                     <td>{{$purchaseBillDue->due}}</td>
                     <td>
-                        {{-- <a href="{{route('purchase.show',$purchaseBillDue->purchase_id)}}" class="text-muted"><i
-                                class="fa fa-eye"></i> Deu Pay</a> --}}
+                        <a href="{{route('purchase-bills.create',$purchaseBillDue->purchase_bill_id)}}" class="fa fa-eye btn btn-primary" data-toggle="tooltip" data-placement="top" title="Show bill"></a>
                     </td>
                     <td>
                         <form action="{{route('purchase-dues.destroy',$purchaseBillDue)}}"
@@ -31,8 +30,7 @@
                             class="d-inline">
                             @csrf
                             @method('delete')
-                            <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
-                                    class="fa fa-trash-alt"></i></button>
+                            <button type="submit" class="fa fa-trash-alt btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete Due"></button>
                         </form>
                     </td>
                 </tr>

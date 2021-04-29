@@ -24,15 +24,14 @@
                     <td>{{$saleDue->due}}</td>
                     <td>{{$saleDue->user->name}}</td>
                     <td> 
-                        <a href="{{route('bills.create',$saleDue->bill_id)}}" class="text-muted"><i class="fa fa-eye"></i>Due Pay</a>
+                        <a href="{{route('bills.create',$saleDue->bill_id)}}" class="fa fa-eye btn btn-primary" data-toggle="tooltip" data-placement="top" title="View Bill"></a>
                     </td>
                     <td>
                         <form action="{{route('sale-dues.destroy',$saleDue)}}"
                             onsubmit="return confirm('Are you sure to delete due Payment?')" method="POST" class="d-inline">
                             @csrf
                             @method('delete')
-                            <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
-                                    class="fa fa-trash-alt"></i></button>
+                            <button type="submit" class="btn btn-danger fa fa-trash-alt" data-toggle="tooltip" data-placement="top" title="Delete Due"></button>
                         </form>
                     </td>
                 </tr>

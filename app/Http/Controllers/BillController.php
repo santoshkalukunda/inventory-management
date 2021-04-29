@@ -149,7 +149,7 @@ class BillController extends Controller
             $sale->delete();
         }
         $bill->delete();
-        return redirect()->back()->with('success', "Bill cancel Successfull");
+        return redirect()->route('bills.index')->with('success', "Bill Delete Successfull");
     }
 
     public function cancel(Bill $bill)

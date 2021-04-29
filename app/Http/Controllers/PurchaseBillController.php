@@ -152,7 +152,7 @@ class PurchaseBillController extends Controller
             $purchase->delete();
         }
         $purchaseBill->delete();
-        return redirect()->back()->with('success', 'Purchase bill Delete');
+        return redirect()->route('purchase-bills.index')->with('success', 'Purchase bill Delete');
     }
 
     public function search(Request $request)

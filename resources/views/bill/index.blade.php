@@ -26,26 +26,26 @@ Customer List
         </button>
         @include('modal.bill-create')
     </div>
-    <div class="col-md-1">
+    <div class="col-md-2">
         <p>
-            <a class="btn btn-primary" onclick="btn1()" data-toggle="collapse" href="#filter" role="button"
+            <a class="btn btn-primary form-control" onclick="btn1()" data-toggle="collapse" href="#filter" role="button"
                 aria-expanded="false" aria-controls="filter">
                 <i class="fa fa-filter"></i> Filter
             </a>
         </p>
     </div>
-    <div class="col-md-1">
-        <p>
-            <a class="btn btn-primary" onclick="btn2()" data-toggle="collapse" href="#report" role="button"
+    <div class="col-md-2">
+        <div>
+            <a class="btn btn-primary form-control" onclick="btn2()" data-toggle="collapse" href="#report" role="button"
                 aria-expanded="false" aria-controls="report">
                 <i class="fa fa-file-pdf"></i> Reports
             </a>
-        </p>
+        </div>
     </div>
-    <div class="col-md-8 form-group text-right">
-        <span class="bg-blue-light p-2"><b>Net Total : </b>{{$total}}/-</span>
-        <span class="bg-blue-light p-2"><b>Payment : </b>{{$payment}}</span>
-        <span class="bg-blue-light p-2"><b>Due Amount : </b>{{$due}}</span>
+    <div class="col-md-6 d-flex  mt-lg-0 mt-3 justify-content-end my-2">
+        <div class="bg-blue-light p-2"><b>Net Total : </b>{{$total}}/-</div>
+        <div class="bg-blue-light p-2"><b>Payment : </b>{{$payment}}</div>
+        <div class="bg-blue-light p-2 "><b>Due_Amount : </b>{{$due}}</div>
     </div>
     <div class="col-md-12 mb-2">
         {{-- filter-search --}}

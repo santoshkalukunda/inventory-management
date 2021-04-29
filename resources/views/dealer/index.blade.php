@@ -11,12 +11,11 @@ Dealer List
         </a>
     </div>
     <div class="col-md-2">
-        <p>
-            <a class="btn btn-primary" data-toggle="collapse" href="#filter" role="button" aria-expanded="false"
-                aria-controls="filter">
-                <i class="fa fa-filter"></i> Filter
-            </a>
-        </p>
+        <a class="btn btn-primary form-control" data-toggle="collapse" href="#filter" role="button"
+            aria-expanded="false" aria-controls="filter">
+            <i class="fa fa-filter"></i> Filter
+        </a>
+
     </div>
     <div class="col-md-12 mb-2">
         <div class="collapse" id="filter">
@@ -65,8 +64,8 @@ Dealer List
                             <th>Address</th>
                             <th>Phone</th>
                             <th>Email</th>
-                            <th>PAN/VAT No.</th>
-                            <th>Registration No.</th>
+                            <th>PAN/VAT_No.</th>
+                            <th>Registration_No.</th>
                             <th colspan="4">Action</th>
                         </tr>
                         @forelse ($dealers as $dealer)
@@ -78,28 +77,28 @@ Dealer List
                             <td>{{$dealer->pan_vat}}</td>
                             <td>{{$dealer->reg_no}}</td>
                             <td>
-                                <a href="{{route('purchase-bills.store',$dealer)}}" class="btn btn-success" data-toggle="tooltip"
-                                data-placement="top" title="New Bill"><i
+                                <a href="{{route('purchase-bills.store',$dealer)}}" class="btn btn-success"
+                                    data-toggle="tooltip" data-placement="top" title="New Bill"><i
                                         class="fa fa-file"></i></a>
                             </td>
                             <td>
-                                <a href="{{route('dealers.show',$dealer)}}" class="btn btn-primary" data-toggle="tooltip"
-                                data-placement="top" title="Bill List"><i
+                                <a href="{{route('dealers.show',$dealer)}}" class="btn btn-primary"
+                                    data-toggle="tooltip" data-placement="top" title="Bill List"><i
                                         class="fa fa-eye"></i></a>
                             </td>
                             <td>
-                                <a href="{{route('dealers.edit',$dealer)}}" class="btn btn-primary"data-toggle="tooltip"
-                                data-placement="top" title="Edit Dealer"><i
+                                <a href="{{route('dealers.edit',$dealer)}}" class="btn btn-primary"
+                                    data-toggle="tooltip" data-placement="top" title="Edit Dealer"><i
                                         class="fa fa-edit"></i></a>
                             </td>
-                            
+
                             <td>
                                 <form action="{{route('dealers.destroy',$dealer)}}"
                                     onsubmit="return confirm('Are you sure to delete?')" method="POST" class="d-inline">
                                     @csrf
                                     @method('delete')
                                     <button type="submit" class="btn btn-danger" data-toggle="tooltip"
-                                    data-placement="top" title="Delete Dealers"><i
+                                        data-placement="top" title="Delete Dealers"><i
                                             class="fa fa-trash-alt"></i></button>
                                 </form>
                             </td>

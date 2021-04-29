@@ -4,20 +4,19 @@ Product
 @endsection
 @section('content')
 <div class="row">
-    <div class="col-md-2">
-        <p>
-            <a class="btn btn-primary" href="{{route('products.create')}}">
-                <i class="fa fa-plus"></i> New Product
-            </a>
-        </p>
+    <div class="col-md-2 form-group">
+
+        <a class="btn btn-primary form-control" href="{{route('products.create')}}">
+            <i class="fa fa-plus"></i> New Product
+        </a>
+
     </div>
-    <div class="col-md-1">
-        <p>
-            <a class="btn btn-primary" data-toggle="collapse" href="#filter" role="button" aria-expanded="false"
-                aria-controls="filter">
-                <i class="fa fa-filter"></i> Filter
-            </a>
-        </p>
+    <div class="col-md-2 form-group">
+
+        <a class="btn btn-primary form-control" data-toggle="collapse" href="#filter" role="button"
+            aria-expanded="false" aria-controls="filter">
+            <i class="fa fa-filter"></i> Filter
+        </a>
     </div>
     <div class="col-lg-12">
         <div class="mb-2">
@@ -96,7 +95,7 @@ Product
                             <th>Brand</th>
                             <th>Model_No.</th>
                             {{-- <th>Serial_No.</th> --}}
-                            <th>Action</th>
+                            <th colspan="2">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -109,15 +108,16 @@ Product
                             <td>{{$product->model_no}}</td>
                             {{-- <td>{{$product->serial_no}}</td> --}}
                             <td>
-                                <a href="{{ route('products.edit', $product) }}" class="text-muted"><i
-                                        class="fa fa-edit"></i></a>
-                                <span class="mx-3">|</span>
+
+                                <a href="{{ route('products.edit', $product) }}" class="fa fa-edit btn btn-primary" data-toggle="tooltip" data-placement="top" title="Edit"></a>
+                               
+                            </td>
+                            <td>
                                 <form action="{{route('products.destroy', $product) }}"
                                     onsubmit="return confirm('Are you sure to delete?')" method="POST" class="d-inline">
                                     @csrf
                                     @method('delete')
-                                    <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
-                                            class="fa fa-trash-alt"></i></button>
+                                    <button type="submit" class="fa fa-trash-alt btn btn-danger" data-toggle="tooltip" data-placement="top" title="delete"></button>
                                 </form>
                             </td>
                         </tr>

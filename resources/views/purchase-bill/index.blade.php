@@ -18,33 +18,33 @@ Purchase Bill List
     }
 </style>
 @endpush
-<div class="row mx-2">
-    <div class="col-md-2 form-group">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> <i class="fa fa-plus"></i> New
+<div class="row">
+    <div class="col-md-2 mb-2">
+        <button class="btn btn-primary form-control" data-toggle="modal" data-target="#exampleModal"> <i
+                class="fa fa-plus"></i> New
             Bill
         </button>
     </div>
     @include('modal.purchase-modal')
-    <div class="col-md-1 form-group">
-        <p>
-            <a class="btn btn-primary" onclick="btn1()" data-toggle="collapse" href="#filter" role="button"
-                aria-expanded="false" aria-controls="filter">
-                <i class="fa fa-filter"></i> Filter
-            </a>
-        </p>
+    <div class="col-md-2 mb-2">
+
+        <a class="btn btn-primary form-control fa fa-filter" onclick="btn1()" data-toggle="collapse" href="#filter" role="button"
+            aria-expanded="false" aria-controls="filter">
+            Filter
+        </a>
+
     </div>
-    <div class="col-md-1 form-group">
-        <p>
-            <a class="btn btn-primary" onclick="btn2()" data-toggle="collapse" href="#report" role="button"
+    <div class="col-md-2">
+            <a class="btn btn-primary form-control" onclick="btn2()" data-toggle="collapse" href="#report" role="button"
                 aria-expanded="false" aria-controls="report">
                 <i class="fa fa-file-pdf"></i> Reports
             </a>
-        </p>
+    
     </div>
-    <div class="col-md-8 form-group text-right">
-        <span class="bg-blue-light p-2"><b>Net Total : </b>{{$net_total}}/-</span>
-        <span class="bg-blue-light p-2"><b>Payment :</b> {{$payment}}/-</span>
-        <span class="bg-blue-light p-2"> <b>Due :</b> {{$due}}/-</span>
+    <div class="col-md-6 d-flex  mt-lg-0 mt-3 justify-content-end my-2">
+        <div class="bg-blue-light p-2"><b>Net Total : </b>{{$net_total}}/-</div>
+        <div class="bg-blue-light p-2"><b>Payment :</b> {{$payment}}/-</div>
+        <div class="bg-blue-light p-2"> <b>Due :</b> {{$due}}/-</div>
     </div>
     <div class="col-md-12 mb-2">
         {{-- filter-search --}}
@@ -79,8 +79,8 @@ Purchase Bill List
         </div>
     </div>
 </div>
-<div class="col-md-12 justify-content-center">
-   @include('purchase-bill.list')
+<div class="justify-content-center">
+    @include('purchase-bill.list')
 </div>
 <script>
     function btn1() {

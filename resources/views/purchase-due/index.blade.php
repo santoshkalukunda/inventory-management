@@ -18,15 +18,15 @@ Sale Deu Payment List
     }
 </style>
 @endpush
-<div class="row mx-1">
-    <div class="col-md-1 form-group">
-        <button class="btn btn-primary" data-toggle="collapse" href="#filter" role="button" aria-expanded="false"
+<div class="row">
+    <div class="col-md-2 form-group">
+        <button class="btn btn-primary form-control" data-toggle="collapse" href="#filter" role="button" aria-expanded="false"
             aria-controls="filter">
             <i class="fa fa-filter"></i> Filter
         </button>
     </div>
 </div>
-<div class="col-md-12 mb-2">
+<div class="">
     <div class="collapse" id="filter">
         <div class="card card-body">
             <form action="{{route('purchase-dues.search')}}" method="get">
@@ -106,7 +106,7 @@ Sale Deu Payment List
         </div>
     </div>
 </div> 
-<div class="col-md-12 justify-content-center">
+<div class="mt-3">
     @include('purchase-due.list')
 </div>
 @endsection

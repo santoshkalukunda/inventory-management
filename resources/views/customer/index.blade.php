@@ -11,12 +11,12 @@ Customer List
         </a>
     </div>
     <div class="col-md-2">
-        <p>
-            <a class="btn btn-primary" data-toggle="collapse" href="#filter" role="button" aria-expanded="false"
+        <div>
+            <a class="btn btn-primary form-control" data-toggle="collapse" href="#filter" role="button" aria-expanded="false"
                 aria-controls="filter">
                 <i class="fa fa-filter"></i> Filter
             </a>
-        </p>
+        </div>
     </div>
     <div class="col-md-12 mb-2">
         <div class="collapse" id="filter">

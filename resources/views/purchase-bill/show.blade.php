@@ -37,7 +37,7 @@ Purchase Deu Payment
                         <div class="col-md-3 form-group">
                             <label for="date" class="required">Billing Date</label>
                             <input type="date" class="form-control @error('date') is-invalid @enderror"
-                                value="{{old('date')}}" name="date" id="date" placeholder="Order Date">
+                                value="{{old('date',date('Y-m-d'))}}" name="date" id="date" placeholder="Order Date">
                             @error('date')
                             <div class="invalid-feedback">
                                 {{ $message }}

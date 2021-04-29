@@ -202,12 +202,26 @@ Purchase Bill Create
                             </div>
                             @enderror
                         </div>
+                    
+                    </div>
+                    <div class="row">
                         <div class="form-group col-md-2">
                             <label for="" class="mb-4"></label>
                             <button type="submit" class="btn btn-success form-control btn-rounded">Pay</button>
                         </div>
                     </div>
                 </form>
+             
+                    <div class="d-flex justify-content-end">
+                        <form action="{{route('purchase-bills.destroy',$purchaseBill)}}"
+                            onsubmit="return confirm('Are you sure to delete bill?')" method="POST" class="d-inline">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn-sm btn-danger px-3  form-control btn-rounded"
+                                data-toggle="tooltip" data-placement="top" title="Delete Bill">Delete</button>
+                        </form>
+                    </div>
+                
             </div>
         </div>
     </div>

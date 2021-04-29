@@ -19,33 +19,29 @@ Sales List
 </style>
 @endpush
 
-<div class="row mx-1">
-    <div class="col-md-2">
-        <button class="btn btn-primary mb-2 form-control" data-toggle="modal" data-target="#new-bill"> <i
+<div class="row">
+    <div class="col-md-2 form-group">
+        <button class="btn btn-primary form-control" data-toggle="modal" data-target="#new-bill"> <i
                 class="fa fa-plus"></i> New
             Sale
         </button>
         @include('modal.bill-create')
     </div>
-    <div class="col-md-1">
-        <p>
-            <a class="btn btn-primary" onclick="btn1()" data-toggle="collapse" href="#filter" role="button"
-                aria-expanded="false" aria-controls="filter">
-                <i class="fa fa-filter"></i> Filter
-            </a>
-        </p>
+    <div class="col-md-2 form-group">
+        <a class="btn btn-primary form-control" onclick="btn1()" data-toggle="collapse" href="#filter" role="button"
+            aria-expanded="false" aria-controls="filter">
+            <i class="fa fa-filter"></i> Filter
+        </a>
     </div>
-    <div class="col-md-1">
-        <p>
-            <a class="btn btn-primary" onclick="btn2()" data-toggle="collapse" href="#report" role="button"
-                aria-expanded="false" aria-controls="report">
-                <i class="fa fa-file-pdf"></i> Reports
-            </a>
-        </p>
+    <div class="col-md-2 ">
+        <a class="btn btn-primary form-control" onclick="btn2()" data-toggle="collapse" href="#report" role="button"
+            aria-expanded="false" aria-controls="report">
+            <i class="fa fa-file-pdf"></i> Reports
+        </a>
     </div>
-    <div class="col-md-8 form-group text-right">
-        <span class="bg-blue-light p-2"><b>Product Quantity: </b>{{$quantity}}</span>
-        <span class="bg-blue-light p-2"><b>Total Amount: </b>{{$total}}/-</span>
+    <div class="col-md-6 d-flex  mt-lg-0 mt-3 justify-content-end my-2">
+        <div class="bg-blue-light p-2"><b>Product Quantity: </b>{{$quantity}}</div>
+        <div class="bg-blue-light p-2"><b>Total Amount: </b>{{$total}}/-</div>
     </div>
     <div class="col-md-12 mb-2">
 
@@ -92,7 +88,7 @@ Sales List
                     <table class="table-hover table">
                         <tr class="text-center bg-light">
                             <th>Date</th>
-                            <th>Invoice No.</th>
+                            <th>Invoice_No.</th>
                             <th>Customer</th>
                             <th>Product</th>
                             <th>Batch_No.</th>
@@ -143,7 +139,7 @@ Sales List
                             <td class="text-right">{{number_format((float)$sale->rate,2,'.', '')}}</td>
                             <td class="text-right">{{$sale->quantity * $sale->rate }}</td>
                             <td class="text-right">
-                                @if ($sale->discount)    
+                                @if ($sale->discount)
                                 {{$sale->discount}}{{$sale->discount_in == "fixed" ? '' : '%'}}
                                 @endif
                             </td>
@@ -151,7 +147,7 @@ Sales List
                             <td class="text-right">{{number_format((float)$sale->total,2,'.', '')}}</td>
                             <td>
                                 <a href="{{route('bills.create',$sale->bill_id)}}" class="text-muted">
-                                    <i class="fa fa-edit"></i>
+                                    <i class="btn btn-primary fa fa-edit"></i>
                                 </a>
                             </td>
                         </tr>

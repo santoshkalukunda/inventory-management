@@ -46,7 +46,8 @@ Bill Create
                     <div class="badge-primary p-1 m-1 col-md"> <b>Bill Date: </b> <br> {{$bill->date}} </div>
                     <div class="badge-primary  p-1 m-1 col-md"> <b>Invoice No.: </b> <br> {{$bill->invoice_no}} </div>
                     <div class="badge-primary p-1 m-1 col-md"> <b>Total: </b><br> {{$bill->total}} </div>
-                    <div class="badge-primary  p-1 m-1 col-md"> <b>Discount: </b> <br> {{$bill->discount}} {{$bill->discount_in}} </div>
+                    <div class="badge-primary  p-1 m-1 col-md"> <b>Discount: </b> <br> {{$bill->discount}}
+                        {{$bill->discount_in}} </div>
                     <div class="badge-primary  p-1 m-1 col-md"> <b>VAT: </b><br> {{$bill->vat}} </div>
                     <div class="badge-primary p-1 m-1 col-md"> <b>Net-total : </b><br> {{$bill->net_total}}/- </div>
                     <div class="badge-primary  p-1 m-1 col-md"><b>Pay Amount :</b><br> {{$bill->payment}}/- </div>
@@ -248,8 +249,20 @@ Bill Create
                             <label for="" class="mb-4"></label>
                             <button type="submit" class="btn btn-success form-control btn-rounded">Pay</button>
                         </div>
+
                     </div>
                 </form>
+                <div class="">
+                    <div class="d-flex justify-content-end">
+                        <form action="{{route('bills.destroy',$bill)}}"
+                            onsubmit="return confirm('Are you sure to delete bill?')" method="POST" class="d-inline">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn-sm btn-danger px-4 form-control btn-rounded"
+                                data-toggle="tooltip" data-placement="top" title="Delete Bill">Delete</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

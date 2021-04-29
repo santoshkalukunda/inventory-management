@@ -75,12 +75,13 @@ Customer List
                                 @endforeach
                             </td>
                             <td>
-                                <a href="{{ route('users.changePasswordShow', $user) }}" class="text-muted"><i
-                                        class="fa fa-key"></i></a>
+                                <a href="{{ route('users.changePasswordShow', $user) }}" class="btn-success btn" class="fa fa-trash-alt btn btn-danger" data-toggle="tooltip" data-placement="top" title="change password"><i
+                                        class="fa fa-key"></i>
+                                </a>
                             </td>
                             <td>
-                                <a href="{{ route('users.edit', $user) }}" class="text-muted"><i
-                                        class="fa fa-edit"></i></a>
+                                <a href="{{ route('users.edit', $user) }}" class="fa fa-edit btn btn-primary"
+                                    data-toggle="tooltip" data-placement="top" title="delete"></a>
                             </td>
                         </tr>
                         @empty

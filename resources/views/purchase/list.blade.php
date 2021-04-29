@@ -61,8 +61,8 @@
                     <td class="text-right">{{number_format((float)$purchase->total,2,'.', '')}}</td>
                     <td class="text-right">{{number_format((float)$purchase->mrp,2,'.', '')}}</td>
                     <td>
-                        <a href="{{route('purchase-bills.create',$purchase->purchase_bill_id)}}">
-                            <i class="fa fa-edit"></i>
+                        <a href="{{route('purchase-bills.create',$purchase->purchase_bill_id)}}" class="btn btn-primary fa fa-edit" data-toggle="tooltip" data-placement="top" title="Edit bill">
+                       
                         </a>
                     </td>
                     @if ($purchase->purchaseBill->status == "incomplete")
@@ -71,8 +71,7 @@
                             onsubmit="return confirm('Are you sure to delete?')" method="POST" class="d-inline">
                             @csrf
                             @method('delete')
-                            <button type="submit" class="border-0 my-0 p-0 text-danger bg-transparent"><i
-                                    class="fa fa-trash-alt"></i></button>
+                            <button type="submit" class="btn btn-danger fa fa-trash-alt" data-toggle="tooltip" data-placement="top" title="Delete"></button>
                         </form>
                     </td>
                     @endif

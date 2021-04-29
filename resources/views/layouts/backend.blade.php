@@ -21,8 +21,9 @@
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             <div class="page-content fade-in-up">
-                <div class="container">
+                <div class="mr-lg-3 mr-0">
                     @include('alerts.all')
+                    
                     @yield('content')
                     <!-- END PAGE CONTENT-->
                 </div>
